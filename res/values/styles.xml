@@ -1,0 +1,67 @@
+<!-- 
+   Copyright 2013, 2014 Daniel Pereira Coelho
+   
+   This file is part of the Expenses Android Application.
+
+   Expenses is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation in version 3.
+
+   Expenses is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="MoneyNotebookTheme" parent="Theme.Sherlock.Light">        
+        <!-- Action Bar -->
+        <item name="actionBarStyle">@style/MN.Widget.ActionBar</item>        
+        <item name="actionBarItemBackground">@drawable/statelist_normal</item>
+        
+        <!-- Action Mode -->
+        <item name="actionModeBackground">@drawable/actionmode_bg</item>                
+        <item name="actionModeCloseButtonStyle">@style/MN.Widget.ActionButton.CloseMode</item>
+    
+    	<!-- Other -->
+    	<item name="android:windowBackground">@drawable/window_bg</item>        
+        <item name="android:dropDownListViewStyle">@style/MN.Widget.ListView.DropDown</item>
+    </style>
+    
+    <style name="MN.Widget.ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar">
+        <item name="background">@drawable/actionbar_bg</item>
+        <item name="titleTextStyle">@style/MN.TextAppearance.Widget.ActionBar.Title</item>
+    </style>
+        
+    <style name="MN.TextAppearance.Widget.ActionBar.Title" parent="@style/TextAppearance.Sherlock.Small">
+        <item name="android:textColor">@color/yellowFirst</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="MN.TextAppearance.Subtitle" parent="@style/TextAppearance.Sherlock.Small">
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="MN.Widget.ImageButton" parent="@android:style/Widget.ImageButton">
+        <item name="android:background">@drawable/statelist_normal</item>
+        <item name="android:padding">10dp</item>
+    </style>
+    
+    <style name="MN.Widget.DialogButton" parent="@android:style/Widget.Button">
+    </style>
+    
+    <style name="MN.Widget.ActionButton.CloseMode" parent="@style/Widget.Sherlock.Light.ActionButton.CloseMode">
+        <item name="android:background">@drawable/statelist_normal</item>
+    </style>
+    
+	<color name="greenFirst">#119400</color>
+    <color name="greenSecond">#4cc457</color>
+    <color name="yellowFirst">#fbffd7</color>
+	<color name="grayFirst">#d4d4d4</color>
+	
+	<color name="hBar">@android:color/darker_gray</color>
+</resources>

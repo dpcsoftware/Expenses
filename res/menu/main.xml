@@ -1,0 +1,32 @@
+<!-- 
+   Copyright 2013, 2014 Daniel Pereira Coelho
+   
+   This file is part of the Expenses Android Application.
+
+   Expenses is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation in version 3.
+
+   Expenses is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/item1" android:title="@string/menu_main_1" android:titleCondensed="@string/menu_main_1" android:icon="@drawable/ic_menu_add" android:showAsAction="ifRoom"></item>
+    
+    <item android:id="@+id/item7" android:titleCondensed="@string/menu_main_2" android:title="@string/menu_main_2">
+        <menu>
+            <item android:id="@+id/item4" android:showAsAction="never" android:title="@string/menu_main_3" android:titleCondensed="@string/menu_main_4"></item>
+    		<item android:id="@+id/item5" android:title="@string/menu_main_5" android:showAsAction="never" android:titleCondensed="@string/menu_main_6"></item>
+        </menu>
+    </item><item android:id="@+id/item2" android:showAsAction="never" android:title="@string/menu_main_7" android:titleCondensed="@string/menu_main_7"></item>
+    <item android:id="@+id/item3" android:showAsAction="never" android:title="@string/menu_main_8" android:titleCondensed="@string/menu_main_8"></item>
+    <item android:id="@+id/item6" android:titleCondensed="@string/menu_main_9" android:showAsAction="never" android:title="@string/menu_main_9"></item>
+    <item android:id="@+id/item8" android:title="@string/menu_main_10" android:titleCondensed="@string/menu_main_11" android:showAsAction="never"></item>
+    <item android:id="@+id/item9" android:title="@string/menu_main_12" android:titleCondensed="@string/menu_main_12" android:showAsAction="never"></item>
+</menu>

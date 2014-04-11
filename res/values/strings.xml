@@ -1,0 +1,241 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- Strings that doesn't need to be translated -->
+    <string name="nt_about_l2">dpcsoftware@gmail.com</string>
+    <string name="nt_about_l3">http://www.gnu.org/copyleft/gpl.txt</string>
+    <string name="nt_about_l4">http://github.com/dpcsoftware/Expenses</string>
+    <string-array name="nt_prefs_1">
+        <item>W</item>
+        <item>M</item>
+    </string-array>
+    <string name="nt_calculator_l1">+</string>
+    <string name="nt_calculator_l2">-</string>
+    <string name="nt_calculator_l3">x</string>
+    <string name="nt_calculator_l4">÷</string>
+    <string name="nt_calculator_l5">=</string>
+    
+    
+    
+    <!-- English Translation (Standard Language) -->
+    <string name="app_name">Expenses</string>
+    <string name="title_activity_main">Expenses</string>
+    <string name="standard_currency">$</string>
+    <bool name="standard_currency_pos">true</bool>
+    
+    
+    
+    <!-- General Purpose Strings -->
+    <string name="gp_1">Category Color</string>
+    <string name="gp_2">OK</string>
+    <string name="gp_3">Cancel</string>
+    <string name="gp_4">Edit</string>
+    <string name="gp_5">Delete</string>
+    <string name="gp_6">Share</string>
+    <string name="gp_7">Previous</string>
+    <string name="gp_8">Next</string>
+    <string name="gp_9">Select</string>
+    
+    
+	
+    <string name="changes_1">1.1.2:\n
+        - Expenses list: click to edit, long click to delete\n
+        - Add expense screen: added a button to add a category, the most used categories are shown first\n
+        - Some user interfaces were redesigned\n
+        - Backups can be done automatically</string>
+        
+    <string name="changes_2">1.2:\n
+        - Expenses is now free software (as in freedom) licensed under the GPL version 3\n
+        - Backups are saved only on the SD card. Tight integration with Google Drive is no longer available. Reason: incompatibility with the GPL, make possible to use other cloud storage services\n
+        - Added an option to export data to a Open Document Spreadsheet\n
+        - Added a widget for quick access to add an expense and to view the total of a group\n</string>
+    
+    
+    
+   
+    
+    
+    
+    <string name="about_c1">About the app</string>
+    
+    <string name="about_l1">Version 1.2</string>
+    <string name="about_l3">Send us your feedback:</string>
+    <string name="about_l4">Changelog</string>
+	<string name="about_l5">Credits</string>
+    <string name="about_l6">Expenses is free software (as in freedom) released under the GNU GPL license version 3</string>
+    <string name="about_l7">License:</string>
+    <string name="about_l8">Source Code:</string>
+    <string name="about_l9">Developed by Daniel Pereira Coelho</string>
+    <string name="about_l10">Special thanks to Jake Wharton, author of the library ActionBarSherlock (Apache License version 2)</string>
+    
+    
+    
+    <string name="addex_c1">Invalid value</string>
+    <string name="addex_c2">Saved!</string>
+    <string name="addex_c3">Error while recording expense</string>
+    <string name="addex_c4">Invalid expression</string>
+    <string name="addex_c5">Calculator</string>
+    
+    <string name="addex_l1">Amount</string>
+    <string name="addex_l2">Category</string>
+    <string name="addex_l3">Details</string>
+    <string name="addex_l_img1">Calculator</string>
+    <string name="addex_l_img2">New Category</string>
+    
+    
+    
+    <string name="categorystats_c1">Total</string>
+    <string name="categorystats_c2">Daily average</string>
+    <string name="categorystats_c3">There aren\'t any expenses on this group for this month</string>
+    
+    <string name="categorystats_l1">By Month</string>
+    <string name="categorystats_l2">Total</string>
+    
+    
+    
+    <string name="dbHelper_c1">Standard</string>
+    <string name="dbHelper_c2">Business Trip</string>
+    <string name="dbHelper_c3">Summer Vacations</string>
+    <string name="dbHelper_c4">Other</string>
+    <string name="dbHelper_c5">Restaurants</string>
+    <string name="dbHelper_c6">Supermarket</string>
+    <string name="dbHelper_c7">Bills</string>
+    <string name="dbHelper_c8">Car</string>
+    
+    
+    
+    <string name="exportdata_c1">Export Data</string>
+    <string name="exportdata_c2">Storage error</string>
+    <string name="exportdata_c3">This operation will overwrite ALL data on your device replacing it by the selected file. Do you want to continue?</string>
+    <string name="exportdata_c4">Important!</string>
+    <string name="exportdata_c5">Yes</string>
+    <string name="exportdata_c6">No</string>
+    <string name="exportdata_c7">Error while doing backup</string>
+    <string name="exportdata_c8">Backup successful!</string>
+    <string name="exportdata_c9">Backup restored!</string>
+    <string name="exportdata_c10">Error while restoring backup</string>
+    <string name="exportdata_c11">Are you sure you want to delete this file?</string>
+    <string name="exportdata_c12">Choose the application</string>
+    <string name="exportdata_c13">Date</string>
+    <string name="exportdata_c14">Category</string>
+    <string name="exportdata_c15">Amount</string>
+    <string name="exportdata_c16">Details</string>
+    <string name="exportdata_c17">Spreadsheet</string>
+    <string name="exportdata_c18">Error while exporting to spreadsheet</string>
+    
+    <string name="exportdata_l1">Files are stored on the phone memory (SD Card), but they can be used by other applications (E-mail, Drive, Dropbox, etc.)</string>
+    <string name="exportdata_l2">Backup data now</string>
+    <string name="exportdata_l3">Files</string>
+    <string name="exportdata_l4">Folder:</string>
+    <string name="exportdata_l5">Export to a ODS spreadsheet</string>
+    
+    <string name="exportdata_l_img1">Open File</string>
+    <string name="exportdata_l_img2">Restore Backup</string>
+  
+    
+    
+    <string name="editcategories_c1">Edit Categories</string>
+    <string name="editcategories_c2">Warning!</string>
+    <string name="editcategories_c3">There must be at least one category</string>
+    <string name="editcategories_c4">Delete this category and all expenses associated with it</string>
+    <string name="editcategories_c5">Delete this category and change its expenses to the following category:</string>
+    <string name="editcategories_c6">Delete Category</string>
+    <string name="editcategories_c7">Add Category</string>
+    <string name="editcategories_c8">Edit Category</string>
+    <string name="editcategories_c9">Done!</string>
+    <string name="editcategories_c10">Done!</string>
+    <string name="editcategories_c11">Error while accessing database</string>
+    <string name="editcategories_c12">Done!</string>
+    <string name="editcategories_c13">Error while deleting</string>
+    <string name="editcategories_c14">Type a name for the category</string>
+    
+    
+    
+    <string name="editgroups_c1">Edit Groups</string>
+    <string name="editgroups_c2">Warning!</string>
+    <string name="editgroups_c3">There must be at least one group</string>
+    <string name="editgroups_c4">Delete Group</string>
+    <string name="editgroups_c5">Done!</string>
+    <string name="editgroups_c6">Error while deleting</string>
+    <string name="editgroups_c7">Add Group</string>
+    <string name="editgroups_c8">Edit Group</string>
+    <string name="editgroups_c9">Done!</string>
+    <string name="editgroups_c10">Done!</string>
+    <string name="editgroups_c11">Error while accessing database</string>
+    <string name="editgroups_c12">Type a name for the group</string>
+    
+    <string name="editgroups_l3">Delete this group and all expenses associated with it</string>
+    <string name="editgroups_l4">Delete this group and move its expenses to the following group:</string>
+    
+    
+    
+    <string name="editpreferences_c1">Preferences</string>
+    
+    
+        
+    <string name="expenseslist_c1">What\'s new?</string>
+    <string name="expenseslist_c2">No expense record was found in this group</string>
+    
+    <string name="expenseslist_l1">Filters:</string>
+    <string name="expenseslist_l_img1">Show More</string>
+    
+    
+    
+    <string name="timestats_l1">Year</string>
+    <string name="timestats_l2">Week</string>
+    
+    
+    
+    <string name="menu_addex_1">Save</string>
+    <string name="menu_content_readex_1">Delete</string>
+    <string name="menu_groups_1">New Group</string>
+    <string name="menu_categories_1">New Category</string>
+    <string name="menu_main_1">Add</string>
+    <string name="menu_main_2">Statistics</string>
+    <string name="menu_main_3">Expenses by Category</string>
+    <string name="menu_main_4">By Category</string>
+    <string name="menu_main_5">Statistics Over Time</string>
+    <string name="menu_main_6">Over Time</string>
+    <string name="menu_main_7">Groups</string>
+    <string name="menu_main_8">Categories</string>
+    <string name="menu_main_9">Preferences</string>
+    <string name="menu_main_10">Export Data</string>
+    <string name="menu_main_11">Data</string>
+    <string name="menu_main_12">About</string>
+    
+    
+    
+    <string name="prefs_1">Currency</string>
+    <string name="prefs_2">Currency Sign</string>
+    <string name="prefs_3">Type the currency sign or code of your country</string>
+    <string name="prefs_4">Position of the Sign</string>
+    <string name="prefs_5">Show sign before digits</string>
+    <string name="prefs_6">Single backup file</string>
+    <string name="prefs_7">When doing backups, use a single file overwriting any older backup</string>
+    <string name="prefs_8">Automatic backup</string>
+    <string name="prefs_9">Backup data automatically</string>
+    <string name="prefs_10">Backup Interval</string>
+    <string-array name="prefs_11">
+        <item>Week</item>
+        <item>Month</item>
+    </string-array>
+    <string name="prefs_12">Define how often backups must be done</string>
+    
+    
+    
+    <string name="folderpicker_c1">Storage error</string>
+    <string name="folderpicker_c2">This is the root directory</string>
+    <string name="folderpicker_c3">Selected!</string>
+    <string name="folderpicker_c4">Root Directory</string>
+    <string name="folderpicker_c5">.. Parent Folder</string>
+    
+    <string name="folderpicker_l_img1">Folder</string>
+    
+    
+    
+    <string name="widget1config_l1">Pick a Group</string>
+    <string name="widget1config_l2">Value Type</string>
+    <string name="widget1config_l3">By Month</string>
+    <string name="widget1config_l4">Total</string>
+    
+    <string name="widget1config_l_img1">Add Expense</string>
+</resources>

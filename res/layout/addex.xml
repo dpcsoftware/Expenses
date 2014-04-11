@@ -1,0 +1,108 @@
+<!-- 
+   Copyright 2013, 2014 Daniel Pereira Coelho
+   
+   This file is part of the Expenses Android Application.
+
+   Expenses is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation in version 3.
+
+   Expenses is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout 
+	    android:id="@+id/LinearLayout1"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:padding="5dp" >
+	
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+	
+	        <EditText
+	            android:id="@+id/editText1"
+	            android:layout_width="wrap_content"
+	            android:ems="10"
+	            android:layout_height="wrap_content"
+	            android:inputType="numberDecimal"
+	            android:layout_gravity="center_vertical"
+	            android:hint="@string/addex_l1"
+	            android:nextFocusForward="@+id/editText2"
+	            android:nextFocusDown="@+id/editText2" />
+	
+	        <ImageButton
+	            android:id="@+id/imageButton1"
+	            style="@style/MN.Widget.DialogButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/statelist_normal"
+	            android:contentDescription="@string/addex_l_img1"
+	            android:src="@drawable/calc"
+	            android:layout_gravity="center_vertical" />
+	
+	    </LinearLayout>
+	
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+	        
+	        <TextView
+		        android:id="@+id/textView1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/addex_l2"
+		        android:layout_gravity="center_vertical"
+		        android:layout_marginRight="10dp"
+		        android:layout_marginLeft="5dp"
+		        android:textAllCaps="true"/>
+	
+	        <Spinner
+	            android:id="@+id/spinner1"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1" />
+	
+	        <ImageButton
+	            android:id="@+id/imageButton2"
+	            style="@style/MN.Widget.DialogButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_vertical"
+	            android:background="@drawable/statelist_normal"
+	            android:src="@drawable/ic_menu_add"
+	            android:contentDescription="@string/addex_l_img2" />
+	
+	    </LinearLayout>
+	    
+	    <DatePicker
+	        android:id="@+id/datePicker1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:calendarViewShown="false" />
+	
+	    <EditText
+	        android:id="@+id/editText2"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:inputType="textMultiLine"
+	        android:hint="@string/addex_l3" />
+	
+	
+	</LinearLayout>
+    
+    
+</ScrollView>
