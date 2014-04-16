@@ -47,6 +47,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -133,8 +134,12 @@ public class EditCategories extends SherlockActivity {
     	public void bindView(View view, Context context, Cursor cursor) {
     		((ImageView) view.findViewById(R.id.imageViewCategory)).getDrawable().setColorFilter(cursor.getInt(2), App.colorFilterMode);
     		((TextView) view.findViewById(R.id.textViewCategory)).setText(cursor.getString(1));
-    		view.findViewById(R.id.imageButtonEdit).setOnClickListener(this);
-    		view.findViewById(R.id.imageButtonDelete).setOnClickListener(this);
+    		ImageButton btEdit = (ImageButton) view.findViewById(R.id.imageButtonEdit);
+    		btEdit.setOnClickListener(this);
+    		btEdit.setTag(Integer.valueOf(cursor.getPosition()));
+    		ImageButton btDelete = (ImageButton) view.findViewById(R.id.imageButtonDelete);
+    		btDelete.setOnClickListener(this);
+    		btDelete.setTag(Integer.valueOf(cursor.getPosition()));
     	}
     	
     	public void onClick(View v) {
@@ -148,16 +153,16 @@ public class EditCategories extends SherlockActivity {
     				}
     				else {
     					Bundle args = new Bundle();
-    					args.putLong("DELETE_ID", getItemId(lv.indexOfChild((View) v.getParent())));
+    					args.putLong("DELETE_ID", getItemId((Integer) v.getTag()));
     					DeleteDialog delDg = new DeleteDialog(EditCategories.this,args);
     					delDg.show();
     				}
     				break;
     			case R.id.imageButtonEdit:
     				Bundle args2 = new Bundle();
-    				args2.putLong("EDIT_ID", getItemId(lv.indexOfChild((View) v.getParent())));
+    				args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
     				Cursor c = getCursor();
-    				c.moveToPosition(lv.indexOfChild((View) v.getParent()));
+    				c.moveToPosition((Integer) v.getTag());
     				args2.putString("CURRENT_NAME", c.getString(c.getColumnIndex(Db.Table2.COLUMN_NCAT)));
     				args2.putInt("CURRENT_COLOR", c.getInt(c.getColumnIndex(Db.Table2.COLUMN_CORCAT)));
     				AddEditDialog edtDg = new AddEditDialog(EditCategories.this,args2,AddEditDialog.EDIT);

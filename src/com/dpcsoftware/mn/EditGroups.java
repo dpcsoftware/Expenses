@@ -40,12 +40,14 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -122,8 +124,12 @@ public class EditGroups extends SherlockActivity {
     	
     	public void bindView(View view, Context context, Cursor cursor) {
     		((TextView) view.findViewById(R.id.textViewGroup)).setText(cursor.getString(1));
-    		view.findViewById(R.id.imageButtonEdit).setOnClickListener(this);
-    		view.findViewById(R.id.imageButtonDelete).setOnClickListener(this);
+    		ImageButton btEdit = (ImageButton) view.findViewById(R.id.imageButtonEdit);
+    		btEdit.setOnClickListener(this);
+    		btEdit.setTag(Integer.valueOf(cursor.getPosition()));
+    		ImageButton btDelete = (ImageButton) view.findViewById(R.id.imageButtonDelete);
+    		btDelete.setOnClickListener(this);
+    		btDelete.setTag(Integer.valueOf(cursor.getPosition()));
     	}
     	
 		@Override
@@ -138,16 +144,16 @@ public class EditGroups extends SherlockActivity {
 				}
 				else {
 					Bundle args = new Bundle();
-					args.putLong("DELETE_ID", getItemId(lv.indexOfChild((View) v.getParent())));
+					args.putLong("DELETE_ID", getItemId((Integer) v.getTag()));
 					DeleteDialog delDg = new DeleteDialog(EditGroups.this,args);
 					delDg.show();
 				}
 				break;
 			case R.id.imageButtonEdit:
 				Bundle args2 = new Bundle();
-				args2.putLong("EDIT_ID", getItemId(lv.indexOfChild((View) v.getParent())));
+				args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
 				Cursor c = getCursor();
-				c.moveToPosition(lv.indexOfChild((View) v.getParent()));
+				c.moveToPosition((Integer) v.getTag());
 				args2.putString("CURRENT_NAME", c.getString(c.getColumnIndex(Db.Table3.COLUMN_NGRUPO)));
 				AddEditDialog edtDg = new AddEditDialog(EditGroups.this,args2,AddEditDialog.EDIT);
 				edtDg.show();
