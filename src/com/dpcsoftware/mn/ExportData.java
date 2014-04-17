@@ -246,6 +246,11 @@ public class ExportData extends SherlockActivity implements View.OnClickListener
 			else
 				v = convertView;
 			
+			v.findViewById(R.id.imageButton1).setTag(Integer.valueOf(position));
+			v.findViewById(R.id.imageButton2).setTag(Integer.valueOf(position));
+			v.findViewById(R.id.imageButton3).setTag(Integer.valueOf(position));
+			v.findViewById(R.id.imageButton4).setTag(Integer.valueOf(position));
+			
 			if(item.getName().endsWith(".backup"))
 				v.findViewById(R.id.imageButton3).setVisibility(View.VISIBLE);
 			else
@@ -263,7 +268,8 @@ public class ExportData extends SherlockActivity implements View.OnClickListener
 		
 		@Override
 		public void onClick(View v) {
-			clickedIndex = lv.indexOfChild((View) v.getParent());
+			clickedIndex = (Integer) v.getTag();
+			App.Log(""+clickedIndex);
 			switch(v.getId()) {
 			case R.id.imageButton1:
 				AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ExportData.this);
@@ -271,7 +277,7 @@ public class ExportData extends SherlockActivity implements View.OnClickListener
 				dialogBuilder.setPositiveButton(R.string.exportdata_c5, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						((File) lv.getAdapter().getItem(clickedIndex)).delete();
+						((File) getItem(clickedIndex)).delete();
 						renderList();
 					}
 				});
@@ -280,13 +286,13 @@ public class ExportData extends SherlockActivity implements View.OnClickListener
 				break;
 			case R.id.imageButton2:
 				Intent intentApp = new Intent(android.content.Intent.ACTION_SEND);
-				File f = (File) lv.getAdapter().getItem(clickedIndex);
+				File f = (File) getItem(clickedIndex);
 				if(f.getName().endsWith(".backup"))
 					intentApp.setType("application/x-sqlite3");	
 				else if(f.getName().endsWith(".ods"))
 					intentApp.setType("application/vnd.oasis.opendocument.spreadsheet");						
 				intentApp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-				Uri uri = Uri.fromFile((File) lv.getAdapter().getItem(clickedIndex));
+				Uri uri = Uri.fromFile(f);
 				intentApp.putExtra(Intent.EXTRA_STREAM, uri);
 			    startActivity(Intent.createChooser(intentApp, r.getString(R.string.exportdata_c12)));
 				break;
@@ -296,7 +302,7 @@ public class ExportData extends SherlockActivity implements View.OnClickListener
 				dgBuilder.setTitle(R.string.exportdata_c4);
 				dgBuilder.setPositiveButton(R.string.exportdata_c5, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						restoreDb((File) lv.getItemAtPosition(clickedIndex));
+						restoreDb((File) getItem(clickedIndex));
 					}
 				});
 				dgBuilder.setNegativeButton(R.string.exportdata_c6, null);
@@ -305,7 +311,7 @@ public class ExportData extends SherlockActivity implements View.OnClickListener
 			case R.id.imageButton4:
 				Intent intentApp2 = new Intent(android.content.Intent.ACTION_VIEW);
 				intentApp2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-				Uri uri2 = Uri.fromFile((File) lv.getAdapter().getItem(clickedIndex));
+				Uri uri2 = Uri.fromFile((File) getItem(clickedIndex));
 				intentApp2.setDataAndType(uri2, "application/vnd.oasis.opendocument.spreadsheet");
 			    startActivity(Intent.createChooser(intentApp2, r.getString(R.string.exportdata_c12)));
 			}
