@@ -31,13 +31,16 @@
         - Adicionada opção para exportar os dados para uma planilha ODS\n
         - Adicionado um widget de atalho rápido para adicionar despesa e visualizar o total de um grupo\n</string>
         
+    <string name="changes_3">1.2.1:\n
+        - Correções de pequenos bugs\n</string>
+        
     
     
     
         
     <string name="about_c1">Sobre o aplicativo</string>
     
-    <string name="about_l1">Versão 1.2</string>
+    <string name="about_l1">Versão 1.2.1</string>
     <string name="about_l3">Envie seu feedback:</string>
     <string name="about_l4">Registro de Mudanças</string>
     <string name="about_l5">Créditos</string>

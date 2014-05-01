@@ -53,10 +53,10 @@ public class FolderPicker extends SherlockActivity implements FileFilter {
 	private Comparator<? super File> filecomparator = new Comparator<File>(){
     	public int compare(File file1, File file2) {
     		if(file1.isDirectory() && file2.isFile())
-    			return 1;
+    			return -1;
     		
     		if(file1.isFile() && file2.isDirectory())
-    			return -1;
+    			return 1;
     			
     		return file1.getName().compareTo(file2.getName());
     	}	    	

@@ -48,6 +48,9 @@
         - Backups are saved only on the SD card. Tight integration with Google Drive is no longer available. Reason: incompatibility with the GPL, make possible to use other cloud storage services\n
         - Added an option to export data to a Open Document Spreadsheet\n
         - Added a widget for quick access to add an expense and to view the total of a group\n</string>
+        
+    <string name="changes_3">1.2.1:\n
+        - Minor bug fixes\n</string>
     
     
     
@@ -57,7 +60,7 @@
     
     <string name="about_c1">About the app</string>
     
-    <string name="about_l1">Version 1.2</string>
+    <string name="about_l1">Version 1.2.1</string>
     <string name="about_l3">Send us your feedback:</string>
     <string name="about_l4">Changelog</string>
 	<string name="about_l5">Credits</string>

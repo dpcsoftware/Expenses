@@ -203,6 +203,11 @@ public class ExportData extends SherlockActivity implements View.OnClickListener
 	}
 	
 	private void renderList() {
+		if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+    		App.Toast(this, R.string.exportdata_c2);
+    		return;
+    	}
+		
 		List<File> fList;
 		
 		File dir = new File(prefs.getString("STD_FOLDER", stdAppFolder));
@@ -269,7 +274,6 @@ public class ExportData extends SherlockActivity implements View.OnClickListener
 		@Override
 		public void onClick(View v) {
 			clickedIndex = (Integer) v.getTag();
-			App.Log(""+clickedIndex);
 			switch(v.getId()) {
 			case R.id.imageButton1:
 				AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ExportData.this);

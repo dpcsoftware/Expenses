@@ -4,7 +4,7 @@ Expenses
 Expenses is a simple Android application to manage personal
 expenses.
 
-Version: 1.2
+Version: 1.2.1
 
 Developed By Daniel Pereira Coelho <dpcsoftware@gmail.com>
 
@@ -62,5 +62,19 @@ into workspace:
 
 *Collaborate with the project on:
 [http://github.com/dpcsoftware/Expenses]
+
+Changelog
+==============================================================
+
+1.2.1:
+	- Minor bug fixes
+
+1.2:
+	- Expenses is now free software (as in freedom) licensed under the GPL version 3
+  - Backups are saved only on the SD card. Tight integration with Google Drive is no longer available. Reason: incompatibility with the GPL, make possible to use other cloud storage services
+  - Added an option to export data to a Open Document Spreadsheet
+  - Added a widget for quick access to add an expense and to view the total of a group
+        
+
 
 

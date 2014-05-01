@@ -30,12 +30,15 @@
         - Les sauvegardes sont enregistrés dans la mémoire du téléphone. Il n\'y a plus l\'integration avec le service Google Drive. Raison: incompatibilité avec la license GPL, laisser le choix d\'utiliser d\'autres services de stockage\n
         - Vous pouvez exporter les données de l\'application dans un classeur de type ODS (Open Document)\n
         - Nouveau widget: permet d\'ajouter une dépense à la liste rapidement et de voir la somme totale d\'un groupe\n</string>
+        
+     <string name="changes_3">1.2.1:\n
+        - Corrections de bugs\n</string>
     
     
     
     <string name="about_c1">A propos de l\'application</string>
     
-    <string name="about_l1">Version 1.2</string>
+    <string name="about_l1">Version 1.2.1</string>
     <string name="about_l3">Envoyez-nous votre opinion:</string>
     <string name="about_l4">Registre des changements</string>
     <string name="about_l5">Crédits</string>
