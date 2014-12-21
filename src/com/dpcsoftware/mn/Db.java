@@ -25,21 +25,60 @@ public class Db {
 
 	public static class Table1 implements BaseColumns {
 	    public static final String TABLE_NAME = "gastos";
-	    public static final String COLUMN_VALORT = "valort";
-	    public static final String COLUMN_DATAT = "datat";
-	    public static final String COLUMN_DESCRIC = "descric";
-	    public static final String COLUMN_IDGRUPO = "idgrupo";
-	    public static final String COLUMN_IDCAT = "idcat";
+	    
+	    public static final String AMOUNT = "valort";
+	    public static final String DATE = "datat";
+	    public static final String DETAILS = "descric";
+	    public static final String ID_GROUP = "idgrupo";
+	    public static final String ID_CATEGORY = "idcat";
+	    
+	    public static final String T_ID = TABLE_NAME + "." + _ID;
+	    public static final String T_AMOUNT = TABLE_NAME + "." + AMOUNT;
+	    public static final String T_DATE = TABLE_NAME + "." + DATE;
+	    public static final String T_DETAILS = TABLE_NAME + "." + DETAILS;
+	    public static final String T_ID_GROUP = TABLE_NAME + "." + ID_GROUP;
+	    public static final String T_ID_CATEGORY = TABLE_NAME + "." + ID_CATEGORY;
 	}
 	
 	public static class Table2 implements BaseColumns {
 		public static final String TABLE_NAME = "categorias";
-		public static final String COLUMN_NCAT = "ncat";
-		public static final String COLUMN_CORCAT = "corcat";
+		
+		public static final String CATEGORY_NAME = "ncat";
+		public static final String CATEGORY_COLOR = "corcat";
+		
+		public static final String T_ID = TABLE_NAME + "." + _ID;
+		public static final String T_CATEGORY_NAME = TABLE_NAME + "." + CATEGORY_NAME;
+		public static final String T_CATEGORY_COLOR = TABLE_NAME + "." + CATEGORY_COLOR;
 	}
 	
 	public static class Table3 implements BaseColumns {
 		public static final String TABLE_NAME = "grupos";
-		public static final String COLUMN_NGRUPO = "ngrupo";
+		
+		public static final String GROUP_NAME = "ngrupo";
+		
+		public static final String T_ID = TABLE_NAME + "." + _ID;
+		public static final String T_GROUP_NAME = TABLE_NAME + "." + GROUP_NAME;
+	}
+	
+	public static class Table4 implements BaseColumns {
+		public static final String TABLE_NAME = "metas";
+		
+		public static final String ID_GROUP = "idgrupo";
+		public static final String ID_CATEGORY = "idcat";
+		public static final String AMOUNT = "valor";
+		public static final String TYPE = "tipo";
+		public static final String ALERT = "alerta";
+		
+		public static final String T_ID = TABLE_NAME + "." + _ID;
+		public static final String T_ID_GROUP = TABLE_NAME + "." + ID_GROUP;
+		public static final String T_ID_CATEGORY = TABLE_NAME + "." + ID_CATEGORY;
+		public static final String T_AMOUNT = TABLE_NAME + "." + AMOUNT;
+		public static final String T_TYPE = TABLE_NAME + "." + TYPE;
+		public static final String T_ALERT = TABLE_NAME + "." + ALERT;
+		
+		public static final int TYPE_TOTAL = 0;
+		public static final int TYPE_TOTAL_BY_MONTH = 1;
+		public static final int TYPE_CAT = 2;
+		public static final int TYPE_CAT_BY_MONTH = 3;
 	}
 }

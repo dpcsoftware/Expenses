@@ -44,6 +44,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -52,9 +53,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
-public class ExportData extends SherlockActivity implements View.OnClickListener, FileFilter {
+public class ExportData extends ActionBarActivity implements View.OnClickListener, FileFilter {
 	private static final int REQUEST_STD_FOLDER = 1;
 	
 	private SharedPreferences prefs;
@@ -498,7 +497,7 @@ public class ExportData extends SherlockActivity implements View.OnClickListener
 	    	
 	    	Cursor c = db.rawQuery("SELECT " +
 	    			Db.Table3._ID + "," +
-	    			Db.Table3.COLUMN_NGRUPO +
+	    			Db.Table3.GROUP_NAME +
 	    			" FROM " +
 	    			Db.Table3.TABLE_NAME, null);
 	    	c.moveToFirst();
@@ -515,15 +514,15 @@ public class ExportData extends SherlockActivity implements View.OnClickListener
 	    		writeString(ods, "</table:table-row>");
 	    		
 	    		Cursor cData = db.rawQuery("SELECT " +
-	    				Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_DATAT + "," +
-	    				Db.Table2.TABLE_NAME + "." + Db.Table2.COLUMN_NCAT + "," +
-	    				Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_VALORT + "," +
-	    				Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_DESCRIC + 
+	    				Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + "," +
+	    				Db.Table2.TABLE_NAME + "." + Db.Table2.CATEGORY_NAME + "," +
+	    				Db.Table1.TABLE_NAME + "." + Db.Table1.AMOUNT + "," +
+	    				Db.Table1.TABLE_NAME + "." + Db.Table1.DETAILS + 
 	    				" FROM " + Db.Table1.TABLE_NAME + "," + Db.Table2.TABLE_NAME +
 	    				" WHERE " +
-	    				Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_IDCAT + " = " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID +
-	    				" AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_IDGRUPO + " = " + c.getInt(0) +
-	    				" ORDER BY " + Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_DATAT + " ASC", null);
+	    				Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + " = " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID +
+	    				" AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_GROUP + " = " + c.getInt(0) +
+	    				" ORDER BY " + Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + " ASC", null);
 	    		cData.moveToFirst();
 	    		
 	    		int iExp;

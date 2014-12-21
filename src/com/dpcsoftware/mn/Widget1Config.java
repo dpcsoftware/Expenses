@@ -27,15 +27,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
-public class Widget1Config extends SherlockActivity {
+public class Widget1Config extends ActionBarActivity {
 	private Intent resultIntent;
 	private int wId;
 	private SharedPreferences wPrefs;
@@ -66,10 +65,10 @@ public class Widget1Config extends SherlockActivity {
 	    abar.setTitle("Configurações do Widget");
 	    
 	    SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_READ);
-	    Cursor c = db.rawQuery("SELECT " + Db.Table3._ID + "," + Db.Table3.COLUMN_NGRUPO +
-	    		" FROM " + Db.Table3.TABLE_NAME + " ORDER BY " + Db.Table3.COLUMN_NGRUPO + " ASC", null);
+	    Cursor c = db.rawQuery("SELECT " + Db.Table3._ID + "," + Db.Table3.GROUP_NAME +
+	    		" FROM " + Db.Table3.TABLE_NAME + " ORDER BY " + Db.Table3.GROUP_NAME + " ASC", null);
 	    
-	    SimpleCursorAdapter sAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c, new String[] {Db.Table3.COLUMN_NGRUPO}, new int[] {android.R.id.text1}, 0);
+	    SimpleCursorAdapter sAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c, new String[] {Db.Table3.GROUP_NAME}, new int[] {android.R.id.text1}, 0);
 	    sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    sp = ((Spinner) findViewById(R.id.spinner1));
 	    sp.setAdapter(sAdapter);
@@ -77,7 +76,7 @@ public class Widget1Config extends SherlockActivity {
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.widget1_config, menu);
+		getMenuInflater().inflate(R.menu.widget1_config, menu);
 		return true;
 	}
 	

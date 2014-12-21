@@ -30,6 +30,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -40,11 +43,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
-public class FolderPicker extends SherlockActivity implements FileFilter {
+public class FolderPicker extends ActionBarActivity implements FileFilter {
 	private Resources r;
 	private File currentDir;
 	private File root;
@@ -112,7 +111,7 @@ public class FolderPicker extends SherlockActivity implements FileFilter {
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.folderpicker, menu);
+		getMenuInflater().inflate(R.menu.folderpicker, menu);
 		return true;
 	}
 	

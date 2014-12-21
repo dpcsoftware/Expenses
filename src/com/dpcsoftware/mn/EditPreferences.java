@@ -20,19 +20,18 @@
 package com.dpcsoftware.mn;
 
 import android.os.Bundle;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import android.preference.PreferenceActivity;
+import android.support.v7.app.ActionBar;
 
 
 
-public class EditPreferences extends SherlockPreferenceActivity {
+public class EditPreferences extends PreferenceActivity {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {    
 	    super.onCreate(savedInstanceState);
 	    addPreferencesFromResource(R.xml.prefs);
 	    
-	    ActionBar abar = getSupportActionBar();
-	    abar.setTitle(R.string.editpreferences_c1);
+	    setTitle(R.string.editpreferences_c1);
 	}
 }

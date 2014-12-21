@@ -21,12 +21,13 @@
 	<item>
 		<selector>
 		    <item
-		        android:drawable="@color/greenSecond"
-		        android:state_pressed="true" />
+		        android:drawable="@color/lightGreen"
+		        android:state_pressed="true"/>
 		</selector>
 	</item>
 	
 	<item>
-	    <nine-patch android:src="@drawable/abs__spinner_ab_default_holo_light"/>
+	    <bitmap android:src="@drawable/spinner_arrow_down_white"
+	        android:gravity="end"/>
 	</item>
 </layer-list>

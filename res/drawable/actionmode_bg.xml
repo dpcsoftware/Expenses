@@ -24,11 +24,11 @@
     android:insetTop="-5dp" >
  
     <shape>
-        <solid android:color="@android:color/white" />
+        <solid android:color="@android:color/black" />
  
         <stroke
-            android:width="3dp"
-            android:color="@color/greenSecond" />
+            android:width="4dp"
+            android:color="@color/lightGreen" />
     </shape>
  
 </inset>

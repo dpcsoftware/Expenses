@@ -23,11 +23,11 @@
         android:radius="5dp" />
     <gradient
         android:angle="315"
-        android:endColor="@color/greenFirst"
+        android:endColor="@color/green"
         android:gradientRadius="300"
         android:centerX="0"
         android:centerY="0"
-        android:startColor="@color/greenSecond"
+        android:startColor="@color/lightGreen"
         android:type="radial"/>
     <stroke
         android:width="1dp"

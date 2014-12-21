@@ -20,9 +20,9 @@
 package com.dpcsoftware.mn;
 
 import android.os.Bundle;
-import com.actionbarsherlock.app.SherlockActivity;
+import android.support.v7.app.ActionBarActivity;
 
-public class About extends SherlockActivity {
+public class About extends ActionBarActivity {
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {

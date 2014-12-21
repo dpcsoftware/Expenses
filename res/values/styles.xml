@@ -18,32 +18,45 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="MoneyNotebookTheme" parent="Theme.Sherlock.Light">        
+    <style name="ExpensesTheme" parent="Theme.AppCompat.Light.DarkActionBar">        
+        <item name="colorPrimary">@color/green</item>
+        <item name="colorPrimaryDark">@color/darkGreen</item>
+        <item name="colorAccent">@color/lightGreen</item>
+        
+        <item name="selectableItemBackground">@drawable/statelist_normal</item>
+        <item name="selectableItemBackgroundBorderless">@drawable/statelist_normal</item>
+        <item name="listChoiceBackgroundIndicator">@drawable/statelist_normal</item>
+        <item name="android:listSelector">@drawable/statelist_normal</item>
+        <item name="android:itemBackground">@drawable/statelist_normal</item>              
+        
         <!-- Action Bar -->
-        <item name="actionBarStyle">@style/MN.Widget.ActionBar</item>        
+        <item name="actionBarStyle">@style/MN.ActionBar</item>
         <item name="actionBarItemBackground">@drawable/statelist_normal</item>
+        <item name="actionButtonStyle">@style/MN.ActionButton</item>            
         
         <!-- Action Mode -->
-        <item name="actionModeBackground">@drawable/actionmode_bg</item>                
-        <item name="actionModeCloseButtonStyle">@style/MN.Widget.ActionButton.CloseMode</item>
-    
-    	<!-- Other -->
-    	<item name="android:windowBackground">@drawable/window_bg</item>        
-        <item name="android:dropDownListViewStyle">@style/MN.Widget.ListView.DropDown</item>
+		<item name="actionModeBackground">@drawable/actionmode_bg</item>
+		<!-- <item name="actionModeCloseButtonStyle">@style/MN.Widget.ActionButton.CloseMode</item>-->
+		
+		<!-- Other -->
+		<item name="android:windowBackground">@android:color/white</item>
     </style>
     
-    <style name="MN.Widget.ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar">
+    <style name="MN.ActionButton" parent="@style/Widget.AppCompat.ActionButton">
+        <item name="android:background">@drawable/statelist_normal</item>
+    </style>
+    
+    <style name="MN.TextAppearance.Subtitle" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="MN.ActionBar" parent="Widget.AppCompat.Light.ActionBar">
         <item name="background">@drawable/actionbar_bg</item>
-        <item name="titleTextStyle">@style/MN.TextAppearance.Widget.ActionBar.Title</item>
+        <item name="titleTextStyle">@style/MN.ActionBar.Title</item>
     </style>
         
-    <style name="MN.TextAppearance.Widget.ActionBar.Title" parent="@style/TextAppearance.Sherlock.Small">
-        <item name="android:textColor">@color/yellowFirst</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    
-    <style name="MN.TextAppearance.Subtitle" parent="@style/TextAppearance.Sherlock.Small">
-        <item name="android:textStyle">bold</item>
+    <style name="MN.ActionBar.Title" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/yellow</item>
     </style>
     
     <style name="MN.Widget.ImageButton" parent="@android:style/Widget.ImageButton">
@@ -54,14 +67,39 @@
     <style name="MN.Widget.DialogButton" parent="@android:style/Widget.Button">
     </style>
     
-    <style name="MN.Widget.ActionButton.CloseMode" parent="@style/Widget.Sherlock.Light.ActionButton.CloseMode">
+    <style name="MN.Widget.ActionButton.CloseMode" parent="Widget.AppCompat.Light.ActionButton.CloseMode">
         <item name="android:background">@drawable/statelist_normal</item>
     </style>
     
-	<color name="greenFirst">#119400</color>
-    <color name="greenSecond">#4cc457</color>
-    <color name="yellowFirst">#fbffd7</color>
-	<color name="grayFirst">#d4d4d4</color>
+    <style name="MN.MenuTextView" parent="@android:style/Widget.TextView">
+        <item name="android:padding">7dp</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:background">@drawable/statelist_normal</item>
+		<item name="android:clickable">true</item>
+		<item name="android:textAppearance">@style/TextAppearance.AppCompat.Menu</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:onClick">menuClick</item>
+		<item name="android:drawablePadding">8dp</item>
+    </style>
+    
+    <style name="MN.HBar" parent="@android:style/Widget">
+        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/hBar</item>
+    </style>
+    
+    <style name="MN.HBarThin" parent="@android:style/Widget">
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/hBar</item>
+    </style>
+    
+	<color name="green">#119400</color>
+    <color name="lightGreen">#4cc457</color>
+    <color name="darkGreen">#0a5b00</color>
+    <color name="yellow">#fbffd7</color>
+	<color name="gray">#d4d4d4</color>
 	
 	<color name="hBar">@android:color/darker_gray</color>
 </resources>

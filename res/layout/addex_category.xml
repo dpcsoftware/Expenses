@@ -19,7 +19,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp" >
+    android:padding="10dp"
+    android:background="@drawable/statelist_normal">
 
     <TextView
         android:id="@+id/textView1"
@@ -27,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/imageView1"
-        android:textSize="6pt" />
+        android:textSize="6pt"/>
 
     <ImageView
         android:id="@+id/imageView1"
@@ -37,6 +38,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="5dp"
         android:src="@drawable/square_shape"
-        android:contentDescription="@string/gp_1" />
+        android:contentDescription="@string/gp_1"/>
 
 </RelativeLayout>

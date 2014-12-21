@@ -30,7 +30,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -48,12 +51,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
-
-public class EditGroups extends SherlockActivity {
+public class EditGroups extends ActionBarActivity {
 	private App app;
 	private ListView lv;
 	private GroupsAdapter adapter;
@@ -62,7 +61,8 @@ public class EditGroups extends SherlockActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		app = (App) getApplication();
-		lv = new ListView(EditGroups.this);
+		setContentView(R.layout.listview);
+		lv = (ListView) findViewById(R.id.listView1);
 				
 		renderGroups();
 		
@@ -71,15 +71,10 @@ public class EditGroups extends SherlockActivity {
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.groups, menu);
+		getMenuInflater().inflate(R.menu.groups, menu);
 		
 		return true;
 	}
-	
-    @Override
-    public View findViewById(int id) {
-    	return lv.findViewById(id);
-    }
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
@@ -92,12 +87,12 @@ public class EditGroups extends SherlockActivity {
 	}
 	
 	private void renderGroups() {
-		SQLiteDatabase db = DatabaseHelper.quickDb(this, 1);
+		SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_READ);
 		Cursor c = db.rawQuery("SELECT "
 				+ Db.Table3._ID + ","
-				+ Db.Table3.COLUMN_NGRUPO +
+				+ Db.Table3.GROUP_NAME +
 				" FROM " + Db.Table3.TABLE_NAME +
-				" ORDER BY " + Db.Table3.COLUMN_NGRUPO + " ASC", null);
+				" ORDER BY " + Db.Table3.GROUP_NAME + " ASC", null);
 		if(adapter == null) {
 			adapter = new GroupsAdapter(this, c);
 			lv.setAdapter(adapter);
@@ -154,7 +149,7 @@ public class EditGroups extends SherlockActivity {
 				args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
 				Cursor c = getCursor();
 				c.moveToPosition((Integer) v.getTag());
-				args2.putString("CURRENT_NAME", c.getString(c.getColumnIndex(Db.Table3.COLUMN_NGRUPO)));
+				args2.putString("CURRENT_NAME", c.getString(c.getColumnIndex(Db.Table3.GROUP_NAME)));
 				AddEditDialog edtDg = new AddEditDialog(EditGroups.this,args2,AddEditDialog.EDIT);
 				edtDg.show();
 				break;
@@ -176,11 +171,11 @@ public class EditGroups extends SherlockActivity {
 			SQLiteDatabase db = DatabaseHelper.quickDb(EditGroups.this, 0);
 			Cursor c = db.rawQuery("SELECT "
 					+ Db.Table3._ID + ","
-					+ Db.Table3.COLUMN_NGRUPO +
+					+ Db.Table3.GROUP_NAME +
 					" FROM " + Db.Table3.TABLE_NAME +
 					" WHERE " + Db.Table3._ID + " <> " + deleteId +
-					" ORDER BY " + Db.Table3.COLUMN_NGRUPO + " ASC",null);
-			SimpleCursorAdapter adapter = new SimpleCursorAdapter(EditGroups.this, android.R.layout.simple_spinner_item, c, new String[] {Db.Table3.COLUMN_NGRUPO}, new int[] {android.R.id.text1}, 0);
+					" ORDER BY " + Db.Table3.GROUP_NAME + " ASC",null);
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(EditGroups.this, android.R.layout.simple_spinner_item, c, new String[] {Db.Table3.GROUP_NAME}, new int[] {android.R.id.text1}, 0);
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			sp.setAdapter(adapter);
 			sp.setEnabled(false);
@@ -219,11 +214,11 @@ public class EditGroups extends SherlockActivity {
 			int result = db.delete(Db.Table3.TABLE_NAME, new String(Db.Table3._ID + " = " + deleteId), null);
 			if(result == 1) {
 				if(rg.getCheckedRadioButtonId() == R.id.radio0)
-					db.delete(Db.Table1.TABLE_NAME,Db.Table1.COLUMN_IDGRUPO + " = " + deleteId, null);
+					db.delete(Db.Table1.TABLE_NAME,Db.Table1.ID_GROUP + " = " + deleteId, null);
 				else {
 					ContentValues cv = new ContentValues();
-					cv.put(Db.Table1.COLUMN_IDGRUPO, ((Spinner) findViewById(R.id.spinner1)).getSelectedItemId());
-					db.update(Db.Table1.TABLE_NAME,cv,new String(Db.Table1.COLUMN_IDGRUPO + " = " + deleteId),null);
+					cv.put(Db.Table1.ID_GROUP, ((Spinner) findViewById(R.id.spinner1)).getSelectedItemId());
+					db.update(Db.Table1.TABLE_NAME,cv,new String(Db.Table1.ID_GROUP + " = " + deleteId),null);
 				}
 				toastString = R.string.editgroups_c5;
 				app.setFlag(1);
@@ -291,7 +286,7 @@ public class EditGroups extends SherlockActivity {
 		private void saveGroupName() {
 			SQLiteDatabase db = DatabaseHelper.quickDb(EditGroups.this, 1);
 			ContentValues cv = new ContentValues();
-			cv.put(Db.Table3.COLUMN_NGRUPO, ((EditText) findViewById(R.id.editText1)).getText().toString());
+			cv.put(Db.Table3.GROUP_NAME, ((EditText) findViewById(R.id.editText1)).getText().toString());
 			long result;
 			if(mode == EDIT)
 				result = db.update(Db.Table3.TABLE_NAME, cv, Db.Table3._ID + " = " + editId, null);

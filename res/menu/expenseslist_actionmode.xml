@@ -16,6 +16,13 @@
    along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/item1" android:showAsAction="always" android:titleCondensed="@string/menu_content_readex_1" android:title="@string/menu_content_readex_1" android:icon="@drawable/ic_menu_delete"></item>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:expenses="http://schemas.android.com/apk/res-auto">
+    
+    <item android:id="@+id/item1"
+        expenses:showAsAction="always"
+        android:titleCondensed="@string/menu_content_readex_1"
+        android:title="@string/menu_content_readex_1"
+        android:icon="@drawable/delete_white">
+    </item>
 </menu>

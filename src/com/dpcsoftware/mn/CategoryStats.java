@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -36,7 +37,9 @@ import android.graphics.PorterDuff;
 import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -49,11 +52,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
 
-
-public class CategoryStats extends SherlockActivity {
+public class CategoryStats extends ActionBarActivity {
 	private App app;
 	private CategoryStatsAdapter adapter;
 	private View footer,footer2;
@@ -150,22 +150,22 @@ public class CategoryStats extends SherlockActivity {
 		
 		String queryModifier = "";
 		if(isByMonth)
-			queryModifier = " AND strftime('%Y-%m'," + Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_DATAT + ") = '" + app.dateToDb("yyyy-MM", date) + "'";
+			queryModifier = " AND strftime('%Y-%m'," + Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + ") = '" + app.dateToDb("yyyy-MM", date) + "'";
 		
 		Cursor c = db.rawQuery("SELECT " + 
 				Db.Table2.TABLE_NAME + "." + Db.Table2._ID + "," + 
-				Db.Table2.TABLE_NAME + "." + Db.Table2.COLUMN_NCAT + "," +
-				Db.Table2.TABLE_NAME + "." + Db.Table2.COLUMN_CORCAT + "," +
-				"SUM(" + Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_VALORT + ")" +
+				Db.Table2.TABLE_NAME + "." + Db.Table2.CATEGORY_NAME + "," +
+				Db.Table2.TABLE_NAME + "." + Db.Table2.CATEGORY_COLOR + "," +
+				"SUM(" + Db.Table1.TABLE_NAME + "." + Db.Table1.AMOUNT + ")" +
 				" FROM " +
 				Db.Table1.TABLE_NAME + "," +
 				Db.Table2.TABLE_NAME +
 				" WHERE " +
-				Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_IDCAT + " = " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID +
-				" AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_IDGRUPO + " = " + app.activeGroupId +
+				Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + " = " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID +
+				" AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_GROUP + " = " + app.activeGroupId +
 				queryModifier + 
-				" GROUP BY " + Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_IDCAT +
-				" ORDER BY " + Db.Table2.COLUMN_NCAT, null);
+				" GROUP BY " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY +
+				" ORDER BY " + Db.Table2.CATEGORY_NAME, null);
 
 		float[] values = new float[c.getCount()];
         int[] colors = new int[c.getCount()];
@@ -192,11 +192,11 @@ public class CategoryStats extends SherlockActivity {
 			dateF.setTimeZone(TimeZone.getDefault());
 			
 			Cursor cTemp = db.rawQuery("SELECT "+
-					Db.Table1.COLUMN_DATAT +
+					Db.Table1.DATE +
 					" FROM " +
 					Db.Table1.TABLE_NAME +
-					" WHERE " + Db.Table1.COLUMN_IDGRUPO + " = " + app.activeGroupId +
-					" ORDER BY " + Db.Table1.COLUMN_DATAT + " DESC",null);
+					" WHERE " + Db.Table1.ID_GROUP + " = " + app.activeGroupId +
+					" ORDER BY " + Db.Table1.DATE + " DESC",null);
 			try {
 				cTemp.moveToFirst();
 				Date date2 = dateF.parse(cTemp.getString(0));

@@ -27,13 +27,21 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -47,15 +55,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
-
-
-public class ExpensesList extends SherlockActivity implements OnItemClickListener, OnItemLongClickListener {
+public class ExpensesList extends ActionBarActivity implements OnItemClickListener, OnItemLongClickListener {
 	private static final int NUMBER_OF_ITEMS = 40;
 	
 	private App app;
@@ -79,7 +79,9 @@ public class ExpensesList extends SherlockActivity implements OnItemClickListene
 	private Date filterDate;
 	private Resources rs;
 	private SharedPreferences prefs;
-	
+	private ActionBarDrawerToggle drawerToggle;
+	private DrawerLayout drawerLayout;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -98,7 +100,7 @@ public class ExpensesList extends SherlockActivity implements OnItemClickListene
     	listView.setOnItemClickListener(this);
     	listView.setOnItemLongClickListener(this);
     	
-    	View emptyView = LayoutInflater.from(this).inflate(R.layout.empty_msg, null);
+    	View emptyView = (View) findViewById(R.id.empty);
     	((TextView) emptyView.findViewById(R.id.textView1)).setText(R.string.expenseslist_c2);
     	listView.setEmptyView(emptyView);
     	
@@ -124,6 +126,21 @@ public class ExpensesList extends SherlockActivity implements OnItemClickListene
 			filterId = -1;
 		}
 		
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		//colocar resources corretos
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.expenseslist_c1, R.string.expenseslist_c2) {
+			public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+		};
+		drawerLayout.setDrawerListener(drawerToggle);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		
 		if(app.showChangesDialog) {
 			ChangesDialog cdg = new ChangesDialog(this);
 			cdg.show();
@@ -131,14 +148,24 @@ public class ExpensesList extends SherlockActivity implements OnItemClickListene
 			pEditor.putInt("APP_VERSION", app.appVersion);
 			pEditor.commit();
 			app.showChangesDialog = false;
-		}
-		
-		
+		}		
  	}
 	
+	@Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-     	getSupportMenuInflater().inflate(R.menu.main, menu);
+     	getMenuInflater().inflate(R.menu.expenseslist, menu);
     	
     	sMenu = app.new SpinnerMenu(this,menuCallback);
     	
@@ -155,43 +182,57 @@ public class ExpensesList extends SherlockActivity implements OnItemClickListene
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	switch (item.getItemId()) {
-    		case R.id.item1:
-    			Intent intent = new Intent(this, AddEx.class);
-    			intent.putExtra("EDIT_MODE", false);
-    			startActivity(intent);
-    			break;
-    		case R.id.item2:
+    	if(drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+    	
+    	switch(item.getItemId()) {
+			case R.id.item1:
+				Intent intent = new Intent(this, AddEx.class);
+				intent.putExtra("EDIT_MODE", false);
+				startActivity(intent);
+				break;
+    	}
+
+    	return true;
+    }
+    
+    public void menuClick(View v) {
+    	switch (v.getId()) {
+    		case R.id.menu3:
     			Intent intent2 = new Intent(this, EditGroups.class);
        			startActivity(intent2);
        			break;
-    		case R.id.item3:
+    		case R.id.menu4:
     			Intent intent3 = new Intent(this, EditCategories.class);
        			startActivity(intent3);
        			break;
-    		case R.id.item4:
+    		case R.id.menu1:
     			Intent intent4 = new Intent(this, CategoryStats.class);
        			startActivity(intent4);
        			break;
-    		case R.id.item5:
+    		case R.id.menu2:
     			Intent intent5 = new Intent(this, TimeStats.class);
        			startActivity(intent5);
        			break;
-    		case R.id.item6:
+    		case R.id.menu7:
     			Intent intent6 = new Intent(this, EditPreferences.class);
        			startActivity(intent6);
        			break;
-    		case R.id.item8:
+    		case R.id.menu6:
     			Intent intent8 = new Intent(this, ExportData.class);
        			startActivity(intent8);
        			break;
-    		case R.id.item9:
+    		case R.id.menu8:
     			Intent intent9 = new Intent(this, About.class);
        			startActivity(intent9);
        			break;
+    		case R.id.menu5:
+    			Intent intent10 = new Intent(this, Goals.class);
+    			startActivity(intent10);
+    			break;
     	}
-    	
-    	return true;
+    	drawerLayout.closeDrawers();
     }
     
     @Override
@@ -266,25 +307,25 @@ public class ExpensesList extends SherlockActivity implements OnItemClickListene
     	SQLiteDatabase db = DatabaseHelper.quickDb(this, 0);
     	String queryModifier = "", queryModifier2 = "";
     	if(filterId != -1)
-    		queryModifier = " AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_IDCAT + " = " + filterId;
+    		queryModifier = " AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + " = " + filterId;
     	if(filterDate != null)
-    		queryModifier2 = " AND strftime('%Y-%m'," + Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_DATAT + ") = '" + app.dateToDb("yyyy-MM", filterDate) + "'";
+    		queryModifier2 = " AND strftime('%Y-%m'," + Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + ") = '" + app.dateToDb("yyyy-MM", filterDate) + "'";
 
     	Cursor c = db.rawQuery("SELECT " +
-    			Db.Table2.TABLE_NAME + "." + Db.Table2.COLUMN_NCAT + "," +
-    			Db.Table2.TABLE_NAME + "." + Db.Table2.COLUMN_CORCAT + "," +
-    			Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_VALORT + "," + 
-    			Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_DATAT + "," +
-    			Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_DESCRIC + "," +
+    			Db.Table2.TABLE_NAME + "." + Db.Table2.CATEGORY_NAME + "," +
+    			Db.Table2.TABLE_NAME + "." + Db.Table2.CATEGORY_COLOR + "," +
+    			Db.Table1.TABLE_NAME + "." + Db.Table1.AMOUNT + "," + 
+    			Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + "," +
+    			Db.Table1.TABLE_NAME + "." + Db.Table1.DETAILS + "," +
     			Db.Table1.TABLE_NAME + "." + Db.Table1._ID +
     			" FROM " +
     			Db.Table1.TABLE_NAME + "," +
     			Db.Table2.TABLE_NAME +
     			" WHERE " +
-    			Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_IDGRUPO + " = " + app.activeGroupId +
-    			" AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_IDCAT + " = " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID + queryModifier + queryModifier2 +
+    			Db.Table1.TABLE_NAME + "." + Db.Table1.ID_GROUP + " = " + app.activeGroupId +
+    			" AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + " = " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID + queryModifier + queryModifier2 +
     			" ORDER BY " +
-    			Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_DATAT + " DESC, " +
+    			Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + " DESC, " +
     			Db.Table1.TABLE_NAME + "." + Db.Table1._ID + " DESC" +
     			" LIMIT " + numberOfItems,null);
     	
@@ -352,7 +393,7 @@ public class ExpensesList extends SherlockActivity implements OnItemClickListene
 	    @Override
 	    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 	        MenuInflater inflater = mode.getMenuInflater();
-	        inflater.inflate(R.menu.context_readex, menu);
+	        inflater.inflate(R.menu.expenseslist_actionmode, menu);
 	        return true;
 	    }
 
@@ -386,7 +427,7 @@ public class ExpensesList extends SherlockActivity implements OnItemClickListene
     	if(id >= 0)
     		selectedIds.add(id);
     	
-    	v.setBackgroundColor(getResources().getColor(R.color.grayFirst));
+    	v.setBackgroundColor(getResources().getColor(R.color.gray));
     }
     
     private void unselectItem(View v, long id) {
@@ -437,7 +478,7 @@ public class ExpensesList extends SherlockActivity implements OnItemClickListene
     	if(!pickMode) {
     		pickMode = true;
     		selectItem(view,id);
-    		mActionMode = startActionMode(mActionModeCallback);
+    		mActionMode = startSupportActionMode(mActionModeCallback);
     	}    	
     	return true;
     }

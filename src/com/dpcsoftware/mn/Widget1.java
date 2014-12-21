@@ -81,17 +81,17 @@ public class Widget1 extends AppWidgetProvider {
     		dateDbFormater.setTimeZone(TimeZone.getDefault());    		
     		
     		if(isByMonth)
-    			queryModifier = " AND strftime('%Y-%m'," + Db.Table1.COLUMN_DATAT + ") = '" + dateDbFormater.format(date) + "'";
+    			queryModifier = " AND strftime('%Y-%m'," + Db.Table1.DATE + ") = '" + dateDbFormater.format(date) + "'";
     		
     		Cursor c = db.rawQuery("SELECT " +
-    				"SUM(" + Db.Table1.COLUMN_VALORT + ")" +
+    				"SUM(" + Db.Table1.AMOUNT + ")" +
     				" FROM " +
     				Db.Table1.TABLE_NAME +
-    				" WHERE " + Db.Table1.COLUMN_IDGRUPO + " = " + groupId +
+    				" WHERE " + Db.Table1.ID_GROUP + " = " + groupId +
     				queryModifier, null);    		
     		c.moveToFirst();
     		
-    		Cursor c2 = db.rawQuery("SELECT " + Db.Table3.COLUMN_NGRUPO + " FROM " + Db.Table3.TABLE_NAME +
+    		Cursor c2 = db.rawQuery("SELECT " + Db.Table3.GROUP_NAME + " FROM " + Db.Table3.TABLE_NAME +
     				" WHERE " + Db.Table3._ID + " = " + groupId ,null);
     		c2.moveToFirst();
     		
@@ -110,6 +110,8 @@ public class Widget1 extends AppWidgetProvider {
     		views.setTextViewText(R.id.textView3, printMoney(c.getFloat(0)));
     		
             appWidgetManager.updateAppWidget(appWidgetId, views);
+            
+            db.close();
         }
     }
     

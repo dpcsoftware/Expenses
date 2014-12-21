@@ -20,6 +20,7 @@
 package com.dpcsoftware.mn;
 
 import java.util.Calendar;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,18 +29,18 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.GestureDetector;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
 
 
-public class TimeStats extends SherlockActivity {	
+public class TimeStats extends ActionBarActivity {	
 	private App app;
 	private String[] labels;
 	private TimeChart chart;
@@ -140,11 +141,11 @@ public class TimeStats extends SherlockActivity {
 			iDate.set(Calendar.MONTH, 0);
 		SQLiteDatabase db = DatabaseHelper.quickDb(this, 0);
 		while(i < numberOfItems) {	
-	    	Cursor c = db.rawQuery("SELECT SUM(" + Db.Table1.COLUMN_VALORT + ")," +
-	    			" strftime('%Y-%m" + queryModifier + "'," + Db.Table1.COLUMN_DATAT + ") AS timeUnit" +
+	    	Cursor c = db.rawQuery("SELECT SUM(" + Db.Table1.AMOUNT + ")," +
+	    			" strftime('%Y-%m" + queryModifier + "'," + Db.Table1.DATE + ") AS timeUnit" +
 	    			" FROM " + Db.Table1.TABLE_NAME +
 	    			" WHERE " +
-	    			Db.Table1.COLUMN_IDGRUPO + " = " + app.activeGroupId +
+	    			Db.Table1.ID_GROUP + " = " + app.activeGroupId +
 	    			" AND timeUnit = '" + app.dateToDb(datePatternDb, iDate.getTime()) + "'" +
 	    			" GROUP BY timeUnit",null);
 	    	c.moveToFirst();

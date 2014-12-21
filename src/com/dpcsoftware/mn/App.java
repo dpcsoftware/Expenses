@@ -45,14 +45,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.PorterDuff;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.internal.widget.IcsAdapterView;
-import com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener;
-import com.actionbarsherlock.internal.widget.IcsSpinner;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Spinner;
 
 public class App extends Application {
 	public static final PorterDuff.Mode colorFilterMode = PorterDuff.Mode.MULTIPLY;
@@ -140,17 +139,14 @@ public class App extends Application {
 				break;
 		}
 	}
-	
-	
-
-	
+		
 	public class SpinnerMenu {
-		private IcsSpinner gSpinner;
+		private Spinner gSpinner;
 		private SimpleCursorAdapter mAdapter;
 		private Runnable callback;
-		private SherlockActivity activity;
+		private ActionBarActivity activity;
 	
-		public SpinnerMenu(SherlockActivity act, Runnable updateFunction) {
+		public SpinnerMenu(ActionBarActivity act, Runnable updateFunction) {
 			callback = updateFunction;
 			activity = act;
 			renderMenu();			
@@ -158,23 +154,23 @@ public class App extends Application {
 		
 		public void renderMenu() {
 			SQLiteDatabase db = DatabaseHelper.quickDb(activity, 0);
-			Cursor mCursor = db.query(true, Db.Table3.TABLE_NAME, null, null, null, null, null, Db.Table3.COLUMN_NGRUPO + " ASC", null);
+			Cursor mCursor = db.query(true, Db.Table3.TABLE_NAME, null, null, null, null, null, Db.Table3.GROUP_NAME + " ASC", null);
 	    	if(mAdapter == null) {			
-	    		mAdapter = new SimpleCursorAdapter(activity, R.layout.menu_spinner_item, mCursor, new String[] {Db.Table3.COLUMN_NGRUPO}, new int[] {android.R.id.text1},0);
+	    		mAdapter = new SimpleCursorAdapter(activity, R.layout.menu_spinner_item, mCursor, new String[] {Db.Table3.GROUP_NAME}, new int[] {android.R.id.text1},0);
 	    		mAdapter.setDropDownViewResource(R.layout.menu_spinner_dd_item);
 		    	
 		        ActionBar abar = activity.getSupportActionBar();
 		        View spview = activity.getLayoutInflater().inflate(R.layout.menu_spinner,null);
-		        gSpinner = (IcsSpinner) spview.findViewById(R.id.icsSpinner1);
+		        gSpinner = (Spinner) spview.findViewById(R.id.icsSpinner1);
 		        gSpinner.setAdapter(mAdapter);
 		        
 		    	gSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-		        	public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+		        	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		        		activeGroupId = id;
 		        		activeGroupPos = position;
 		        		if(callback != null) callback.run();
 		        	}
-		        	public void onNothingSelected(IcsAdapterView<?> parent) {        		
+		        	public void onNothingSelected(AdapterView<?> parent) {        		
 		        	}
 		        });
 		    	
@@ -201,7 +197,7 @@ public class App extends Application {
 	    	db.close();
 		}
 		
-		public IcsSpinner getSpinner() {
+		public Spinner getSpinner() {
 			return gSpinner;
 		}
 		

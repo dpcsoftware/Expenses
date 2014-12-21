@@ -15,8 +15,13 @@
    You should have received a copy of the GNU General Public License
    along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:expenses="http://schemas.android.com/apk/res-auto">
     
-    <item android:id="@+id/item1" android:title="@string/menu_addex_1" android:titleCondensed="@string/menu_addex_1" android:showAsAction="always" android:icon="@drawable/ic_menu_save"/>
+    <item android:id="@+id/item1"
+        android:title="@string/menu_addex_1"
+        android:titleCondensed="@string/menu_addex_1"
+        android:icon="@drawable/done_white"
+        expenses:showAsAction="always" />
     
 </menu>

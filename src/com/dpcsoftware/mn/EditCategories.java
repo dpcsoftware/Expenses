@@ -28,7 +28,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -48,12 +51,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
-
-public class EditCategories extends SherlockActivity {
+public class EditCategories extends ActionBarActivity {
 	private App app;
 	private ListView lv;
 	private CategoriesAdapter adapter;
@@ -62,9 +61,9 @@ public class EditCategories extends SherlockActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		lv = new ListView(EditCategories.this);
+		setContentView(R.layout.listview);
+		lv = (ListView) findViewById(R.id.listView1);
 		app = (App) getApplication();
-
 		
 		renderCategories();
 		
@@ -80,14 +79,9 @@ public class EditCategories extends SherlockActivity {
 	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.categories, menu);
+		getMenuInflater().inflate(R.menu.categories, menu);
 		return true;
 	}
-	
-    @Override
-    public View findViewById(int id) {
-    	return lv.findViewById(id);
-    }
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
@@ -103,14 +97,13 @@ public class EditCategories extends SherlockActivity {
 		SQLiteDatabase db = DatabaseHelper.quickDb(this, 0);
 		Cursor c = db.rawQuery("SELECT "
 				+ Db.Table2._ID + ","
-				+ Db.Table2.COLUMN_NCAT + ","
-				+ Db.Table2.COLUMN_CORCAT +
+				+ Db.Table2.CATEGORY_NAME + ","
+				+ Db.Table2.CATEGORY_COLOR +
 				" FROM " + Db.Table2.TABLE_NAME +
-				" ORDER BY " + Db.Table2.COLUMN_NCAT + " ASC",null);
+				" ORDER BY " + Db.Table2.CATEGORY_NAME + " ASC",null);
 		if(adapter == null) {
 			adapter = new CategoriesAdapter(this,c);
 			lv.setAdapter(adapter);
-			setContentView(lv);
 		}
 		else {
 			adapter.swapCursor(c);
@@ -163,8 +156,8 @@ public class EditCategories extends SherlockActivity {
     				args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
     				Cursor c = getCursor();
     				c.moveToPosition((Integer) v.getTag());
-    				args2.putString("CURRENT_NAME", c.getString(c.getColumnIndex(Db.Table2.COLUMN_NCAT)));
-    				args2.putInt("CURRENT_COLOR", c.getInt(c.getColumnIndex(Db.Table2.COLUMN_CORCAT)));
+    				args2.putString("CURRENT_NAME", c.getString(c.getColumnIndex(Db.Table2.CATEGORY_NAME)));
+    				args2.putInt("CURRENT_COLOR", c.getInt(c.getColumnIndex(Db.Table2.CATEGORY_COLOR)));
     				AddEditDialog edtDg = new AddEditDialog(EditCategories.this,args2,AddEditDialog.EDIT);
     				edtDg.show();
     				break;
@@ -188,11 +181,11 @@ public class EditCategories extends SherlockActivity {
 			SQLiteDatabase db = DatabaseHelper.quickDb(EditCategories.this, 0);
 			Cursor c = db.rawQuery("SELECT "
 					+ Db.Table2._ID + ","
-					+ Db.Table2.COLUMN_NCAT +
+					+ Db.Table2.CATEGORY_NAME +
 					" FROM " + Db.Table2.TABLE_NAME +
 					" WHERE " + Db.Table2._ID + " <> " + deleteId +
-					" ORDER BY " + Db.Table2.COLUMN_NCAT + " ASC",null);
-			SimpleCursorAdapter adapter = new SimpleCursorAdapter(EditCategories.this, android.R.layout.simple_spinner_item, c, new String[] {Db.Table2.COLUMN_NCAT}, new int[] {android.R.id.text1}, 0);
+					" ORDER BY " + Db.Table2.CATEGORY_NAME + " ASC",null);
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(EditCategories.this, android.R.layout.simple_spinner_item, c, new String[] {Db.Table2.CATEGORY_NAME}, new int[] {android.R.id.text1}, 0);
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			sp.setAdapter(adapter);
 			sp.setEnabled(false);
@@ -231,11 +224,11 @@ public class EditCategories extends SherlockActivity {
 			int result = db.delete(Db.Table2.TABLE_NAME, new String(Db.Table2._ID + " = " + deleteId), null);
 			if(result == 1) {
 				if(rg.getCheckedRadioButtonId() == R.id.radio0)
-					db.delete(Db.Table1.TABLE_NAME,Db.Table1.COLUMN_IDCAT + " = " + deleteId, null);
+					db.delete(Db.Table1.TABLE_NAME,Db.Table1.ID_CATEGORY + " = " + deleteId, null);
 				else {
 					ContentValues cv = new ContentValues();
-					cv.put(Db.Table1.COLUMN_IDCAT, ((Spinner) findViewById(R.id.spinner1)).getSelectedItemId());
-					db.update(Db.Table1.TABLE_NAME,cv,new String(Db.Table1.COLUMN_IDCAT + " = " + deleteId),null);
+					cv.put(Db.Table1.ID_CATEGORY, ((Spinner) findViewById(R.id.spinner1)).getSelectedItemId());
+					db.update(Db.Table1.TABLE_NAME,cv,new String(Db.Table1.ID_CATEGORY + " = " + deleteId),null);
 				}
 				toastString = R.string.editcategories_c12;
 				app.setFlag(1);
@@ -340,8 +333,8 @@ public class EditCategories extends SherlockActivity {
 		private void saveGroupName() {
 			SQLiteDatabase db = DatabaseHelper.quickDb(EditCategories.this, 1);
 			ContentValues cv = new ContentValues();
-			cv.put(Db.Table2.COLUMN_NCAT, ((EditText) findViewById(R.id.editText1)).getText().toString());
-			cv.put(Db.Table2.COLUMN_CORCAT, selectedColor);
+			cv.put(Db.Table2.CATEGORY_NAME, ((EditText) findViewById(R.id.editText1)).getText().toString());
+			cv.put(Db.Table2.CATEGORY_COLOR, selectedColor);
 			long result;
 			if(mode == EDIT)
 				result = db.update(Db.Table2.TABLE_NAME, cv, Db.Table2._ID + " = " + editId, null);

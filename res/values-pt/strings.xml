@@ -157,9 +157,20 @@
     
     
     <string name="expenseslist_c1">Novidades do app</string>
-    <string name="expenseslist_c2">Não há despesas neste grupo</string>
+    <string name="expenseslist_c2">Suas despesas vão aparecer aqui!</string>
     
     <string name="expenseslist_l1">Filtros:</string>
+    <string name="expenseslist_dr1">Estatísticas</string>
+    <string name="expenseslist_dr2">Por Categoria</string>
+    <string name="expenseslist_dr3">No Tempo</string>
+    <string name="expenseslist_dr4">Personalizar</string>
+    <string name="expenseslist_dr5">Grupos</string>
+    <string name="expenseslist_dr6">Categorias</string>
+    <string name="expenseslist_dr7">Outros</string>
+    <string name="expenseslist_dr8">Metas</string>
+    <string name="expenseslist_dr9">Exportar Dados</string>
+    <string name="expenseslist_dr10">Preferências</string>
+    <string name="expenseslist_dr11">Sobre</string>
     <string name="expenseslist_l_img1">Expandir Lista</string>
     
     
@@ -172,18 +183,7 @@
     <string name="menu_content_readex_1">Excluir</string>
     <string name="menu_groups_1">Novo Grupo</string>
     <string name="menu_categories_1">Nova Categoria</string>
-    <string name="menu_main_1">Adicionar</string>
-    <string name="menu_main_2">Estatísticas</string>
-    <string name="menu_main_3">Despesas por Categoria</string>
-    <string name="menu_main_4">Por Categoria</string>
-    <string name="menu_main_5">Estatisticas no Tempo</string>
-    <string name="menu_main_6">No Tempo</string>
-    <string name="menu_main_7">Grupos</string>
-    <string name="menu_main_8">Categorias</string>
-    <string name="menu_main_9">Preferências</string>
-    <string name="menu_main_10">Exportar dados</string>
-    <string name="menu_main_11">Exportar</string>
-    <string name="menu_main_12">Sobre</string>
+    <string name="menu_main_1">Adicionar Despesa</string>
     
     
     

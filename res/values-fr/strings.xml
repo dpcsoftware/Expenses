@@ -154,9 +154,20 @@
     
     
     <string name="expenseslist_c1">Les nouveautés de l\'appli</string>
-    <string name="expenseslist_c2">Il n\'y a aucune dépense dans ce groupe</string>
+    <string name="expenseslist_c2">Votre liste de dépenses va apparaître ici!</string>
     
     <string name="expenseslist_l1">Filtres:</string>
+    <string name="expenseslist_dr1">Statistiques</string>
+    <string name="expenseslist_dr2">Par Catégorie</string>
+    <string name="expenseslist_dr3">Au cours du temps</string>
+    <string name="expenseslist_dr4">Personnaliser</string>
+    <string name="expenseslist_dr5">Groupes</string>
+    <string name="expenseslist_dr6">Catégories</string>
+    <string name="expenseslist_dr7">Autres</string>
+    <string name="expenseslist_dr8">Objectifs</string>
+    <string name="expenseslist_dr9">Exporter les données</string>
+    <string name="expenseslist_dr10">Préférences</string>
+    <string name="expenseslist_dr11">A propos</string>
     <string name="expenseslist_l_img1">Voir Plus</string>
     
     
@@ -170,19 +181,7 @@
     <string name="menu_content_readex_1">Supprimer</string>
     <string name="menu_groups_1">Ajouter Groupe</string>
     <string name="menu_categories_1">Ajouter Catégorie</string>
-    <string name="menu_main_1">Ajouter</string>
-    <string name="menu_main_2">Statistiques</string>
-    <string name="menu_main_3">Dépenses par Catégorie</string>
-    <string name="menu_main_4">Par Catégorie</string>
-    <string name="menu_main_5">Statistiques dans le Temps</string>
-    <string name="menu_main_6">Dans le Temps</string>
-    <string name="menu_main_7">Groupes</string>
-    <string name="menu_main_8">Catégories</string>
-    <string name="menu_main_9">Préférences</string>
-    <string name="menu_main_10">Exporter des données</string>
-    <string name="menu_main_11">Données</string>
-    <string name="menu_main_12">A propos</string>
-    
+    <string name="menu_main_1">Nouvelle Dépense</string>   
     
     
     <string name="prefs_1">Monnée</string>

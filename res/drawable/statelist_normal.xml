@@ -19,6 +19,6 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:drawable="@color/greenSecond"
+        android:drawable="@color/lightGreen"
         android:state_pressed="true" />
 </selector>

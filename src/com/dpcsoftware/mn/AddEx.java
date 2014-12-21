@@ -29,7 +29,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -43,12 +46,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.dpcsoftware.mn.App.SpinnerMenu;
 
-public class AddEx extends SherlockActivity {
+public class AddEx extends ActionBarActivity {
 	private App app;
 	private boolean editMode;
 	private long editModeId;
@@ -97,15 +97,15 @@ public class AddEx extends SherlockActivity {
         SQLiteDatabase db = DatabaseHelper.quickDb(this,0);
         if(editMode == true) {
         	editModeId = options.getLong("EM_ID");
-        	Cursor c2 = db.query(Db.Table1.TABLE_NAME, new String[]{Db.Table1.COLUMN_VALORT, Db.Table1.COLUMN_DATAT, Db.Table1.COLUMN_DESCRIC, Db.Table1.COLUMN_IDCAT}, Db.Table1._ID + " = " + editModeId, null, null, null, null);
+        	Cursor c2 = db.query(Db.Table1.TABLE_NAME, new String[]{Db.Table1.AMOUNT, Db.Table1.DATE, Db.Table1.DETAILS, Db.Table1.ID_CATEGORY}, Db.Table1._ID + " = " + editModeId, null, null, null, null);
         	c2.moveToFirst();
         	EditText edtValue = ((EditText) findViewById(R.id.editText1));
-        	edtValue.setText(c2.getString(c2.getColumnIndex(Db.Table1.COLUMN_VALORT)));
+        	edtValue.setText(c2.getString(c2.getColumnIndex(Db.Table1.AMOUNT)));
         	edtValue.setSelection(edtValue.length());
-        	String[] date = c2.getString(c2.getColumnIndex(Db.Table1.COLUMN_DATAT)).split("-");
+        	String[] date = c2.getString(c2.getColumnIndex(Db.Table1.DATE)).split("-");
         	((DatePicker) findViewById(R.id.datePicker1)).updateDate(Integer.parseInt(date[0]),Integer.parseInt(date[1])-1,Integer.parseInt(date[2]));
-        	cSpinner.setSelection(cAdapter.getPositionById(c2.getLong(c2.getColumnIndex(Db.Table1.COLUMN_IDCAT))));
-        	((EditText) findViewById(R.id.editText2)).setText(c2.getString(c2.getColumnIndex(Db.Table1.COLUMN_DESCRIC)));
+        	cSpinner.setSelection(cAdapter.getPositionById(c2.getLong(c2.getColumnIndex(Db.Table1.ID_CATEGORY))));
+        	((EditText) findViewById(R.id.editText2)).setText(c2.getString(c2.getColumnIndex(Db.Table1.DETAILS)));
         }
         
         db.close();
@@ -113,7 +113,7 @@ public class AddEx extends SherlockActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	getSupportMenuInflater().inflate(R.menu.addex, menu);
+    	getMenuInflater().inflate(R.menu.addex, menu);
     	
         SpinnerMenu sm = app.new SpinnerMenu(this,null);
         
@@ -168,11 +168,11 @@ public class AddEx extends SherlockActivity {
     	SQLiteDatabase db = DatabaseHelper.quickDb(this,1);
     	
     	ContentValues values = new ContentValues();
-    	values.put(Db.Table1.COLUMN_VALORT, ((float) Math.round(valor*100))/100);
-    	values.put(Db.Table1.COLUMN_DATAT, date);
-    	values.put(Db.Table1.COLUMN_DESCRIC, ((EditText) findViewById(R.id.editText2)).getText().toString());
-    	values.put(Db.Table1.COLUMN_IDGRUPO, app.activeGroupId);
-    	values.put(Db.Table1.COLUMN_IDCAT, cSpinner.getSelectedItemId());
+    	values.put(Db.Table1.AMOUNT, ((float) Math.round(valor*100))/100);
+    	values.put(Db.Table1.DATE, date);
+    	values.put(Db.Table1.DETAILS, ((EditText) findViewById(R.id.editText2)).getText().toString());
+    	values.put(Db.Table1.ID_GROUP, app.activeGroupId);
+    	values.put(Db.Table1.ID_CATEGORY, cSpinner.getSelectedItemId());
     	
     	long result;
     	if(editMode == true)
@@ -197,12 +197,12 @@ public class AddEx extends SherlockActivity {
         Cursor c = db.rawQuery(
 		"SELECT " +
 				Db.Table2.TABLE_NAME + "." + Db.Table2._ID + "," +
-				Db.Table2.TABLE_NAME + "." + Db.Table2.COLUMN_NCAT + "," +
-				Db.Table2.TABLE_NAME + "." + Db.Table2.COLUMN_CORCAT + "," +
-				"count(" + Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_IDCAT + ") AS frequency" +
+				Db.Table2.TABLE_NAME + "." + Db.Table2.CATEGORY_NAME + "," +
+				Db.Table2.TABLE_NAME + "." + Db.Table2.CATEGORY_COLOR + "," +
+				"count(" + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + ") AS frequency" +
 				" FROM " + Db.Table2.TABLE_NAME +
-				" LEFT JOIN (SELECT " + Db.Table1.COLUMN_IDCAT +" FROM " + Db.Table1.TABLE_NAME + " ORDER BY " + Db.Table1.COLUMN_DATAT + " DESC LIMIT 0,100) AS " + Db.Table1.TABLE_NAME + 
-					" ON " + Db.Table1.TABLE_NAME + "." + Db.Table1.COLUMN_IDCAT + " = " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID +
+				" LEFT JOIN (SELECT " + Db.Table1.ID_CATEGORY +" FROM " + Db.Table1.TABLE_NAME + " ORDER BY " + Db.Table1.DATE + " DESC LIMIT 0,100) AS " + Db.Table1.TABLE_NAME + 
+					" ON " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + " = " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID +
 				" GROUP BY " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID +
 				" ORDER BY frequency DESC",null
 		);
@@ -238,8 +238,8 @@ public class AddEx extends SherlockActivity {
     	public void bindView(View view, Context context, Cursor cursor) {
     		TextView itemText = (TextView) view.findViewById(R.id.textView1);
     		ImageView itemSquare = (ImageView) view.findViewById(R.id.imageView1);
-    		itemText.setText(cursor.getString(cursor.getColumnIndex(Db.Table2.COLUMN_NCAT)));
-    		itemSquare.getDrawable().setColorFilter(cursor.getInt(cursor.getColumnIndex(Db.Table2.COLUMN_CORCAT)), App.colorFilterMode);
+    		itemText.setText(cursor.getString(cursor.getColumnIndex(Db.Table2.CATEGORY_NAME)));
+    		itemSquare.getDrawable().setColorFilter(cursor.getInt(cursor.getColumnIndex(Db.Table2.CATEGORY_COLOR)), App.colorFilterMode);
     	
     	}
     	

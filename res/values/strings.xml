@@ -176,9 +176,20 @@
     
         
     <string name="expenseslist_c1">What\'s new?</string>
-    <string name="expenseslist_c2">No expense record was found in this group</string>
+    <string name="expenseslist_c2">Your expenses will show up here!</string>
     
     <string name="expenseslist_l1">Filters:</string>
+    <string name="expenseslist_dr1">Statistics</string>
+    <string name="expenseslist_dr2">By Category</string>
+    <string name="expenseslist_dr3">Over Time</string>
+    <string name="expenseslist_dr4">Customize</string>
+    <string name="expenseslist_dr5">Groups</string>
+    <string name="expenseslist_dr6">Categories</string>
+    <string name="expenseslist_dr7">Other</string>
+    <string name="expenseslist_dr8">Goals</string>
+    <string name="expenseslist_dr9">Export Data</string>
+    <string name="expenseslist_dr10">Preferences</string>
+    <string name="expenseslist_dr11">About</string>
     <string name="expenseslist_l_img1">Show More</string>
     
     
@@ -192,18 +203,8 @@
     <string name="menu_content_readex_1">Delete</string>
     <string name="menu_groups_1">New Group</string>
     <string name="menu_categories_1">New Category</string>
-    <string name="menu_main_1">Add</string>
-    <string name="menu_main_2">Statistics</string>
-    <string name="menu_main_3">Expenses by Category</string>
-    <string name="menu_main_4">By Category</string>
-    <string name="menu_main_5">Statistics Over Time</string>
-    <string name="menu_main_6">Over Time</string>
-    <string name="menu_main_7">Groups</string>
-    <string name="menu_main_8">Categories</string>
-    <string name="menu_main_9">Preferences</string>
-    <string name="menu_main_10">Export Data</string>
-    <string name="menu_main_11">Data</string>
-    <string name="menu_main_12">About</string>
+    <string name="menu_main_1">Add Expense</string>
+
     
     
     

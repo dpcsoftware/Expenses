@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_menu_archive"
+        android:src="@drawable/folder_grey"
         android:contentDescription="@string/exportdata_l_img1" />
 
     <ImageButton
@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_menu_rotate"
+        android:src="@drawable/restore_grey"
         android:contentDescription="@string/exportdata_l_img2" />
 
     <ImageButton
@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_menu_share"
+        android:src="@drawable/share_grey"
         android:contentDescription="@string/gp_6" />
 
     <ImageButton
@@ -62,6 +62,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_menu_close_clear_cancel"
+        android:src="@drawable/delete_grey"
         android:contentDescription="@string/gp_5" />
 </LinearLayout>
