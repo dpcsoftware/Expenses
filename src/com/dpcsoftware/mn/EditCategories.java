@@ -178,7 +178,7 @@ public class EditCategories extends ActionBarActivity {
 			((RadioButton) findViewById(R.id.radio1)).setText(R.string.editcategories_c5);
 			
 			Spinner sp = (Spinner) findViewById(R.id.spinner1);
-			SQLiteDatabase db = DatabaseHelper.quickDb(EditCategories.this, 0);
+			SQLiteDatabase db = DatabaseHelper.quickDb(EditCategories.this, DatabaseHelper.MODE_READ);
 			Cursor c = db.rawQuery("SELECT "
 					+ Db.Table2._ID + ","
 					+ Db.Table2.CATEGORY_NAME +
@@ -279,7 +279,7 @@ public class EditCategories extends ActionBarActivity {
 			for(i = 0;i < 16;i++) {
 				ImageButton item = new ImageButton(EditCategories.this);
 				item.setImageResource(R.drawable.square_shape);
-				item.setPadding(15,15,15,15);
+				item.setPadding(20,20,20,20);
 				item.getDrawable().setColorFilter(getResources().getColor(colors[i]), App.colorFilterMode);
 				item.setOnClickListener(selectColorListener);
 				colorList.addView(item);

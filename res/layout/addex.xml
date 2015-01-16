@@ -22,72 +22,72 @@
     <LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:padding="5dp" >
+	    android:orientation="vertical" >
 	
-	    <LinearLayout
+	    <RelativeLayout
 	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal" >
+	        android:layout_height="70dp"
+	        android:paddingLeft="8dp" >
 	
 	        <EditText
 	            android:id="@+id/editText1"
 	            android:layout_width="wrap_content"
-	            android:ems="10"
 	            android:layout_height="wrap_content"
+	            android:ems="10"
 	            android:inputType="numberDecimal"
-	            android:layout_gravity="center_vertical"
+	            android:layout_centerVertical="true"
+	            android:layout_alignParentLeft="true"
 	            android:hint="@string/addex_l1"
-	            android:nextFocusForward="@+id/editText2"
-	            android:nextFocusDown="@+id/editText2" />
+	            android:background="?android:attr/windowBackground"
+	            android:padding="5dp" />
 	
 	        <ImageButton
 	            android:id="@+id/imageButton1"
 	            style="@style/MN.Widget.ImageButton"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:background="@drawable/statelist_normal"
+	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
 	            android:contentDescription="@string/addex_l_img1"
-	            android:src="@drawable/calc"
-	            android:layout_gravity="center_vertical" />
+	            android:src="@drawable/calc" />
 	
-	    </LinearLayout>
+	    </RelativeLayout>
 	    
 	    <View style="@style/MN.HBarThin" />
 	
-	    <LinearLayout
+	    <RelativeLayout
 	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal" >
+	        android:layout_height="70dp"
+	        android:paddingLeft="8dp" >
 	        
 	        <TextView
 		        android:id="@+id/textView1"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="@string/addex_l2"
-		        android:layout_gravity="center_vertical"
-		        android:layout_marginRight="10dp"
-		        android:layout_marginLeft="5dp"
-		        android:textAllCaps="true"/>
+		        android:layout_centerVertical="true"
+		        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 	
 	        <Spinner
 	            android:id="@+id/spinner1"
-	            android:layout_width="0dp"
+	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_weight="1"
-	            android:background="@drawable/statelist_normal" />
+	            android:background="@drawable/statelist_normal"
+	            android:layout_toRightOf="@+id/textView1"
+	            android:layout_marginLeft="10dp"
+	            android:layout_centerVertical="true" />
 	
 	        <ImageButton
 	            android:id="@+id/imageButton2"
    	            style="@style/MN.Widget.ImageButton"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_gravity="center_vertical"
-	            android:background="@drawable/statelist_normal"
+	            android:layout_centerVertical="true"
+	            android:layout_alignParentRight="true"
 	            android:src="@drawable/add_box_grey"
 	            android:contentDescription="@string/addex_l_img2" />
 	
-	    </LinearLayout>
+	    </RelativeLayout>
 	    
 	    <View style="@style/MN.HBarThin" />
 	    
@@ -97,15 +97,57 @@
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center"
 	        android:calendarViewShown="false" />-->
+	        
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="70dp"
+	        android:orientation="horizontal"
+	        android:paddingLeft="8dp"
+	        android:gravity="center_vertical" >
+	        
+	        <TextView
+		        android:id="@+id/textView3"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/addex_l4"
+		        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+	        
+	        <ImageButton 
+	            android:id="@+id/imageButton3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            style="@style/MN.Widget.ImageButton"
+	            android:src="@drawable/arrow_left"/>
+	        
+	        <TextView
+	            android:id="@+id/dateView"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:clickable="true"
+	            android:background="@drawable/statelist_normal"
+	            android:padding="10dp"
+	            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+	        
+	        <ImageButton 
+	            android:id="@+id/imageButton4"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            style="@style/MN.Widget.ImageButton"
+	            android:src="@drawable/arrow_right"/>        
+	        
+	    </LinearLayout>
+	    
+	    <View style="@style/MN.HBarThin" />
 	
 	    <EditText
 	        android:id="@+id/editText2"
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
+	        android:layout_height="70dp"
 	        android:ems="10"
 	        android:inputType="textMultiLine"
-	        android:hint="@string/addex_l3" />
-	
+	        android:hint="@string/addex_l3"
+	        android:background="?android:attr/windowBackground"
+	        android:padding="8dp"/>
 	
 	</LinearLayout>
     

@@ -48,6 +48,7 @@
     
     <style name="MN.TextAppearance.Subtitle" parent="TextAppearance.AppCompat.Small">
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
     
     <style name="MN.ActionBar" parent="Widget.AppCompat.Light.ActionBar">
@@ -84,7 +85,7 @@
     </style>
     
     <style name="MN.HBar" parent="@android:style/Widget">
-        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_height">1dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">@color/hBar</item>
     </style>
@@ -100,6 +101,7 @@
     <color name="darkGreen">#0a5b00</color>
     <color name="yellow">#fbffd7</color>
 	<color name="gray">#d4d4d4</color>
+	<color name="red">#d7412b</color>
 	
 	<color name="hBar">@android:color/darker_gray</color>
 </resources>

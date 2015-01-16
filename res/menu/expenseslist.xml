@@ -23,6 +23,6 @@
         android:title="@string/menu_main_1"
         android:titleCondensed="@string/menu_main_1"
         android:icon="@drawable/add_box_white"
-        expenses:showAsAction="ifRoom">
+        expenses:showAsAction="always">
     </item>
 </menu>

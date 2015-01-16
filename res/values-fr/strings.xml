@@ -59,6 +59,7 @@
     <string name="addex_l1">Montant</string>
     <string name="addex_l2">Catégorie</string>
     <string name="addex_l3">Détails</string>
+    <string name="addex_l4">Date</string>
     <string name="addex_l_img1">Calculatrice</string>
     <string name="addex_l_img2">Nouvelle Catégorie</string>
     
@@ -66,7 +67,7 @@
     
     <string name="categorystats_c1">Total</string>
     <string name="categorystats_c2">Moyenne par jour</string>
-    <string name="categorystats_c3">Il n\'y a pas de dépenses dans cette groupe pour le mois indiqué</string>
+    <string name="categorystats_c3">Il n\'y a pas de dépenses dans ce groupe pour le mois indiqué</string>
     
     <string name="categorystats_l1">Par mois</string>
     <string name="categorystats_l2">Total</string>
@@ -179,9 +180,10 @@
         
     <string name="menu_addex_1">Enregistrer</string>
     <string name="menu_content_readex_1">Supprimer</string>
-    <string name="menu_groups_1">Ajouter Groupe</string>
-    <string name="menu_categories_1">Ajouter Catégorie</string>
-    <string name="menu_main_1">Nouvelle Dépense</string>   
+    <string name="menu_groups_1">Ajouter un groupe</string>
+    <string name="menu_categories_1">Ajouter une catégorie</string>
+    <string name="menu_main_1">Ajouter une dépense</string>
+    <string name="menu_goals_1">Ajouter un objectif</string>
     
     
     <string name="prefs_1">Monnée</string>

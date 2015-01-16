@@ -19,9 +19,14 @@
 
 package com.dpcsoftware.mn;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Stack;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -29,6 +34,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -54,6 +60,18 @@ public class AddEx extends ActionBarActivity {
 	private long editModeId;
 	private Spinner cSpinner;
 	private CategoryAdapter cAdapter;
+	private Calendar expDate;
+	private OnClickListener upDownDateListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if(v.getId() == R.id.imageButton3)
+				expDate.add(Calendar.DAY_OF_MONTH, -1);
+			else
+				expDate.add(Calendar.DAY_OF_MONTH, 1);
+			
+	        ((TextView) findViewById(R.id.dateView)).setText(app.dateToUser(null,expDate.getTime()));
+		}		
+	};
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,15 +80,14 @@ public class AddEx extends ActionBarActivity {
         app = (App) getApplication();
         
         Bundle options = getIntent().getExtras();
-        if(options != null) {
+        if(options != null)
         	editMode = options.getBoolean("EDIT_MODE",false);
-        }
-        else {
+        else
         	editMode = false;
-        }
         
-        cSpinner = ((Spinner) findViewById(R.id.spinner1));
+        expDate = Calendar.getInstance();
         
+        cSpinner = ((Spinner) findViewById(R.id.spinner1));        
         loadCategoryList();
         
         ((ImageButton) findViewById(R.id.imageButton1)).setOnClickListener(new OnClickListener(){
@@ -94,6 +111,17 @@ public class AddEx extends ActionBarActivity {
         	}
         });
         
+        ((TextView) findViewById(R.id.dateView)).setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				DialogFragment dialog = new DatePickerFragment();
+				dialog.show(getSupportFragmentManager(), "datePicker");
+			}
+		});
+        
+        ((ImageButton) findViewById(R.id.imageButton3)).setOnClickListener(upDownDateListener);
+        ((ImageButton) findViewById(R.id.imageButton4)).setOnClickListener(upDownDateListener);
+        
         SQLiteDatabase db = DatabaseHelper.quickDb(this,0);
         if(editMode == true) {
         	editModeId = options.getLong("EM_ID");
@@ -103,12 +131,13 @@ public class AddEx extends ActionBarActivity {
         	edtValue.setText(c2.getString(c2.getColumnIndex(Db.Table1.AMOUNT)));
         	edtValue.setSelection(edtValue.length());
         	String[] date = c2.getString(c2.getColumnIndex(Db.Table1.DATE)).split("-");
-        	((DatePicker) findViewById(R.id.datePicker1)).updateDate(Integer.parseInt(date[0]),Integer.parseInt(date[1])-1,Integer.parseInt(date[2]));
+        	expDate.set(Integer.parseInt(date[0]),Integer.parseInt(date[1])-1,Integer.parseInt(date[2]));
         	cSpinner.setSelection(cAdapter.getPositionById(c2.getLong(c2.getColumnIndex(Db.Table1.ID_CATEGORY))));
         	((EditText) findViewById(R.id.editText2)).setText(c2.getString(c2.getColumnIndex(Db.Table1.DETAILS)));
         }
-        
         db.close();
+        
+        ((TextView) findViewById(R.id.dateView)).setText(app.dateToUser(null,expDate.getTime()));
     }
 
     @Override
@@ -148,9 +177,7 @@ public class AddEx extends ActionBarActivity {
     }
     
     public void saveExpense() {
-    	DatePicker dP = ((DatePicker) findViewById(R.id.datePicker1));
-    	
-    	String date = app.dateToDb("yyyy-MM-dd", dP.getYear(), dP.getMonth(), dP.getDayOfMonth());
+    	String date = app.dateToDb("yyyy-MM-dd", expDate.getTime());
     	
     	EditText edtValue = ((EditText) findViewById(R.id.editText1));
     	float valor;
@@ -234,6 +261,10 @@ public class AddEx extends ActionBarActivity {
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             return mInflater.inflate(R.layout.addex_category,parent,false); 
         }
+        
+        public View newDropDownView(Context context, Cursor cursor, ViewGroup parent) {
+            return mInflater.inflate(R.layout.addex_category_dd,parent,false); 
+        }
     	
     	public void bindView(View view, Context context, Cursor cursor) {
     		TextView itemText = (TextView) view.findViewById(R.id.textView1);
@@ -248,11 +279,24 @@ public class AddEx extends ActionBarActivity {
     		cursor.moveToFirst();
     		int i;
     		for(i = 0;i < cursor.getCount();i++) {
-    			if(cursor.getLong(cursor.getColumnIndex(Db.Table2._ID)) == id) break;
+    			if(cursor.getLong(cursor.getColumnIndex(Db.Table2._ID)) == id)
+    				break;
     			cursor.moveToNext();
     		}
     		return i;
     	}
+    }
+    
+    private class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            return new DatePickerDialog(AddEx.this, this, expDate.get(Calendar.YEAR), expDate.get(Calendar.MONTH), expDate.get(Calendar.DAY_OF_MONTH));
+        }
+
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            expDate.set(year, monthOfYear, dayOfMonth);          
+            ((TextView) findViewById(R.id.dateView)).setText(app.dateToUser(null, expDate.getTime()));
+        }
     }
     
     private class CalculatorDialog extends Dialog implements View.OnClickListener {
@@ -272,7 +316,7 @@ public class AddEx extends ActionBarActivity {
 			            CalculatorDialog.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 			        }
 			    }
-			});			
+			});	
 			
 			String value = args.getString("NUMBER");
 			if(value != null) {
