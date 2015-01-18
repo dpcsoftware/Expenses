@@ -1,0 +1,4 @@
+<resources>
+    <string name="standard_currency">R$</string>
+    <bool name="standard_currency_pos">true</bool>
+</resources>

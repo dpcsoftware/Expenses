@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+   Copyright 2013, 2014 Daniel Pereira Coelho
+   
+   This file is part of the Expenses Android Application.
+
+   Expenses is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation in version 3.
+
+   Expenses is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <PreferenceCategory
+        android:title="@string/prefs_1">
+
+	    <EditTextPreference android:key="currencySymbol"
+	        android:title="@string/prefs_2"
+	        android:defaultValue="@string/standard_currency"
+	        android:summary="@string/prefs_3"/>
+	    <CheckBoxPreference android:key="cSymbolBefore"
+	        android:title="@string/prefs_4"
+	        android:summary="@string/prefs_5"
+	        android:defaultValue="@bool/standard_currency_pos" />
+    
+    </PreferenceCategory>
+    
+    <PreferenceCategory 
+        android:title="Backup">
+        
+        <CheckBoxPreference android:key="BACKUP_OVERRIDE_OLD"
+            android:title="@string/prefs_6" 
+        	android:defaultValue="false"
+        	android:summary="@string/prefs_7" />
+        <CheckBoxPreference android:key="BACKUP_AUTO"
+            android:title="@string/prefs_8"
+            android:defaultValue="false"
+            android:summary="@string/prefs_9" />
+        <ListPreference android:key="BACKUP_AUTO_INT"
+            android:dependency="BACKUP_AUTO"
+            android:title="@string/prefs_10"
+            android:entries="@array/prefs_11"
+            android:entryValues="@array/nt_prefs_1"
+            android:defaultValue="M"
+            android:summary="@string/prefs_12" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
