@@ -33,3 +33,7 @@ assets/
 
 #Temp Files
 *~
+
+#Android Studio
+.idea/workspace.xml
+.idea/tasks.xml
