@@ -150,7 +150,7 @@ public class CategoryStats extends ActionBarActivity {
 		
 		String queryModifier = "";
 		if(isByMonth)
-			queryModifier = " AND strftime('%Y-%m'," + Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + ") = '" + app.dateToDb("yyyy-MM", date) + "'";
+			queryModifier = " AND strftime('%Y-%m'," + Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + ") = '" + App.dateToDb("yyyy-MM", date) + "'";
 		
 		Cursor c = db.rawQuery("SELECT " + 
 				Db.Table2.TABLE_NAME + "." + Db.Table2._ID + "," + 
@@ -223,7 +223,7 @@ public class CategoryStats extends ActionBarActivity {
 		
 		((TextView) footer2.findViewById(R.id.textView2)).setText(app.printMoney(total/days));
 		
-		((TextView) findViewById(R.id.textViewMonth)).setText(app.dateToUser("MMMM / yyyy", date));
+		((TextView) findViewById(R.id.textViewMonth)).setText(App.dateToUser("MMMM / yyyy", date));
 	
 		if(adapter == null) {
 			adapter = new CategoryStatsAdapter(this,c,total);

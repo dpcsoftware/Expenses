@@ -183,14 +183,14 @@
     <string name="expenseslist_c2">Your expenses will show up here!</string>
     
     <string name="expenseslist_l1">Filters:</string>
-    <string name="expenseslist_dr1">Statistics</string>
+    <string name="expenseslist_dr1">STATISTICS</string>
     <string name="expenseslist_dr2">By Category</string>
     <string name="expenseslist_dr3">Over Time</string>
-    <string name="expenseslist_dr4">Customize</string>
+    <string name="expenseslist_dr4">CUSTOMIZE</string>
     <string name="expenseslist_dr5">Groups</string>
     <string name="expenseslist_dr6">Categories</string>
-    <string name="expenseslist_dr7">Other</string>
-    <string name="expenseslist_dr8">Goals</string>
+    <string name="expenseslist_dr7">OTHER</string>
+    <string name="expenseslist_dr8">Budget</string>
     <string name="expenseslist_dr9">Export Data</string>
     <string name="expenseslist_dr10">Preferences</string>
     <string name="expenseslist_dr11">About</string>
@@ -208,7 +208,7 @@
     <string name="menu_groups_1">New Group</string>
     <string name="menu_categories_1">New Category</string>
     <string name="menu_main_1">Add Expense</string>
-    <string name="menu_goals_1">Add Goal</string>
+    <string name="menu_budget_1">Add Item</string>
 
     
     
@@ -251,16 +251,16 @@
     
     
     
-    <string name="goals_c1">No goals were defined for this group</string>
-    <string name="goals_c2">All Categories</string>
-    <string name="goals_c3">Add Goal</string>
-    <string name="goals_c4">Edit Goal</string>
-    <string name="goals_c5">Invalid value</string>
-    <string name="goals_c6">Done!</string>
-    <string name="goals_c7">Done!</string>
+    <string name="budget_c1">No budget items were defined for this group</string>
+    <string name="budget_c2">All Categories</string>
+    <string name="budget_c3">Add Item</string>
+    <string name="budget_c4">Edit Item</string>
+    <string name="budget_c5">Invalid value</string>
+    <string name="budget_c6">Done!</string>
+    <string name="budget_c7">Done!</string>
     
-    <string name="goals_l1">By Month</string>
-    <string name="goals_l2">Total</string>
-    <string name="goals_l3">All Categories</string>
-    <string name="goals_l4">Only One</string>
+    <string name="budget_l1">By Month</string>
+    <string name="budget_l2">Total</string>
+    <string name="budget_l3">All Categories</string>
+    <string name="budget_l4">Only One</string>
 </resources>

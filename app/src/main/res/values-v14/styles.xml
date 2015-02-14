@@ -21,9 +21,4 @@
     <style name="MN.Widget.DialogButton" parent="android:Widget.Holo.Light.Button.Borderless.Small">
     </style>
     
-    <style name="MN.TextAppearance.Subtitle" parent="TextAppearance.AppCompat.Small">
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    
 </resources>

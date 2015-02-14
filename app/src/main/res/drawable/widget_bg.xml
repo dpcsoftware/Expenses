@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 
    Copyright 2013, 2014 Daniel Pereira Coelho
    
@@ -16,13 +17,18 @@
    along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:expenses="http://schemas.android.com/apk/res-auto">
-    
-    <item android:id="@+id/item1"
-        android:title="@string/menu_goals_1"
-        android:titleCondensed="@string/menu_goals_1"
-        android:icon="@drawable/add_box_white"
-        expenses:showAsAction="always">
-    </item>
-</menu>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetBottom="0dp"
+    android:insetLeft="-5dp"
+    android:insetRight="-5dp"
+    android:insetTop="0dp" >
+ 
+    <shape>
+        <solid android:color="@android:color/black" />
+ 
+        <stroke
+            android:width="4dp"
+            android:color="@color/darkGreen" />
+    </shape>
+ 
+</inset>

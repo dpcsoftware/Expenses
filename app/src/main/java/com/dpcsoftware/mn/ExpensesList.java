@@ -19,10 +19,6 @@
 
 package com.dpcsoftware.mn;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -48,12 +44,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
 import android.widget.CursorAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class ExpensesList extends ActionBarActivity implements OnItemClickListener, OnItemLongClickListener {
 	private static final int NUMBER_OF_ITEMS = 40;
@@ -100,17 +99,17 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     	listView.setOnItemClickListener(this);
     	listView.setOnItemLongClickListener(this);
     	
-    	View emptyView = (View) findViewById(R.id.empty);
+    	View emptyView = findViewById(R.id.empty);
     	((TextView) emptyView.findViewById(R.id.textView1)).setText(R.string.expenseslist_c2);
     	listView.setEmptyView(emptyView);
     	
 		footer = LayoutInflater.from(this).inflate(R.layout.expenseslist_footer, null);
-		((ImageButton) footer).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				numberOfItems += NUMBER_OF_ITEMS;
-				renderList();
-			}
-		});
+		footer.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                numberOfItems += NUMBER_OF_ITEMS;
+                renderList();
+            }
+        });
 		listView.addFooterView(footer);
 		
 		Bundle bd = getIntent().getExtras();
@@ -127,7 +126,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
 		}
 		
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		//colocar resources corretos
+		//TODO -- colocar resources corretos
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.expenseslist_c1, R.string.expenseslist_c2) {
 			public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
@@ -146,7 +145,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
 			cdg.show();
 			SharedPreferences.Editor pEditor = prefs.edit();
 			pEditor.putInt("APP_VERSION", app.appVersion);
-			pEditor.commit();
+			pEditor.apply();
 			app.showChangesDialog = false;
 		}		
  	}
@@ -228,7 +227,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
        			startActivity(intent9);
        			break;
     		case R.id.menu5:
-    			Intent intent10 = new Intent(this, Goals.class);
+    			Intent intent10 = new Intent(this, Budget.class);
     			startActivity(intent10);
     			break;
     	}
@@ -240,9 +239,9 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     	super.onResume();
     	if(mActionMode != null) mActionMode.finish();
     	if(!creating) {
-	    	if(app.mnUpdateList == true)
+	    	if(app.mnUpdateList)
 		    	renderList();
-	    	if(app.mnUpdateMenu == true)
+	    	if(app.mnUpdateMenu)
 	    		sMenu.renderMenu();
 	    	if(sMenu.getSpinner().getSelectedItemPosition() != app.activeGroupPos)
 	    		sMenu.getSpinner().setSelection(app.activeGroupPos);
@@ -264,21 +263,24 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
 				try {
 					String stdAppFolder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + rs.getString(R.string.app_name);
 					File destDir = new File(prefs.getString("STD_FOLDER",stdAppFolder));
-			    	if(!destDir.exists())
-			    		destDir.mkdirs();
+			    	if(!destDir.exists()) {
+                        boolean tryDir = destDir.mkdirs();
+                        if(!tryDir)
+                            throw new IOException();
+                    }
 			    		    		
 			    	String destName;
 			    	if(prefs.getBoolean("BACKUP_OVERRIDE_OLD", false))
 			    		destName = rs.getString(R.string.app_name) + ".backup";
 			    	else
-			    		destName = rs.getString(R.string.app_name) + "_" + app.dateToUser("yyyy-MM-dd_H-m", new Date()) + ".backup";
+			    		destName = rs.getString(R.string.app_name) + "_" + App.dateToUser("yyyy-MM-dd_H-m", new Date()) + ".backup";
 					
 					boolean tryCopy = App.copyFile(getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath(), destDir.getAbsolutePath() + "/" + destName);
 		
-					if (tryCopy == true) {
+					if (tryCopy) {
 						SharedPreferences.Editor pEdit = prefs.edit();
 						pEdit.putLong("BACKUP_TIME", (new Date().getTime()));
-						pEdit.commit();
+						pEdit.apply();
 					}
 				}
 				catch (Exception e) {
@@ -300,7 +302,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
 		SharedPreferences.Editor pEdit = prefs.edit();
 		pEdit.putInt("ACTIVE_GROUP_POS", app.activeGroupPos);
 		pEdit.putLong("ACTIVE_GROUP_ID", app.activeGroupId);
-		pEdit.commit();
+		pEdit.apply();
 	}
     
     public void renderList() {
@@ -309,7 +311,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     	if(filterId != -1)
     		queryModifier = " AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + " = " + filterId;
     	if(filterDate != null)
-    		queryModifier2 = " AND strftime('%Y-%m'," + Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + ") = '" + app.dateToDb("yyyy-MM", filterDate) + "'";
+    		queryModifier2 = " AND strftime('%Y-%m'," + Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + ") = '" + App.dateToDb("yyyy-MM", filterDate) + "'";
 
     	Cursor c = db.rawQuery("SELECT " +
     			Db.Table2.TABLE_NAME + "." + Db.Table2.CATEGORY_NAME + "," +
@@ -333,7 +335,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     		c.moveToFirst();
     		String text = c.getString(0);
     		if(filterDate != null)
-    			text = text + ", " + app.dateToUser("MMMM / yyyy", filterDate);
+    			text = text + ", " + App.dateToUser("MMMM / yyyy", filterDate);
     		((TextView) header.findViewById(R.id.textView2)).setText(text);
     	}
    	
@@ -370,7 +372,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     		((TextView) view.findViewById(R.id.textView1)).setText(cursor.getString(0));
     		((ImageView) view.findViewById(R.id.imageView1)).getDrawable().setColorFilter(cursor.getInt(1), App.colorFilterMode);
     		((TextView) view.findViewById(R.id.textView2)).setText(app.printMoney( cursor.getFloat(2)));
-    		((TextView) view.findViewById(R.id.textView3)).setText(app.dateToUser(null,cursor.getString(3)));
+    		((TextView) view.findViewById(R.id.textView3)).setText(App.dateToUser(null, cursor.getString(3)));
     		TextView tvObs = ((TextView) view.findViewById(R.id.textView4));
     		String obs = cursor.getString(4);
     		if(obs.isEmpty())
@@ -434,7 +436,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     	if(id >= 0)
     		selectedIds.remove(selectedIds.indexOf(id));
     	
-		v.setBackgroundDrawable(getResources().getDrawable(R.drawable.statelist_normal));
+		v.setBackgroundResource(R.drawable.statelist_normal);
 		if(mActionMode != null && selectedIds.isEmpty())
 			mActionMode.finish();
     }
@@ -488,7 +490,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     	int i;    	
     	
     	for(i = 0;i < ids.size();i++)
-    		db.delete(Db.Table1.TABLE_NAME,new String(Db.Table1._ID + " = " + ids.get(i)), null);
+    		db.delete(Db.Table1.TABLE_NAME, Db.Table1._ID + " = " + ids.get(i), null);
     	
     	app.setFlag(1);
     	
@@ -503,7 +505,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     		setTitle(R.string.expenseslist_c1);
     		setContentView(R.layout.expenseslist_changesdialog);
     		
-    		((Button) findViewById(R.id.button1)).setOnClickListener(this);
+    		findViewById(R.id.button1).setOnClickListener(this);
     	}
     	
     	public void onClick(View v) {

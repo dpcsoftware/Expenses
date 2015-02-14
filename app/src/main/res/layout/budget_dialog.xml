@@ -23,8 +23,16 @@
     android:orientation="vertical"
     android:padding="3dp">
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText1"
+        android:ems="10"
+        android:hint="@string/gp_12"
+        android:inputType="numberDecimal"/>
+    
     <RadioGroup
-        android:id="@+id/radioGroup1"
+        android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
@@ -35,39 +43,10 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:layout_margin="5dp"
-            android:text="@string/goals_l1" />
-
-        <RadioButton
-            android:id="@+id/radio1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/goals_l2" />
-    </RadioGroup>
-    
-    <EditText 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText1"
-        android:ems="10"
-        android:hint="@string/gp_12"/>
-    
-    <RadioGroup
-        android:id="@+id/radioGroup2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/radio2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:layout_margin="5dp"
             android:text="All Categories" />
 
         <RadioButton
-            android:id="@+id/radio3"
+            android:id="@+id/radio1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 			android:layout_margin="5dp"
@@ -80,6 +59,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp" />
+
+    <Button
+        android:id="@+id/button3"
+        style="@style/MN.Widget.DialogButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete Goal" />
 
     <LinearLayout
         android:id="@+id/LinearLayout2"

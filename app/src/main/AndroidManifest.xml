@@ -36,7 +36,7 @@
         <activity android:name="About"></activity>
         <activity android:name="ExportData"></activity>
         <activity android:name="FolderPicker"></activity>
-        <activity android:name="Goals"></activity>
+        <activity android:name=".Budget"></activity>
         
         <activity android:name="Widget1Config">
 		    <intent-filter>

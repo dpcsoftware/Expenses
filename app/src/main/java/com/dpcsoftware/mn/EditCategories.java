@@ -37,7 +37,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
@@ -70,7 +69,7 @@ public class EditCategories extends ActionBarActivity {
 		getSupportActionBar().setTitle(R.string.editcategories_c1);
 		
 		Bundle args = getIntent().getExtras();
-		if(args != null && args.getBoolean("ADD_CATEGORY",false) == true) {
+		if(args != null && args.getBoolean("ADD_CATEGORY",false)) {
 			comingFromAddEx = true;
 			AddEditDialog addDg = new AddEditDialog(this,null,AddEditDialog.ADD);
 			addDg.show();
@@ -129,10 +128,10 @@ public class EditCategories extends ActionBarActivity {
     		((TextView) view.findViewById(R.id.textViewCategory)).setText(cursor.getString(1));
     		ImageButton btEdit = (ImageButton) view.findViewById(R.id.imageButtonEdit);
     		btEdit.setOnClickListener(this);
-    		btEdit.setTag(Integer.valueOf(cursor.getPosition()));
+    		btEdit.setTag(cursor.getPosition());
     		ImageButton btDelete = (ImageButton) view.findViewById(R.id.imageButtonDelete);
     		btDelete.setOnClickListener(this);
-    		btDelete.setTag(Integer.valueOf(cursor.getPosition()));
+    		btDelete.setTag(cursor.getPosition());
     	}
     	
     	public void onClick(View v) {
@@ -193,14 +192,14 @@ public class EditCategories extends ActionBarActivity {
 			setTitle(R.string.editcategories_c6);
 			
 			((RadioButton) findViewById(R.id.radio1)).setOnCheckedChangeListener(this);
-			((Button) findViewById(R.id.button1)).setOnClickListener(this);
-			((Button) findViewById(R.id.button2)).setOnClickListener(this);
+			findViewById(R.id.button1).setOnClickListener(this);
+			findViewById(R.id.button2).setOnClickListener(this);
 			db.close();
 		}
 		
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			((Spinner) findViewById(R.id.spinner1)).setEnabled(isChecked);
+			findViewById(R.id.spinner1).setEnabled(isChecked);
 		}
 		
 		@Override
@@ -221,14 +220,14 @@ public class EditCategories extends ActionBarActivity {
 			RadioGroup rg = (RadioGroup) findViewById(R.id.radioGroup1);
 			int toastString;
 			
-			int result = db.delete(Db.Table2.TABLE_NAME, new String(Db.Table2._ID + " = " + deleteId), null);
+			int result = db.delete(Db.Table2.TABLE_NAME, Db.Table2._ID + " = " + deleteId, null);
 			if(result == 1) {
 				if(rg.getCheckedRadioButtonId() == R.id.radio0)
 					db.delete(Db.Table1.TABLE_NAME,Db.Table1.ID_CATEGORY + " = " + deleteId, null);
 				else {
 					ContentValues cv = new ContentValues();
 					cv.put(Db.Table1.ID_CATEGORY, ((Spinner) findViewById(R.id.spinner1)).getSelectedItemId());
-					db.update(Db.Table1.TABLE_NAME,cv,new String(Db.Table1.ID_CATEGORY + " = " + deleteId),null);
+					db.update(Db.Table1.TABLE_NAME,cv, Db.Table1.ID_CATEGORY + " = " + deleteId,null);
 				}
 				toastString = R.string.editcategories_c12;
 				app.setFlag(1);
@@ -298,17 +297,17 @@ public class EditCategories extends ActionBarActivity {
 				((EditText) findViewById(R.id.editText1)).setText(args.getString("CURRENT_NAME"));
 			}
 			
-			((Button) findViewById(R.id.button1)).setOnClickListener(this);
-			((Button) findViewById(R.id.button2)).setOnClickListener(this);
+			findViewById(R.id.button1).setOnClickListener(this);
+			findViewById(R.id.button2).setOnClickListener(this);
 			
-			((EditText) findViewById(R.id.editText1)).setOnFocusChangeListener(new OnFocusChangeListener() {				
-				@Override
-				public void onFocusChange(View v, boolean hasFocus) {
-					if (hasFocus) {
-			            AddEditDialog.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-			        }					
-				}
-			});
+			findViewById(R.id.editText1).setOnFocusChangeListener(new OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        AddEditDialog.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    }
+                }
+            });
 		}
 				
 		@Override			
@@ -326,7 +325,7 @@ public class EditCategories extends ActionBarActivity {
 					break;
 			}
 			
-			if(comingFromAddEx == true)
+			if(comingFromAddEx)
 				EditCategories.this.finish();
 		}
 		
@@ -347,7 +346,7 @@ public class EditCategories extends ActionBarActivity {
 				else
 					toastText = R.string.editcategories_c10;
 				app.setFlag(2);
-				if(comingFromAddEx == true) {
+				if(comingFromAddEx) {
 					app.addExUpdateCategoryId = result;
 					app.addExUpdateCategories = true;
 				}

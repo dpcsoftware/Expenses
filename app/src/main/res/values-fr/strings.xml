@@ -183,7 +183,7 @@
     <string name="menu_groups_1">Ajouter un groupe</string>
     <string name="menu_categories_1">Ajouter une catégorie</string>
     <string name="menu_main_1">Ajouter une dépense</string>
-    <string name="menu_goals_1">Ajouter un objectif</string>
+    <string name="menu_budget_1">Ajouter un objectif</string>
     
     
     <string name="prefs_1">Monnée</string>

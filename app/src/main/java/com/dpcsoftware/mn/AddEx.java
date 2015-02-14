@@ -19,15 +19,10 @@
 
 package com.dpcsoftware.mn;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayDeque;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Stack;
-
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +30,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,16 +39,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dpcsoftware.mn.App.SpinnerMenu;
+
+import java.util.ArrayDeque;
+import java.util.Calendar;
+import java.util.Stack;
 
 public class AddEx extends ActionBarActivity {
 	private App app;
@@ -69,7 +67,7 @@ public class AddEx extends ActionBarActivity {
 			else
 				expDate.add(Calendar.DAY_OF_MONTH, 1);
 			
-	        ((TextView) findViewById(R.id.dateView)).setText(app.dateToUser(null,expDate.getTime()));
+	        ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser(null,expDate.getTime()));
 		}		
 	};
 	
@@ -80,50 +78,47 @@ public class AddEx extends ActionBarActivity {
         app = (App) getApplication();
         
         Bundle options = getIntent().getExtras();
-        if(options != null)
-        	editMode = options.getBoolean("EDIT_MODE",false);
-        else
-        	editMode = false;
-        
+       	editMode = options != null && options.getBoolean("EDIT_MODE",false);
+
         expDate = Calendar.getInstance();
         
         cSpinner = ((Spinner) findViewById(R.id.spinner1));        
         loadCategoryList();
         
-        ((ImageButton) findViewById(R.id.imageButton1)).setOnClickListener(new OnClickListener(){
-        	public void onClick(View v) {
-        		Bundle args = new Bundle();
-        		String value = ((EditText) findViewById(R.id.editText1)).getText().toString();
-        		args.putString("NUMBER", value);
-        		CalculatorDialog calcDialog = new CalculatorDialog(AddEx.this,args);
-        		calcDialog.show();
-        		
-        	}
+        findViewById(R.id.imageButton1).setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                Bundle args = new Bundle();
+                String value = ((EditText) findViewById(R.id.editText1)).getText().toString();
+                args.putString("NUMBER", value);
+                CalculatorDialog calcDialog = new CalculatorDialog(AddEx.this, args);
+                calcDialog.show();
+
+            }
         });
         
-        ((ImageButton) findViewById(R.id.imageButton2)).setOnClickListener(new OnClickListener(){
-        	public void onClick(View v) {
-        		Intent openAct = new Intent(AddEx.this, EditCategories.class);
-        		Bundle args = new Bundle();
-        		args.putBoolean("ADD_CATEGORY", true);
-        		openAct.putExtras(args);
-        		startActivity(openAct);
-        	}
+        findViewById(R.id.imageButton2).setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                Intent openAct = new Intent(AddEx.this, EditCategories.class);
+                Bundle args = new Bundle();
+                args.putBoolean("ADD_CATEGORY", true);
+                openAct.putExtras(args);
+                startActivity(openAct);
+            }
         });
         
-        ((TextView) findViewById(R.id.dateView)).setOnClickListener(new OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				DialogFragment dialog = new DatePickerFragment();
-				dialog.show(getSupportFragmentManager(), "datePicker");
-			}
-		});
+        findViewById(R.id.dateView).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dialog = new DatePickerFragment();
+                dialog.show(getSupportFragmentManager(), "datePicker");
+            }
+        });
         
-        ((ImageButton) findViewById(R.id.imageButton3)).setOnClickListener(upDownDateListener);
-        ((ImageButton) findViewById(R.id.imageButton4)).setOnClickListener(upDownDateListener);
+        findViewById(R.id.imageButton3).setOnClickListener(upDownDateListener);
+        findViewById(R.id.imageButton4).setOnClickListener(upDownDateListener);
         
         SQLiteDatabase db = DatabaseHelper.quickDb(this,0);
-        if(editMode == true) {
+        if(editMode) {
         	editModeId = options.getLong("EM_ID");
         	Cursor c2 = db.query(Db.Table1.TABLE_NAME, new String[]{Db.Table1.AMOUNT, Db.Table1.DATE, Db.Table1.DETAILS, Db.Table1.ID_CATEGORY}, Db.Table1._ID + " = " + editModeId, null, null, null, null);
         	c2.moveToFirst();
@@ -137,7 +132,7 @@ public class AddEx extends ActionBarActivity {
         }
         db.close();
         
-        ((TextView) findViewById(R.id.dateView)).setText(app.dateToUser(null,expDate.getTime()));
+        ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser(null,expDate.getTime()));
     }
 
     @Override
@@ -161,7 +156,7 @@ public class AddEx extends ActionBarActivity {
     public void onResume() {
     	super.onResume();
     	
-    	if(app.addExUpdateCategories == true)
+    	if(app.addExUpdateCategories)
     		loadCategoryList();
     }
     
@@ -177,7 +172,7 @@ public class AddEx extends ActionBarActivity {
     }
     
     public void saveExpense() {
-    	String date = app.dateToDb("yyyy-MM-dd", expDate.getTime());
+    	String date = App.dateToDb("yyyy-MM-dd", expDate.getTime());
     	
     	EditText edtValue = ((EditText) findViewById(R.id.editText1));
     	float valor;
@@ -192,7 +187,7 @@ public class AddEx extends ActionBarActivity {
     		return;
     	}
     	
-    	SQLiteDatabase db = DatabaseHelper.quickDb(this,1);
+    	SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_WRITE);
     	
     	ContentValues values = new ContentValues();
     	values.put(Db.Table1.AMOUNT, ((float) Math.round(valor*100))/100);
@@ -202,12 +197,12 @@ public class AddEx extends ActionBarActivity {
     	values.put(Db.Table1.ID_CATEGORY, cSpinner.getSelectedItemId());
     	
     	long result;
-    	if(editMode == true)
+    	if(editMode)
     		result = db.update(Db.Table1.TABLE_NAME,values,Db.Table1._ID + " = " + editModeId,null);
     	else
     		result = db.insert(Db.Table1.TABLE_NAME,null,values);
     	
-    	if(result != -1 || result != 0) {
+    	if((editMode && result != 0) || (!editMode && result != -1)) {
     			App.Toast(this, R.string.addex_c2);
     			app.setFlag(1);
     			finish();
@@ -244,7 +239,7 @@ public class AddEx extends ActionBarActivity {
         
         db.close();
         
-        if(app.addExUpdateCategories == true) {
+        if(app.addExUpdateCategories) {
         	cSpinner.setSelection(cAdapter.getPositionById(app.addExUpdateCategoryId));
             app.addExUpdateCategories = false;
         }
@@ -295,7 +290,7 @@ public class AddEx extends ActionBarActivity {
 
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             expDate.set(year, monthOfYear, dayOfMonth);          
-            ((TextView) findViewById(R.id.dateView)).setText(app.dateToUser(null, expDate.getTime()));
+            ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser(null, expDate.getTime()));
         }
     }
     
@@ -326,13 +321,13 @@ public class AddEx extends ActionBarActivity {
 			
 			setTitle(R.string.addex_c5);
 			
-			((Button) findViewById(R.id.button1)).setOnClickListener(this);
-			((Button) findViewById(R.id.button2)).setOnClickListener(this);
-			((Button) findViewById(R.id.button3)).setOnClickListener(this);
-			((Button) findViewById(R.id.button4)).setOnClickListener(this);
-			((Button) findViewById(R.id.button5)).setOnClickListener(this);
-			((Button) findViewById(R.id.button6)).setOnClickListener(this);
-			((Button) findViewById(R.id.button7)).setOnClickListener(this);
+			findViewById(R.id.button1).setOnClickListener(this);
+			findViewById(R.id.button2).setOnClickListener(this);
+			findViewById(R.id.button3).setOnClickListener(this);
+			findViewById(R.id.button4).setOnClickListener(this);
+			findViewById(R.id.button5).setOnClickListener(this);
+			findViewById(R.id.button6).setOnClickListener(this);
+			findViewById(R.id.button7).setOnClickListener(this);
 		}
 		
 		@Override
@@ -423,7 +418,6 @@ public class AddEx extends ActionBarActivity {
 				//Conversão para notação pós-fixa
 				Stack<String> st = new Stack<String>();
 				ArrayDeque<String> postFixed = new ArrayDeque<String>();
-				i = 0;
 				
 				while(!tokens.isEmpty()) {
 					String token = tokens.getFirst();
@@ -490,26 +484,20 @@ public class AddEx extends ActionBarActivity {
 		}
 		
 		private boolean isOperator(char c) {
-			if(c == '+' | c == '-' | c == '*' | c == '/')
-				return true;
-			else
-				return false;
+			return (c == '+' || c == '-' || c == '*' || c == '/');
 		}
 		
 		private int priority(char c) {
-			if(c == '+' | c == '-')
+			if(c == '+' || c == '-')
 				return 1;
-			else if(c == '*' | c == '/')
+			else if(c == '*' || c == '/')
 				return 2;
 			else
 				return 0;
 		}
 		
 		private boolean isOther(char c) {
-			if(!isOperator(c) && c != '(' && c != ')')
-				return true;
-			else
-				return false;
+			return (!isOperator(c) && c != '(' && c != ')');
 		}
 	}    
 }

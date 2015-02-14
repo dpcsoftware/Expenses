@@ -32,9 +32,11 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import android.app.Application;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,8 +44,14 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -75,16 +83,16 @@ public class App extends Application {
 	private Resources rs;
 	private SharedPreferences prefs;
 
-	public static final void Toast(Context context, String msg) {
+	public static void Toast(Context context, String msg) {
 		android.widget.Toast.makeText(context, msg, android.widget.Toast.LENGTH_SHORT).show();
 	}
 	
-	public static final void Toast(Context context, int resourceId) {
+	public static void Toast(Context context, int resourceId) {
 		android.widget.Toast.makeText(context, context.getResources().getString(resourceId), android.widget.Toast.LENGTH_SHORT).show();
 	}
 	
-	public static final void Log(String msg) {
-		Log.i("MN-Debug",msg);
+	public static void Log(String msg) {
+		Log.d("Expenses-Debug",msg);
 	}
 	
 	public static final String WIDGET_PREFS_FNAME = "WigetPreferences";
@@ -100,10 +108,7 @@ public class App extends Application {
 		int savedVersion = prefs.getInt("APP_VERSION", -1);
 		try {
 			appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
-			if(savedVersion < appVersion)
-				showChangesDialog = true;
-			else
-				showChangesDialog = false;
+            showChangesDialog = savedVersion < appVersion;
 		}
 		catch (Exception e) {
 			showChangesDialog = false;
@@ -114,7 +119,7 @@ public class App extends Application {
 		switch(tableId) {
 			case 1:
 				mnUpdateList = true;
-				
+
 				//Update widgets if anyone is being used
 				AppWidgetManager wManager = AppWidgetManager.getInstance(this);
 				ComponentName cWidgetProvider = new ComponentName(this, Widget1.class);
@@ -130,6 +135,61 @@ public class App extends Application {
 				    	e.printStackTrace();
 				    }
 				}
+
+                //TODO --- Finish
+                //Check if any goal was overlapped
+                boolean notified = false;
+                int flag, goalType;
+                NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                Intent it = new Intent(this, Budget.class);
+                Bundle args = new Bundle();
+                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                SQLiteDatabase db = dbH.getWritableDatabase();
+                Cursor c = db.rawQuery("SELECT "
+                        + Db.Table4._ID + ","
+                        + Db.Table4.TYPE + ","
+                        + Db.Table4.AMOUNT + ","
+                        + Db.Table4.ID_CATEGORY + ","
+                        + Db.Table4.ALERT +
+                        " FROM " + Db.Table4.TABLE_NAME +
+                        " WHERE " + Db.Table4.ID_GROUP + " = " + activeGroupId +
+                        " ORDER BY " + Db.Table4.TYPE + " ASC", null);
+                c.moveToFirst();
+                while(!c.isAfterLast()) {
+                    goalType = c.getInt(1);
+                    float sum = Budget.ListPage.sumExpensesOfBudgetItem(this, activeGroupId, goalType, c.getLong(3), Calendar.getInstance());
+                    if(sum > c.getFloat(2)) {
+                        App.Log("Meta ultrapassada: " + sum + ", tipo: "+goalType);
+                        if(!notified && c.getInt(4) == 0) {
+                            if(goalType == Db.Table4.TYPE_TOTAL_BY_MONTH || goalType == Db.Table4.TYPE_CAT_BY_MONTH)
+                                args.putInt("SET_TAB_INDEX", 0);
+                            else
+                                args.putInt("SET_TAB_INDEX", 1);
+                            it.putExtras(args);
+                            PendingIntent pi = PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_ONE_SHOT);
+                            NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
+                                    .setContentTitle(rs.getString(R.string.app_name))
+                                    .setContentText("You have spent more than you should!")
+                                    .setSmallIcon(R.drawable.money_white)
+                                    .setLargeIcon(drawableToBitmap(rs.getDrawable(R.drawable.logo)))
+                                    .setContentIntent(pi)
+                                    .setAutoCancel(true);
+                            notifManager.notify(1, notifBuilder.build());
+                            notified = true;
+                        }
+                        flag = 1;
+                    }
+                    else
+                        flag = 0;
+
+                    //set flag alert on database
+                    ContentValues values = new ContentValues();
+                    values.put(Db.Table4.ALERT, flag);
+                    db.update(Db.Table4.TABLE_NAME, values, Db.Table4._ID + " = " + c.getLong(0), null);
+
+                    c.moveToNext();
+                }
+
 				break;
 			case 2:
 				mnUpdateList = true;
@@ -137,6 +197,8 @@ public class App extends Application {
 			case 3:
 				mnUpdateMenu = true;
 				break;
+            case 4:
+                break;
 		}
 	}
 		
@@ -217,29 +279,29 @@ public class App extends Application {
 		int nFractionDigits = Currency.getInstance(Locale.getDefault()).getDefaultFractionDigits();
 		String val = String.format("%."+nFractionDigits+"f", value);
 		String symbol = prefs.getString("currencySymbol",rs.getString(R.string.standard_currency));
-		if(prefs.getBoolean("cSymbolBefore",rs.getBoolean(R.bool.standard_currency_pos)) == true)
+		if(prefs.getBoolean("cSymbolBefore",rs.getBoolean(R.bool.standard_currency_pos)))
 			return symbol + " " + val;
 		else
 			return val + " " + symbol;
 	}
 	
-	public SimpleDateFormat getDateDbFormater(String pattern) {
+	public static SimpleDateFormat getDateDbFormater(String pattern) {
 		SimpleDateFormat dateDbFormater = new SimpleDateFormat(pattern, Locale.US);
 		dateDbFormater.setTimeZone(TimeZone.getDefault());
 		return dateDbFormater;
 	}
 	
-	public String dateToDb(String pattern, int year, int month, int day) {
+	public static String dateToDb(String pattern, int year, int month, int day) {
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month, day);
 		return getDateDbFormater(pattern).format(cal.getTime());
 	}
 	
-	public String dateToDb(String pattern, Date date) {
+	public static String dateToDb(String pattern, Date date) {
 		return getDateDbFormater(pattern).format(date);
 	}
 	
-	public String dateToUser(String pattern, String date) {
+	public static String dateToUser(String pattern, String date) {
 		SimpleDateFormat localFormater;
 		if(pattern == null) {
 			localFormater = (SimpleDateFormat) DateFormat.getDateInstance();
@@ -255,7 +317,7 @@ public class App extends Application {
 		}
 	}
 	
-	public String dateToUser(String pattern, Date date) {
+	public static String dateToUser(String pattern, Date date) {
 		SimpleDateFormat formater;
 		if(pattern == null)
 			formater = (SimpleDateFormat) DateFormat.getDateInstance();
@@ -288,4 +350,17 @@ public class App extends Application {
 			return false;
 		}
 	}
+
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable)drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
 }

@@ -19,15 +19,7 @@
 
 package com.dpcsoftware.mn;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
@@ -39,15 +31,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class FolderPicker extends ActionBarActivity implements FileFilter {
-	private Resources r;
 	private File currentDir;
 	private File root;
-	private FolderPickerAdapter listAdapter;
 	private ListView lv;
 	private Comparator<? super File> filecomparator = new Comparator<File>(){
     	public int compare(File file1, File file2) {
@@ -65,8 +61,6 @@ public class FolderPicker extends ActionBarActivity implements FileFilter {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
     	    	
-    	r = getResources();
-    	
     	Bundle options = getIntent().getExtras();
     	
     	if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -81,9 +75,16 @@ public class FolderPicker extends ActionBarActivity implements FileFilter {
     	if(options.containsKey("START_FOLDER")) {
 	    	currentDir = new File(options.getString("START_FOLDER"));
 	    	if(!currentDir.exists()) {
-	    		currentDir = new File(root.getAbsolutePath() + "/" + r.getString(R.string.app_name));
-	    		if(!currentDir.exists())
-	    			currentDir.mkdirs();
+	    		currentDir = new File(root.getAbsolutePath() + "/" + getResources().getString(R.string.app_name));
+	    		if(!currentDir.exists()) {
+                    boolean tryDir = currentDir.mkdirs();
+                    if(!tryDir) {
+                        App.Toast(this, R.string.folderpicker_c1);
+                        setResult(0,new Intent());
+                        this.finish();
+                        return;
+                    }
+                }
 	    	}
     	}
     	else
@@ -139,17 +140,14 @@ public class FolderPicker extends ActionBarActivity implements FileFilter {
 		fList = Arrays.asList(currentDir.listFiles(this));
 		Collections.sort(fList, filecomparator);
 
-    	listAdapter = new FolderPickerAdapter(fList);    	
+        FolderPickerAdapter listAdapter = new FolderPickerAdapter(fList);
     	lv.setAdapter(listAdapter);
     	lv.setOnItemClickListener(listAdapter);
 	}
 	
 	//FileFilter
 	public boolean accept(File f) {
-		if(f.getName().startsWith("."))
-			return false;
-		else
-			return true;
+		return !f.getName().startsWith(".");
 	}
 	
 	private class FolderPickerAdapter extends ArrayAdapter<File> implements OnItemClickListener {
@@ -168,9 +166,9 @@ public class FolderPicker extends ActionBarActivity implements FileFilter {
 				v = convertView;
 			
 			if(item.isDirectory())
-				((ImageView) v.findViewById(R.id.imageView1)).setVisibility(View.VISIBLE);
+				v.findViewById(R.id.imageView1).setVisibility(View.VISIBLE);
 			else
-				((ImageView) v.findViewById(R.id.imageView1)).setVisibility(View.INVISIBLE);
+				v.findViewById(R.id.imageView1).setVisibility(View.INVISIBLE);
 			
 			((TextView) v.findViewById(R.id.textView1)).setText(item.getName());
 			

@@ -45,14 +45,11 @@ public class Widget1 extends AppWidgetProvider {
 	Resources rs;
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
-            
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         wPrefs = context.getSharedPreferences(App.WIDGET_PREFS_FNAME, Context.MODE_PRIVATE);
         rs = context.getResources();
         		
-        for (int i=0; i<N; i++) {
-            int appWidgetId = appWidgetIds[i];
+        for (int appWidgetId : appWidgetIds) {
             long groupId = wPrefs.getLong(appWidgetId + "_GROUPID", 0);
 
             Intent intent = new Intent(context, AddEx.class);
@@ -119,7 +116,7 @@ public class Widget1 extends AppWidgetProvider {
 		int nFractionDigits = Currency.getInstance(Locale.getDefault()).getDefaultFractionDigits();
 		String val = String.format("%."+nFractionDigits+"f", value);
 		String symbol = prefs.getString("currencySymbol",rs.getString(R.string.standard_currency));
-		if(prefs.getBoolean("cSymbolBefore",rs.getBoolean(R.bool.standard_currency_pos)) == true)
+		if(prefs.getBoolean("cSymbolBefore",rs.getBoolean(R.bool.standard_currency_pos)))
 			return symbol + " " + val;
 		else
 			return val + " " + symbol;

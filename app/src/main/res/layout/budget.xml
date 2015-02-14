@@ -31,7 +31,7 @@
 			android:layout_width="80dp"
 		    android:layout_height="40dp"
 		    android:id="@+id/textView1"
-			android:text="@string/goals_l1"
+			android:text="@string/budget_l1"
 			android:padding="5dp"
 			android:gravity="center"/>
 
@@ -39,7 +39,7 @@
          	android:layout_width="80dp"
          	android:layout_height="40dp"
          	android:id="@+id/textView2"
-         	android:text="@string/goals_l2"
+         	android:text="@string/budget_l2"
          	android:padding="5dp"
          	android:gravity="center"/>
 

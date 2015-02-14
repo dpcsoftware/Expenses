@@ -53,83 +53,65 @@
 		    android:orientation="vertical"
 		    android:background="@color/background_material_light">
 		
-		<TextView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:textAppearance="@style/MN.TextAppearance.Subtitle"
-		    android:padding="5dp"
-		    android:text="@string/expenseslist_dr1"/>
-		
-		<View
-		    style="@style/MN.HBar"/>
-		        
-		<TextView
-		    android:id="@+id/menu1"
-			style="@style/MN.MenuTextView"
-		    android:text="@string/expenseslist_dr2"
-		    android:drawableLeft="@drawable/stats_grey" />
-		
-		<TextView
-		    android:id="@+id/menu2"
-			style="@style/MN.MenuTextView"
-		    android:text="@string/expenseslist_dr3"
-		    android:drawableLeft="@drawable/stats_time_grey" />
-		
-		<TextView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:textAppearance="@style/MN.TextAppearance.Subtitle"
-		    android:padding="5dp"
-		    android:text="@string/expenseslist_dr4"/>
-		
-		<View
-		    style="@style/MN.HBar"/>
-		
-		<TextView
-		    android:id="@+id/menu3"
-			style="@style/MN.MenuTextView"
-		    android:text="@string/expenseslist_dr5"
-		    android:drawableLeft="@drawable/groups_grey" />
-		
-		<TextView
-		    android:id="@+id/menu4"
-			style="@style/MN.MenuTextView"
-		    android:text="@string/expenseslist_dr6"
-		    android:drawableLeft="@drawable/categories_grey" />
-		
-		<TextView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:textAppearance="@style/MN.TextAppearance.Subtitle"
-		    android:padding="5dp"
-		    android:text="@string/expenseslist_dr7"/>
-		
-		<View
-		    style="@style/MN.HBar"/>
-		
-		<TextView
-		    android:id="@+id/menu5"
-			style="@style/MN.MenuTextView"
-		    android:text="@string/expenseslist_dr8"
-		    android:drawableLeft="@drawable/goals_grey" />
-		
-		<TextView
-		    android:id="@+id/menu6"
-			style="@style/MN.MenuTextView"
-		    android:text="@string/expenseslist_dr9"
-		    android:drawableLeft="@drawable/sd_storage_grey" />
-		
-		<TextView
-		    android:id="@+id/menu7"
-			style="@style/MN.MenuTextView"
-		    android:text="@string/expenseslist_dr10"
-		    android:drawableLeft="@drawable/checkbox_grey" />
-		
-		<TextView
-		    android:id="@+id/menu8"
-			style="@style/MN.MenuTextView"
-		    android:text="@string/expenseslist_dr11"
-		    android:drawableLeft="@drawable/info_grey" />
+            <TextView
+                style="@style/MN.MenuSubtitle"
+                android:text="@string/expenseslist_dr1"/>
+
+            <TextView
+                android:id="@+id/menu1"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr2"
+                android:drawableLeft="@drawable/stats_grey" />
+
+            <TextView
+                android:id="@+id/menu2"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr3"
+                android:drawableLeft="@drawable/stats_time_grey" />
+
+            <TextView
+                style="@style/MN.MenuSubtitle"
+                android:text="@string/expenseslist_dr4"/>
+
+            <TextView
+                android:id="@+id/menu3"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr5"
+                android:drawableLeft="@drawable/groups_grey" />
+
+            <TextView
+                android:id="@+id/menu4"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr6"
+                android:drawableLeft="@drawable/categories_grey" />
+
+            <TextView
+                style="@style/MN.MenuSubtitle"
+                android:text="@string/expenseslist_dr7"/>
+
+            <TextView
+                android:id="@+id/menu5"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr8"
+                android:drawableLeft="@drawable/money_grey" />
+
+            <TextView
+                android:id="@+id/menu6"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr9"
+                android:drawableLeft="@drawable/sd_storage_grey" />
+
+            <TextView
+                android:id="@+id/menu7"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr10"
+                android:drawableLeft="@drawable/checkbox_grey" />
+
+            <TextView
+                android:id="@+id/menu8"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr11"
+                android:drawableLeft="@drawable/info_grey" />
 		    
 		</LinearLayout>
 	</ScrollView>

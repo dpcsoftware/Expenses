@@ -83,11 +83,24 @@
 		<item name="android:onClick">menuClick</item>
 		<item name="android:drawablePadding">8dp</item>
     </style>
+
+    <style name="MN.MenuSubtitle" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:color/black</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     
     <style name="MN.HBar" parent="@android:style/Widget">
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">@color/hBar</item>
+    </style>
+
+    <style name="MN.HBarMenu" parent="@style/MN.HBar">
+        <item name="android:background">@color/hBarMenu</item>
     </style>
     
     <style name="MN.HBarThin" parent="@android:style/Widget">
@@ -104,4 +117,5 @@
 	<color name="red">#d7412b</color>
 	
 	<color name="hBar">@android:color/darker_gray</color>
+    <color name="hBarMenu">@color/darkGreen</color>
 </resources>

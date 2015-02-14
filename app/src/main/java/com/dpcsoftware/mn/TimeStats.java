@@ -19,8 +19,6 @@
 
 package com.dpcsoftware.mn;
 
-import java.util.Calendar;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,14 +28,13 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.GestureDetector;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import java.util.Calendar;
 
 
 public class TimeStats extends ActionBarActivity {	
@@ -81,16 +78,13 @@ public class TimeStats extends ActionBarActivity {
 		
 		((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 			public void onCheckedChanged (RadioGroup group, int checkedId) {
-				if(checkedId == R.id.radio1)
-					periodIsYear = true;
-				else
-					periodIsYear = false;				
+				periodIsYear = (checkedId == R.id.radio1);
 				renderGraph();
 			}
 		});
 		
-		((ImageButton) findViewById(R.id.imageButton1)).setOnClickListener(changePageListener);
-		((ImageButton) findViewById(R.id.imageButton2)).setOnClickListener(changePageListener);
+		findViewById(R.id.imageButton1).setOnClickListener(changePageListener);
+		findViewById(R.id.imageButton2).setOnClickListener(changePageListener);
 		
 		referenceDate = Calendar.getInstance();
 	}
@@ -146,7 +140,7 @@ public class TimeStats extends ActionBarActivity {
 	    			" FROM " + Db.Table1.TABLE_NAME +
 	    			" WHERE " +
 	    			Db.Table1.ID_GROUP + " = " + app.activeGroupId +
-	    			" AND timeUnit = '" + app.dateToDb(datePatternDb, iDate.getTime()) + "'" +
+	    			" AND timeUnit = '" + App.dateToDb(datePatternDb, iDate.getTime()) + "'" +
 	    			" GROUP BY timeUnit",null);
 	    	c.moveToFirst();
 	    	
@@ -156,7 +150,7 @@ public class TimeStats extends ActionBarActivity {
 	    	else
 	    		val = 0;
 	    	values[i] = val;
-	    	labels[i] = app.dateToUser(datePattern, iDate.getTime()).substring(0, 1).toUpperCase();
+	    	labels[i] = App.dateToUser(datePattern, iDate.getTime()).substring(0, 1).toUpperCase();
 	    	i++;
 	    	if(periodIsYear)
 	    		iDate.add(Calendar.MONTH,1);
@@ -174,10 +168,10 @@ public class TimeStats extends ActionBarActivity {
 			chart.setNewData(values, labels);
 		
 		if(periodIsYear)
-			((TextView) findViewById(R.id.textView2)).setText(app.dateToUser("yyyy", referenceDate.getTime()));
+			((TextView) findViewById(R.id.textView2)).setText(App.dateToUser("yyyy", referenceDate.getTime()));
 		else {
 			iDate.add(Calendar.DAY_OF_MONTH,-1);
-			((TextView) findViewById(R.id.textView2)).setText(app.dateToUser(null, referenceDate.getTime()) + " - " + app.dateToUser(null, iDate.getTime()));
+			((TextView) findViewById(R.id.textView2)).setText(App.dateToUser(null, referenceDate.getTime()) + " - " + App.dateToUser(null, iDate.getTime()));
 		}
 	}
 	
@@ -191,7 +185,7 @@ public class TimeStats extends ActionBarActivity {
 		private int gridStepMoney;
 		private float horizontalStep;
 		
-		private GestureDetector touchDetector;
+		//private GestureDetector touchDetector;
 		
 		public TimeChart(Context ct, float[] val, String[] lbs) {
 			super(ct);
@@ -233,7 +227,7 @@ public class TimeStats extends ActionBarActivity {
 			
 			values = val;
 			labels = lbs;
-			touchDetector = new GestureDetector(ct, new TouchListener());
+			//touchDetector = new GestureDetector(ct, new TouchListener());
 		}
 		
 		public void setNewData(float[] val, String[] lbs) {
@@ -343,8 +337,8 @@ public class TimeStats extends ActionBarActivity {
 
 		}
 		
-		@Override
-		public boolean onTouchEvent(MotionEvent event) {
+		/*@Override
+		public boolean onTouchEvent(@NonNull MotionEvent event) {
 		   boolean result = touchDetector.onTouchEvent(event);
 		   if (!result) {
 		       if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -363,6 +357,6 @@ public class TimeStats extends ActionBarActivity {
 			public boolean onDown(MotionEvent e) {
 				return true;
 			}
-		}
+		}*/
 	}
 }

@@ -91,7 +91,7 @@ public class Widget1Config extends ActionBarActivity {
     				byMonth = true;
     			pEditor.putBoolean(wId + "_BYMONTH", byMonth);
     			pEditor.putLong(wId + "_GROUPID", sp.getSelectedItemId());
-    			pEditor.commit();
+    			pEditor.apply();
     			
     			//Update widget
 				Intent updateIntent = new Intent(this, Widget1.class);

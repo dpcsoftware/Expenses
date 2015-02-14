@@ -21,7 +21,6 @@ package com.dpcsoftware.mn;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.support.v7.app.ActionBar;
 
 
 

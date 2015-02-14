@@ -23,6 +23,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -92,8 +93,8 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	    lv = (ListView) findViewById(R.id.listView1);
 	    lv.addHeaderView(header);
 	    
-        ((Button) header.findViewById(R.id.button1)).setOnClickListener(this);
-        ((Button) header.findViewById(R.id.button2)).setOnClickListener(this);
+        header.findViewById(R.id.button1).setOnClickListener(this);
+        header.findViewById(R.id.button2).setOnClickListener(this);
         Button bt3 = ((Button) header.findViewById(R.id.button3));
         bt3.setOnClickListener(this);
         String path = prefs.getString("STD_FOLDER", stdAppFolder);
@@ -132,7 +133,7 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	    case REQUEST_STD_FOLDER:	    	
 	    	SharedPreferences.Editor pEdit = prefs.edit();
 	    	pEdit.putString("STD_FOLDER", path);
-	    	pEdit.commit();
+	    	pEdit.apply();
 	    	((Button) header.findViewById(R.id.button3)).setText(path.substring(path.lastIndexOf("/")+1));
 	    	renderList();
 	    	break;
@@ -147,19 +148,22 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	    	}
 	    	
 	    	File destDir = new File(prefs.getString("STD_FOLDER",stdAppFolder));
-	    	if(!destDir.exists())
-	    		destDir.mkdirs();
+	    	if(!destDir.exists()) {
+                boolean tryDir = destDir.mkdirs();
+                if (!tryDir)
+                    throw new IOException();
+            }
 	    		    		
 			String destName;
 	    	if(prefs.getBoolean("BACKUP_OVERRIDE_OLD", false))
 	    		destName = r.getString(R.string.app_name) + ".backup";
 	    	else
-	    		destName = r.getString(R.string.app_name) + "_" + app.dateToUser("yyyy-MM-dd_HH-mm", new Date()) + ".backup";
+	    		destName = r.getString(R.string.app_name) + "_" + App.dateToUser("yyyy-MM-dd_HH-mm", new Date()) + ".backup";
 	    		
 	    	
 			boolean tryCopy = App.copyFile(getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath(), destDir.getAbsolutePath() + "/" + destName);
 
-			if (tryCopy == true) {
+			if (tryCopy) {
 				SharedPreferences.Editor pEdit = prefs.edit();
 				pEdit.putLong("BACKUP_TIME", (new Date().getTime()));
 				pEdit.commit();
@@ -185,7 +189,7 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	    	
 	    	boolean tryCopy = App.copyFile(source.getAbsolutePath(),getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath());
 	    	
-	    	if(tryCopy == true) {
+	    	if(tryCopy) {
 				App.Toast(this, R.string.exportdata_c9);
 				app.setFlag(1);
 				app.setFlag(2);
@@ -210,23 +214,25 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 		List<File> fList;
 		
 		File dir = new File(prefs.getString("STD_FOLDER", stdAppFolder));
-		if(!dir.exists())
-			dir.mkdirs();
-		
-		fList = Arrays.asList(dir.listFiles(this));
-		Collections.sort(fList, filecomparator);
-		
-		FileListAdapter adapter = new FileListAdapter(fList);
-		lv.setAdapter(adapter);		
+        if(!dir.exists()) {
+            boolean tryDir = dir.mkdirs();
+            if(!tryDir) {
+                App.Toast(this, R.string.exportdata_c2);
+                return;
+            }
+        }
+
+        fList = Arrays.asList(dir.listFiles(this));
+        Collections.sort(fList, filecomparator);
+
+        FileListAdapter adapter = new FileListAdapter(fList);
+        lv.setAdapter(adapter);
 	}
 	
 	//FileFilter
 	public boolean accept(File f) {
 		String fName = f.getName();
-		if(!f.isDirectory() && (fName.endsWith(".backup") | fName.endsWith(".ods")))
-			return true;
-		else
-			return false;
+		return (!f.isDirectory() && (fName.endsWith(".backup") || fName.endsWith(".ods")));
 	}
 	
 	private class FileListAdapter extends ArrayAdapter<File> implements OnClickListener {
@@ -250,10 +256,10 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 			else
 				v = convertView;
 			
-			v.findViewById(R.id.imageButton1).setTag(Integer.valueOf(position));
-			v.findViewById(R.id.imageButton2).setTag(Integer.valueOf(position));
-			v.findViewById(R.id.imageButton3).setTag(Integer.valueOf(position));
-			v.findViewById(R.id.imageButton4).setTag(Integer.valueOf(position));
+			v.findViewById(R.id.imageButton1).setTag(position);
+			v.findViewById(R.id.imageButton2).setTag(position);
+			v.findViewById(R.id.imageButton3).setTag(position);
+			v.findViewById(R.id.imageButton4).setTag(position);
 			
 			if(item.getName().endsWith(".backup"))
 				v.findViewById(R.id.imageButton3).setVisibility(View.VISIBLE);
@@ -280,7 +286,7 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 				dialogBuilder.setPositiveButton(R.string.exportdata_c5, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						((File) getItem(clickedIndex)).delete();
+						getItem(clickedIndex).delete();
 						renderList();
 					}
 				});
@@ -289,7 +295,7 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 				break;
 			case R.id.imageButton2:
 				Intent intentApp = new Intent(android.content.Intent.ACTION_SEND);
-				File f = (File) getItem(clickedIndex);
+				File f = getItem(clickedIndex);
 				if(f.getName().endsWith(".backup"))
 					intentApp.setType("application/x-sqlite3");	
 				else if(f.getName().endsWith(".ods"))
@@ -305,7 +311,7 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 				dgBuilder.setTitle(R.string.exportdata_c4);
 				dgBuilder.setPositiveButton(R.string.exportdata_c5, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						restoreDb((File) getItem(clickedIndex));
+						restoreDb(getItem(clickedIndex));
 					}
 				});
 				dgBuilder.setNegativeButton(R.string.exportdata_c6, null);
@@ -314,7 +320,7 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 			case R.id.imageButton4:
 				Intent intentApp2 = new Intent(android.content.Intent.ACTION_VIEW);
 				intentApp2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-				Uri uri2 = Uri.fromFile((File) getItem(clickedIndex));
+				Uri uri2 = Uri.fromFile(getItem(clickedIndex));
 				intentApp2.setDataAndType(uri2, "application/vnd.oasis.opendocument.spreadsheet");
 			    startActivity(Intent.createChooser(intentApp2, r.getString(R.string.exportdata_c12)));
 			}
@@ -329,10 +335,13 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	    	}
 	    	
 	    	File destDir = new File(prefs.getString("STD_FOLDER",stdAppFolder));
-	    	if(!destDir.exists())
-	    		destDir.mkdirs();
+	    	if(!destDir.exists()) {
+                boolean tryDir = destDir.mkdirs();
+                if (!tryDir)
+                    throw new IOException();
+            }
 	    	
-	    	String destName = r.getString(R.string.exportdata_c17) + "_" + r.getString(R.string.app_name) + "_" + app.dateToUser("yyyy-MM-dd_HH-mm", new Date()) + ".ods";
+	    	String destName = r.getString(R.string.exportdata_c17) + "_" + r.getString(R.string.app_name) + "_" + App.dateToUser("yyyy-MM-dd_HH-mm", new Date()) + ".ods";
 	    		    	
 	    	FileOutputStream destFile = new FileOutputStream(destDir.getAbsolutePath() + "/" + destName); 
 	    	ZipOutputStream ods = new ZipOutputStream(new BufferedOutputStream(destFile));
@@ -408,7 +417,7 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	    	writeString(ods, "<number:currency-style style:name=\"nsCurrency\" style:volatile=\"true\">");
 	    	String currencySymbol = prefs.getString("currencySymbol",r.getString(R.string.standard_currency));
 	    	int nFractionDigits = Currency.getInstance(Locale.getDefault()).getDefaultFractionDigits();
-	    	if(prefs.getBoolean("cSymbolBefore",r.getBoolean(R.bool.standard_currency_pos)) == true) {
+	    	if(prefs.getBoolean("cSymbolBefore",r.getBoolean(R.bool.standard_currency_pos))) {
 				writeString(ods, "<number:currency-symbol>" + currencySymbol + "</number:currency-symbol>"
 						+ "<number:text> </number:text>"
 						+ "<number:number number:decimal-places=\"" + nFractionDigits + "\" number:min-integer-digits=\"1\" number:grouping=\"true\"/>");
@@ -528,7 +537,7 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	    		int iExp;
 	    		for(iExp = 0;iExp < cData.getCount();iExp++) {
 	    			writeString(ods, "<table:table-row table:style-name=\"ro1\"><table:table-cell/>");
-	    			writeString(ods, "<table:table-cell table:style-name=\"Date\" office:value-type=\"date\" office:date-value=\"" + cData.getString(0) + "\"><text:p>" + app.dateToUser(null, cData.getString(0)) + "</text:p></table:table-cell>");
+	    			writeString(ods, "<table:table-cell table:style-name=\"Date\" office:value-type=\"date\" office:date-value=\"" + cData.getString(0) + "\"><text:p>" + App.dateToUser(null, cData.getString(0)) + "</text:p></table:table-cell>");
 	    			writeString(ods, "<table:table-cell table:style-name=\"Normal\" office:value-type=\"string\"><text:p>" + cData.getString(1) + "</text:p></table:table-cell>");
 	    			writeString(ods, "<table:table-cell table:style-name=\"Money\" office:value-type=\"currency\" office:value=\"" + String.format(Locale.US, "%.2f", cData.getFloat(2)) + "\"><text:p>" + app.printMoney(cData.getFloat(2)) + "</text:p></table:table-cell>");
 	    			writeString(ods, "<table:table-cell table:style-name=\"Normal\" office:value-type=\"string\"><text:p>" + cData.getString(3) + "</text:p></table:table-cell>");
