@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013, 2014 Daniel Pereira Coelho
+ *   Copyright 2013-2015 Daniel Pereira Coelho
  *   
  *   This file is part of the Expenses Android Application.
  *
@@ -115,7 +115,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		cv.put(Db.Table3.GROUP_NAME, rs.getString(grName));
 		return db.insert(Db.Table3.TABLE_NAME,null,cv);
 	}
-	
+
 	public static SQLiteDatabase quickDb(Activity activity, int mode) {
 		SQLiteDatabase db;
 		DatabaseHelper dbHelper = ((App) activity.getApplication()).dbH;

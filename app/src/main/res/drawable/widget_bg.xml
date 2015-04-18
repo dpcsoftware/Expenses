@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 
-   Copyright 2013, 2014 Daniel Pereira Coelho
+   Copyright 2013-2015 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -24,7 +24,7 @@
     android:insetTop="0dp" >
  
     <shape>
-        <solid android:color="@android:color/black" />
+        <solid android:color="@color/stoneGray" />
  
         <stroke
             android:width="4dp"

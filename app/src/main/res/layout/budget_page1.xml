@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2013, 2014 Daniel Pereira Coelho
+   Copyright 2013-2015 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -20,6 +20,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+
+    <View
+        style="@style/MN.HBar" />
     
    	<LinearLayout
 	    android:layout_width="match_parent"
@@ -32,7 +35,8 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    style="@style/MN.Widget.ImageButton"
-		    android:src="@drawable/arrow_left"/>
+		    android:src="@drawable/arrow_left"
+            android:contentDescription="@string/budget_l_img2"/>
 		
 		<TextView
 		    android:id="@+id/dateView"
@@ -46,9 +50,13 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    style="@style/MN.Widget.ImageButton"
-		    android:src="@drawable/arrow_right"/>        
+		    android:src="@drawable/arrow_right"
+            android:contentDescription="@string/budget_l_img1"/>
 	        
 	</LinearLayout>
+    <!--TODO ver se vai remover mesmo-->
+    <!--<View
+        style="@style/MN.HBar" />-->
 
     <ListView
         android:id="@android:id/list"

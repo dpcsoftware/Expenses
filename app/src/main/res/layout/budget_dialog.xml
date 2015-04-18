@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2013, 2014 Daniel Pereira Coelho
+   Copyright 2013-2015 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -30,29 +30,15 @@
         android:ems="10"
         android:hint="@string/gp_12"
         android:inputType="numberDecimal"/>
-    
-    <RadioGroup
-        android:id="@+id/radioGroup"
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/radio0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:layout_margin="5dp"
-            android:text="All Categories" />
-
-        <RadioButton
-            android:id="@+id/radio1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-			android:layout_margin="5dp"
-            android:text="Specific" />
-    </RadioGroup>
-
+        android:id="@+id/textView1"
+        android:text="@string/gp_13"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_marginLeft="5dp"/>
+    
     <Spinner
         android:id="@+id/spinner1"
         android:layout_width="match_parent"
@@ -65,7 +51,7 @@
         style="@style/MN.Widget.DialogButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Delete Goal" />
+        android:text="@string/budget_l5" />
 
     <LinearLayout
         android:id="@+id/LinearLayout2"

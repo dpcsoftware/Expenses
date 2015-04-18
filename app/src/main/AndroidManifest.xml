@@ -1,12 +1,26 @@
+<!--
+   Copyright 2013-2015 Daniel Pereira Coelho
+
+   This file is part of the Expenses Android Application.
+
+   Expenses is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation in version 3.
+
+   Expenses is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dpcsoftware.mn"
-    android:versionCode="14"
-    android:versionName="1.2.1" >
+    android:versionCode="15"
+    android:versionName="1.3" >
 
-    <uses-sdk
-        android:minSdkVersion="9"
-        android:targetSdkVersion="21" />
-    
     <uses-permission
     	android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -28,15 +42,15 @@
         <activity android:name="AddEx"
         	android:windowSoftInputMode="stateVisible">
         </activity>
-        <activity android:name="EditGroups"></activity>
-        <activity android:name="EditCategories"></activity>
-        <activity android:name="CategoryStats"></activity>
-        <activity android:name="TimeStats"></activity>
-        <activity android:name="EditPreferences"></activity>
-        <activity android:name="About"></activity>
-        <activity android:name="ExportData"></activity>
-        <activity android:name="FolderPicker"></activity>
-        <activity android:name=".Budget"></activity>
+        <activity android:name="EditGroups" />
+        <activity android:name="EditCategories" />
+        <activity android:name="CategoryStats" />
+        <activity android:name="TimeStats" />
+        <activity android:name="EditPreferences" />
+        <activity android:name="About" />
+        <activity android:name="ExportData" />
+        <activity android:name="FolderPicker" />
+        <activity android:name="Budget" />
         
         <activity android:name="Widget1Config">
 		    <intent-filter>

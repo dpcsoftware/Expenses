@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013, 2014 Daniel Pereira Coelho
+ *   Copyright 2013-2015 Daniel Pereira Coelho
  *   
  *   This file is part of the Expenses Android Application.
  *
@@ -76,9 +76,7 @@ public class Db {
 		public static final String T_TYPE = TABLE_NAME + "." + TYPE;
 		public static final String T_ALERT = TABLE_NAME + "." + ALERT;
 		
-		public static final int TYPE_TOTAL = 0;
-		public static final int TYPE_TOTAL_BY_MONTH = 1;
-		public static final int TYPE_CAT = 2;
-		public static final int TYPE_CAT_BY_MONTH = 3;
+		public static final int TYPE_BY_MONTH = 0;
+		public static final int TYPE_NO_TIME = 1;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013, 2014 Daniel Pereira Coelho
+ *   Copyright 2013-2015 Daniel Pereira Coelho
  *   
  *   This file is part of the Expenses Android Application.
  *
@@ -156,6 +156,8 @@ public class TimeStats extends ActionBarActivity {
 	    		iDate.add(Calendar.MONTH,1);
 	    	else
 	    		iDate.add(Calendar.DAY_OF_MONTH,1);
+
+            c.close();
 		}
 		db.close();
 		

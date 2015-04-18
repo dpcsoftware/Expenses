@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013, 2014 Daniel Pereira Coelho
+ *   Copyright 2013-2015 Daniel Pereira Coelho
  *   
  *   This file is part of the Expenses Android Application.
  *
@@ -19,11 +19,6 @@
 
 package com.dpcsoftware.mn;
 
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 import android.content.Context;
 import android.content.Intent;
@@ -46,12 +41,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class CategoryStats extends ActionBarActivity {
 	private App app;
@@ -117,8 +116,8 @@ public class CategoryStats extends ActionBarActivity {
     		}
     	});
     	
-    	((ImageButton) findViewById(R.id.imageButton1)).setOnClickListener(monthButtonCListener);
-    	((ImageButton) findViewById(R.id.imageButton2)).setOnClickListener(monthButtonCListener);
+    	findViewById(R.id.imageButton1).setOnClickListener(monthButtonCListener);
+    	findViewById(R.id.imageButton2).setOnClickListener(monthButtonCListener);
    
 		((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 			public void onCheckedChanged (RadioGroup group, int checkedId) {
@@ -205,7 +204,7 @@ public class CategoryStats extends ActionBarActivity {
 				
 				days = (int)Math.ceil((date2.getTime() - date1.getTime())/(1000.0*24*60*60)) + 1;
 				
-				App.Log(""+days);
+				cTemp.close();
 			}
 			catch (Exception e) {
 				e.printStackTrace();

@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2013, 2014 Daniel Pereira Coelho
+   Copyright 2013-2015 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="@string/changes_3" />
+            android:text="@string/changes" />
 
     </ScrollView>
 

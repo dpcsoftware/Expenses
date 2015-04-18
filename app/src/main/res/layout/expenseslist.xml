@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2013, 2014 Daniel Pereira Coelho
+   Copyright 2013-2015 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 	
-	<LinearLayout
+	<RelativeLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:orientation="vertical" >
@@ -38,7 +38,19 @@
 	        android:id="@+id/empty"
 	        layout="@layout/empty_msg"
 	        android:visibility="gone" />
-	</LinearLayout>
+
+        <ImageButton
+            android:id="@+id/addExpenseButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/add_exp_btn_bg"
+            android:src="@drawable/add_white"
+            android:contentDescription="@string/expenseslist_l_img2"/>
+	</RelativeLayout>
 	
 	<ScrollView
 	    android:id="@+id/drawer_frame"

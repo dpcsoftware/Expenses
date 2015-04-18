@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2013, 2014 Daniel Pereira Coelho
+   Copyright 2013-2015 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -46,11 +46,12 @@
             android:text="@string/timestats_l2" />
     </RadioGroup>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/RelativeLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/radioGroup1" >
+        android:layout_below="@+id/radioGroup1"
+        android:layout_centerHorizontal="true">
 
         <ImageButton
             android:id="@+id/imageButton1"
@@ -62,18 +63,13 @@
             android:src="@drawable/arrow_left"
             android:contentDescription="@string/gp_7" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" >
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"
+            android:text="teste"/>
 
         <ImageButton
             android:id="@+id/imageButton2"
@@ -84,7 +80,7 @@
             android:src="@drawable/arrow_right"
             android:contentDescription="@string/gp_8" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/FrameLayoutTimeChart"

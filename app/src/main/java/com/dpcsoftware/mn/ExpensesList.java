@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013, 2014 Daniel Pereira Coelho
+ *   Copyright 2013-2015 Daniel Pereira Coelho
  *   
  *   This file is part of the Expenses Android Application.
  *
@@ -34,6 +34,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.view.ActionMode;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,10 +42,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -60,7 +64,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
 	private App app;
 	private App.SpinnerMenu sMenu;
 	private ArrayList<Long> selectedIds;
-	private boolean pickMode = false;
+	private boolean pickMode = false, searchMode = false;
 	private ActionMode.Callback mActionModeCallback;
 	private ActionMode mActionMode;
 	private ListView listView;
@@ -111,6 +115,14 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
             }
         });
 		listView.addFooterView(footer);
+
+        findViewById(R.id.addExpenseButton).setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(ExpensesList.this, AddEx.class);
+                intent.putExtra("EDIT_MODE", false);
+                startActivity(intent);
+            }
+        });
 		
 		Bundle bd = getIntent().getExtras();
 		if(bd != null) {
@@ -118,6 +130,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
 			if(filterId >= 0) {
 				filterDate = (Date) bd.get("FILTER_DATE");
 				header = LayoutInflater.from(this).inflate(R.layout.expenseslist_header, null);
+                header.setOnClickListener(null);
 				listView.addHeaderView(header);
 			}
 		}
@@ -126,8 +139,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
 		}
 		
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		//TODO -- colocar resources corretos
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.expenseslist_c1, R.string.expenseslist_c2) {
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.expenseslist_c3, R.string.expenseslist_c4) {
 			public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
             }
@@ -166,7 +178,7 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     public boolean onCreateOptionsMenu(Menu menu) {
      	getMenuInflater().inflate(R.menu.expenseslist, menu);
     	
-    	sMenu = app.new SpinnerMenu(this,menuCallback);
+    	sMenu = app.new SpinnerMenu(this, menuCallback, true);
     	
     	Bundle options = getIntent().getExtras();
         long newGroupId;
@@ -175,6 +187,19 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
         	if(newGroupId >= 0 &&  newGroupId != app.activeGroupId)
             	sMenu.setSelectedById(newGroupId);
         }
+
+        sMenu.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    renderList();
+                    return true;
+                }
+                return false;
+            }
+        });
   	
     	return true;
     }
@@ -184,12 +209,31 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     	if(drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-    	
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        EditText et = sMenu.getEditText();
     	switch(item.getItemId()) {
 			case R.id.item1:
-				Intent intent = new Intent(this, AddEx.class);
-				intent.putExtra("EDIT_MODE", false);
-				startActivity(intent);
+                if(!searchMode) {
+                    sMenu.getSpinner().setVisibility(View.GONE);
+                    et.setVisibility(View.VISIBLE);
+                    et.requestFocus();
+                    imm.showSoftInput(et, 0);
+                    item.setIcon(R.drawable.x_white);
+                    ((TextView) listView.getEmptyView().findViewById(R.id.textView1)).setText(R.string.expenseslist_c5);
+                    item.setTitle(R.string.menu_main_2);
+                }
+                else {
+                    sMenu.getSpinner().setVisibility(View.VISIBLE);
+                    et.setVisibility(View.GONE);
+                    et.setText("");
+                    imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+                    item.setIcon(R.drawable.search_white);
+                    ((TextView) listView.getEmptyView().findViewById(R.id.textView1)).setText(R.string.expenseslist_c2);
+                    item.setTitle(R.string.menu_main_1);
+                    renderList();
+                }
+                searchMode = !searchMode;
 				break;
     	}
 
@@ -307,16 +351,27 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     
     public void renderList() {
     	SQLiteDatabase db = DatabaseHelper.quickDb(this, 0);
-    	String queryModifier = "", queryModifier2 = "";
+    	String queryModifier = "", queryModifier2 = "", queryModifier3 = "";
     	if(filterId != -1)
     		queryModifier = " AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + " = " + filterId;
     	if(filterDate != null)
     		queryModifier2 = " AND strftime('%Y-%m'," + Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + ") = '" + App.dateToDb("yyyy-MM", filterDate) + "'";
+        if(searchMode) {
+            String[] words = sMenu.getEditText().getText().toString().split(" ");
+            queryModifier3 = " AND (";
+            for(String w : words) {
+                queryModifier3 += Db.Table1.T_DETAILS + " LIKE '%" + w + "%' OR ";
+                queryModifier3 += Db.Table1.T_AMOUNT + " LIKE '%" + w + "%' OR ";
+                queryModifier3 += Db.Table2.CATEGORY_NAME + " LIKE '%" + w + "%' OR ";
+            }
+            queryModifier3 = queryModifier3.substring(0, queryModifier3.length()-3);
+            queryModifier3 += ")";
+        }
 
     	Cursor c = db.rawQuery("SELECT " +
     			Db.Table2.TABLE_NAME + "." + Db.Table2.CATEGORY_NAME + "," +
     			Db.Table2.TABLE_NAME + "." + Db.Table2.CATEGORY_COLOR + "," +
-    			Db.Table1.TABLE_NAME + "." + Db.Table1.AMOUNT + "," + 
+    			Db.Table1.TABLE_NAME + "." + Db.Table1.AMOUNT + "," +
     			Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + "," +
     			Db.Table1.TABLE_NAME + "." + Db.Table1.DETAILS + "," +
     			Db.Table1.TABLE_NAME + "." + Db.Table1._ID +
@@ -325,12 +380,12 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     			Db.Table2.TABLE_NAME +
     			" WHERE " +
     			Db.Table1.TABLE_NAME + "." + Db.Table1.ID_GROUP + " = " + app.activeGroupId +
-    			" AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + " = " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID + queryModifier + queryModifier2 +
+    			" AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + " = " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID + queryModifier + queryModifier2 + queryModifier3 +
     			" ORDER BY " +
     			Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + " DESC, " +
     			Db.Table1.TABLE_NAME + "." + Db.Table1._ID + " DESC" +
     			" LIMIT " + numberOfItems,null);
-    	
+
     	if(c.getCount() > 0 && filterId != -1) {
     		c.moveToFirst();
     		String text = c.getString(0);
@@ -386,7 +441,6 @@ public class ExpensesList extends ActionBarActivity implements OnItemClickListen
     			selectItem(view,-1);
     		else
     			unselectItem(view,-1);
-    		
     	}
     }
     

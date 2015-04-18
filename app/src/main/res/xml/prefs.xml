@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 
-   Copyright 2013, 2014 Daniel Pereira Coelho
+   Copyright 2013-2015 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -31,6 +31,16 @@
 	        android:summary="@string/prefs_5"
 	        android:defaultValue="@bool/standard_currency_pos" />
     
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/prefs_13">
+
+        <CheckBoxPreference android:key="budgetAlert"
+            android:title="@string/prefs_14"
+            android:summary="@string/prefs_15"
+            android:defaultValue="true" />
+
     </PreferenceCategory>
     
     <PreferenceCategory 

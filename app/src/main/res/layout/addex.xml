@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2013, 2014 Daniel Pereira Coelho
+   Copyright 2013-2015 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -39,7 +39,9 @@
 	            android:layout_alignParentLeft="true"
 	            android:hint="@string/addex_l1"
 	            android:background="?android:attr/windowBackground"
-	            android:padding="5dp" />
+	            android:padding="5dp"
+                android:imeOptions="actionDone"
+                android:layout_toLeftOf="@+id/imageButton1"/>
 	
 	        <ImageButton
 	            android:id="@+id/imageButton1"
@@ -91,13 +93,6 @@
 	    
 	    <View style="@style/MN.HBarThin" />
 	    
-	    <!-- <DatePicker
-	        android:id="@+id/datePicker1"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center"
-	        android:calendarViewShown="false" />-->
-	        
 	    <LinearLayout
 	        android:layout_width="wrap_content"
 	        android:layout_height="70dp"
@@ -117,7 +112,8 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            style="@style/MN.Widget.ImageButton"
-	            android:src="@drawable/arrow_left"/>
+	            android:src="@drawable/arrow_left"
+                android:contentDescription="@string/addex_l_img4"/>
 	        
 	        <TextView
 	            android:id="@+id/dateView"
@@ -133,7 +129,8 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            style="@style/MN.Widget.ImageButton"
-	            android:src="@drawable/arrow_right"/>        
+	            android:src="@drawable/arrow_right"
+                android:contentDescription="@string/addex_l_img3"/>
 	        
 	    </LinearLayout>
 	    

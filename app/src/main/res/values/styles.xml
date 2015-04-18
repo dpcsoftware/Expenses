@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2013, 2014 Daniel Pereira Coelho
+   Copyright 2013-2015 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -57,7 +57,7 @@
     </style>
         
     <style name="MN.ActionBar.Title" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/yellow</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
     
     <style name="MN.Widget.ImageButton" parent="@android:style/Widget.ImageButton">
@@ -87,7 +87,7 @@
     <style name="MN.MenuSubtitle" parent="@android:style/Widget.TextView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@android:color/black</item>
+        <item name="android:background">@color/petroGreen</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:padding">5dp</item>
         <item name="android:textStyle">bold</item>
@@ -112,9 +112,11 @@
 	<color name="green">#119400</color>
     <color name="lightGreen">#4cc457</color>
     <color name="darkGreen">#0a5b00</color>
-    <color name="yellow">#fbffd7</color>
+    <color name="yellow">#f8fcb6</color>
 	<color name="gray">#d4d4d4</color>
 	<color name="red">#d7412b</color>
+    <color name="petroGreen">#2a562e</color>
+    <color name="stoneGray">#1c1c1c</color>
 	
 	<color name="hBar">@android:color/darker_gray</color>
     <color name="hBarMenu">@color/darkGreen</color>

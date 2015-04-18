@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013, 2014 Daniel Pereira Coelho
+ *   Copyright 2013-2015 Daniel Pereira Coelho
  *   
  *   This file is part of the Expenses Android Application.
  *
@@ -21,24 +21,22 @@ package com.dpcsoftware.mn;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CursorAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -66,8 +64,8 @@ public class AddEx extends ActionBarActivity {
 				expDate.add(Calendar.DAY_OF_MONTH, -1);
 			else
 				expDate.add(Calendar.DAY_OF_MONTH, 1);
-			
-	        ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser(null,expDate.getTime()));
+
+            ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser("E", expDate.getTime()) + ", " + App.dateToUser(null,expDate.getTime()));
 		}		
 	};
 	
@@ -92,7 +90,6 @@ public class AddEx extends ActionBarActivity {
                 args.putString("NUMBER", value);
                 CalculatorDialog calcDialog = new CalculatorDialog(AddEx.this, args);
                 calcDialog.show();
-
             }
         });
         
@@ -109,20 +106,37 @@ public class AddEx extends ActionBarActivity {
         findViewById(R.id.dateView).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment dialog = new DatePickerFragment();
-                dialog.show(getSupportFragmentManager(), "datePicker");
+                DatePickerDialog.OnDateSetListener dListener = new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        expDate.set(year, monthOfYear, dayOfMonth);
+                        ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser("E", expDate.getTime()) + ", " + App.dateToUser(null,expDate.getTime()));
+                    }
+                };
+                DatePickerDialog dialog = new DatePickerDialog(AddEx.this, dListener, expDate.get(Calendar.YEAR), expDate.get(Calendar.MONTH), expDate.get(Calendar.DAY_OF_MONTH));
+                dialog.show();
             }
         });
         
         findViewById(R.id.imageButton3).setOnClickListener(upDownDateListener);
         findViewById(R.id.imageButton4).setOnClickListener(upDownDateListener);
-        
+
+        EditText edtValue = ((EditText) findViewById(R.id.editText1));
+        edtValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_DONE) {
+                    saveExpense();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         SQLiteDatabase db = DatabaseHelper.quickDb(this,0);
         if(editMode) {
         	editModeId = options.getLong("EM_ID");
         	Cursor c2 = db.query(Db.Table1.TABLE_NAME, new String[]{Db.Table1.AMOUNT, Db.Table1.DATE, Db.Table1.DETAILS, Db.Table1.ID_CATEGORY}, Db.Table1._ID + " = " + editModeId, null, null, null, null);
         	c2.moveToFirst();
-        	EditText edtValue = ((EditText) findViewById(R.id.editText1));
         	edtValue.setText(c2.getString(c2.getColumnIndex(Db.Table1.AMOUNT)));
         	edtValue.setSelection(edtValue.length());
         	String[] date = c2.getString(c2.getColumnIndex(Db.Table1.DATE)).split("-");
@@ -131,8 +145,10 @@ public class AddEx extends ActionBarActivity {
         	((EditText) findViewById(R.id.editText2)).setText(c2.getString(c2.getColumnIndex(Db.Table1.DETAILS)));
         }
         db.close();
-        
-        ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser(null,expDate.getTime()));
+
+        ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser("E", expDate.getTime()) + ", " + App.dateToUser(null,expDate.getTime()));
+
+        app.showKeyboard(findViewById(R.id.editText1));
     }
 
     @Override
@@ -266,7 +282,6 @@ public class AddEx extends ActionBarActivity {
     		ImageView itemSquare = (ImageView) view.findViewById(R.id.imageView1);
     		itemText.setText(cursor.getString(cursor.getColumnIndex(Db.Table2.CATEGORY_NAME)));
     		itemSquare.getDrawable().setColorFilter(cursor.getInt(cursor.getColumnIndex(Db.Table2.CATEGORY_COLOR)), App.colorFilterMode);
-    	
     	}
     	
     	public int getPositionById(long id) {
@@ -282,54 +297,50 @@ public class AddEx extends ActionBarActivity {
     	}
     }
     
-    private class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            return new DatePickerDialog(AddEx.this, this, expDate.get(Calendar.YEAR), expDate.get(Calendar.MONTH), expDate.get(Calendar.DAY_OF_MONTH));
-        }
-
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            expDate.set(year, monthOfYear, dayOfMonth);          
-            ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser(null, expDate.getTime()));
-        }
-    }
-    
     private class CalculatorDialog extends Dialog implements View.OnClickListener {
     	private EditText expression;
     	private boolean calcError = false;
-		
+        private Bundle params;
+
 		public CalculatorDialog(Context ctx, Bundle args) {
 			super(ctx);
-						
-			setContentView(R.layout.addex_calculator);
-			expression = (EditText) findViewById(R.id.editText1);
-			
-			expression.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			    @Override
-			    public void onFocusChange(View v, boolean hasFocus) {
-			        if (hasFocus) {
-			            CalculatorDialog.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-			        }
-			    }
-			});	
-			
-			String value = args.getString("NUMBER");
-			if(value != null) {
-				expression.setText(value);
-				expression.setSelection(expression.length());
-			}
-			
-			setTitle(R.string.addex_c5);
-			
-			findViewById(R.id.button1).setOnClickListener(this);
-			findViewById(R.id.button2).setOnClickListener(this);
-			findViewById(R.id.button3).setOnClickListener(this);
-			findViewById(R.id.button4).setOnClickListener(this);
-			findViewById(R.id.button5).setOnClickListener(this);
-			findViewById(R.id.button6).setOnClickListener(this);
-			findViewById(R.id.button7).setOnClickListener(this);
+
+            params = args;
 		}
-		
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            setContentView(R.layout.addex_calculator);
+            expression = (EditText) findViewById(R.id.editText1);
+
+            expression.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(expression, 0);
+                }
+            });
+
+            String value = params.getString("NUMBER");
+            if(value != null) {
+                expression.setText(value);
+                expression.setSelection(expression.length());
+            }
+
+            setTitle(R.string.addex_c5);
+
+            findViewById(R.id.button1).setOnClickListener(this);
+            findViewById(R.id.button2).setOnClickListener(this);
+            findViewById(R.id.button3).setOnClickListener(this);
+            findViewById(R.id.button4).setOnClickListener(this);
+            findViewById(R.id.button5).setOnClickListener(this);
+            findViewById(R.id.button6).setOnClickListener(this);
+            findViewById(R.id.button7).setOnClickListener(this);
+
+            app.showKeyboard(expression);
+        }
+
 		@Override
 		public void onClick(View v) {
 			switch(v.getId()) {

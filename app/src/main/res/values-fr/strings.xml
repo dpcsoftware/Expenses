@@ -1,3 +1,21 @@
+<!--
+   Copyright 2013-2015 Daniel Pereira Coelho
+
+   This file is part of the Expenses Android Application.
+
+   Expenses is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation in version 3.
+
+   Expenses is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
 <!-- French Translation -->
 <resources>
 
@@ -16,37 +34,24 @@
     <string name="gp_7">Précédant</string>
     <string name="gp_8">Suivant</string>
     <string name="gp_9">Sélectionner</string>
-    
-    
-    
-    <string name="changes_1">1.1.2:\n
-        - Liste de dépenses: un clique pour éditer, un clique long pour supprimer\n
-        - Dans l\'écrã pour ajouter une dépense: un boutton pour ajouter une catégorie a été ajouté, les catégories les plus utilisées apparaissent d\'abord\n
-        - Quelques interfaces ont été refaites\n
-        - Les sauvegardes peuvent être faites automatiquement</string>
-        
-     <string name="changes_2">1.2:\n
-        - Dépenses est maintenant un logiciel libre publié sous la license GPL version 3\n
-        - Les sauvegardes sont enregistrés dans la mémoire du téléphone. Il n\'y a plus l\'integration avec le service Google Drive. Raison: incompatibilité avec la license GPL, laisser le choix d\'utiliser d\'autres services de stockage\n
-        - Vous pouvez exporter les données de l\'application dans un classeur de type ODS (Open Document)\n
-        - Nouveau widget: permet d\'ajouter une dépense à la liste rapidement et de voir la somme totale d\'un groupe\n</string>
-        
-     <string name="changes_3">1.2.1:\n
-        - Corrections de bugs\n</string>
-    
+
+
+
+    <string name="changes">-- Interface renouvellée en accordance avec les nouveaux standards du système Android\n
+    -- Vous pouvez maintenant faire des recherches sur le registre de dépenses\n
+    -- Vous pouvez établir un Budget, le suivre au cours du temps et recevoir des alertes</string>
+
     
     
     <string name="about_c1">A propos de l\'application</string>
     
-    <string name="about_l1">Version 1.2.1</string>
+    <string name="about_l1">Version 1.3</string>
     <string name="about_l3">Envoyez-nous votre opinion:</string>
-    <string name="about_l4">Registre des changements</string>
-    <string name="about_l5">Crédits</string>
+    <string name="about_l4">Changements dans version</string>
     <string name="about_l6">Dépenses est un logiciel libre publié sous la license GNU GPL version 3</string>
     <string name="about_l7">License:</string>
     <string name="about_l8">Code Source:</string>
     <string name="about_l9">Développé par Daniel Pereira Coelho</string>
-    <string name="about_l10">Remerciements à Jake Wharton pour la librairie ActionBarSherlock (license Apache version 2)</string>
     
     
     
@@ -139,7 +144,7 @@
     <string name="editgroups_c5">Bien supprimé!</string>
     <string name="editgroups_c6">Erreur lors de la suppression</string>
     <string name="editgroups_c7">Ajouter un groupe</string>
-    <string name="editgroups_c8">Options de groupe</string>
+    <string name="editgroups_c8">Editer un groupe</string>
     <string name="editgroups_c9">Bien enregistré!</string>
     <string name="editgroups_c10">Groupe ajouté!</string>
     <string name="editgroups_c11">Erreur lors de l\'accès à la base de données</string>
@@ -158,14 +163,14 @@
     <string name="expenseslist_c2">Votre liste de dépenses va apparaître ici!</string>
     
     <string name="expenseslist_l1">Filtres:</string>
-    <string name="expenseslist_dr1">Statistiques</string>
+    <string name="expenseslist_dr1">STATISTIQUES</string>
     <string name="expenseslist_dr2">Par Catégorie</string>
     <string name="expenseslist_dr3">Au cours du temps</string>
-    <string name="expenseslist_dr4">Personnaliser</string>
+    <string name="expenseslist_dr4">PERSONNALISER</string>
     <string name="expenseslist_dr5">Groupes</string>
     <string name="expenseslist_dr6">Catégories</string>
-    <string name="expenseslist_dr7">Autres</string>
-    <string name="expenseslist_dr8">Objectifs</string>
+    <string name="expenseslist_dr7">AUTRES</string>
+    <string name="expenseslist_dr8">Budget</string>
     <string name="expenseslist_dr9">Exporter les données</string>
     <string name="expenseslist_dr10">Préférences</string>
     <string name="expenseslist_dr11">A propos</string>
@@ -182,7 +187,7 @@
     <string name="menu_content_readex_1">Supprimer</string>
     <string name="menu_groups_1">Ajouter un groupe</string>
     <string name="menu_categories_1">Ajouter une catégorie</string>
-    <string name="menu_main_1">Ajouter une dépense</string>
+    <string name="menu_main_1">Rechercher</string>
     <string name="menu_budget_1">Ajouter un objectif</string>
     
     
@@ -217,7 +222,33 @@
     <string name="widget1config_l1">Sélectionnez un Groupe</string>
     <string name="widget1config_l2">Type de Valeur</string>
     <string name="widget1config_l3">Mensuelle</string>
-    <string name="widget1config_l4">Totale</string>
+    <string name="widget1config_l4">Total</string>
     
     <string name="widget1config_l_img1">Créer Dépense</string>
+    <string name="addex_l_img3">Jour Suivant</string>
+    <string name="addex_l_img4">Jour Précédent</string>
+    <string name="budget_c1">Aucun élément a été ajouté dans ce groupe</string>
+    <string name="budget_c2">Total</string>
+    <string name="budget_c3">Ajouter un élément</string>
+    <string name="budget_c4">Editer un élément</string>
+    <string name="budget_c5">Montant incorrect</string>
+    <string name="budget_c6">Bien Enregistré!</string>
+    <string name="budget_c7">Bien Enregistré!</string>
+    <string name="budget_l1">Par Mois</string>
+    <string name="budget_l2">Total</string>
+    <string name="budget_l5">Supprimer cet élément</string>
+    <string name="budget_l_img1">Mois Prochain</string>
+    <string name="budget_l_img2">Mois Précédent</string>
+    <string name="expenseslist_c3">Ouvrir le Menu</string>
+    <string name="expenseslist_c4">Fermer le Menu</string>
+    <string name="expenseslist_c5">Aucun résultat a été trouvé</string>
+    <string name="expenseslist_l_img2">Ajouter dépense</string>
+    <string name="gp_10">Total</string>
+    <string name="gp_11">Erreur lors de la connexion à la base de données</string>
+    <string name="gp_12">Montant</string>
+    <string name="menu_main_2">Fermer Recherche</string>
+    <string name="prefs_13">Budget</string>
+    <string name="prefs_14">Recevoir des Alertes du Budget</string>
+    <string name="prefs_15">Cochez cette case si vous voulez recevoir des alertes quand vous dépensez plus que le budget établi</string>
+    <string name="gp_13">Catégorie</string>
 </resources>

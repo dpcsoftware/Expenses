@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013, 2014 Daniel Pereira Coelho
+ *   Copyright 2013-2015 Daniel Pereira Coelho
  *   
  *   This file is part of the Expenses Android Application.
  *
@@ -40,17 +40,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -134,11 +128,12 @@ public class Budget extends ActionBarActivity implements OnClickListener {
     }
 
     public static class ListPage extends ListFragment implements OnClickListener {
-    	private int n;
+    	private int type;
     	private Calendar date;
         private Resources res;
         private App app;
         private View layout;
+        private View header;
         private ActionBarActivity act;
     	
     	@Override
@@ -150,15 +145,15 @@ public class Budget extends ActionBarActivity implements OnClickListener {
             app = (App) act.getApplication();
             
             Bundle args = getArguments();
-            n = args.getInt("POS",0);
+            type = args.getInt("TYPE",Db.Table4.TYPE_BY_MONTH);
             
-            if(n == 0)
+            if(type == Db.Table4.TYPE_BY_MONTH)
             	date = Calendar.getInstance();
         }
     	
     	@Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    		if(n == 0) {
+    		if(type == Db.Table4.TYPE_BY_MONTH) {
     			layout = inflater.inflate(R.layout.budget_page1, container, false);
     			layout.findViewById(R.id.imageButton1).setOnClickListener(this);
     			layout.findViewById(R.id.imageButton2).setOnClickListener(this);
@@ -166,10 +161,17 @@ public class Budget extends ActionBarActivity implements OnClickListener {
     		}
     		else
     			layout = inflater.inflate(R.layout.budget_page2, container, false);
-    		
+
             ((TextView) layout.findViewById(R.id.textView1)).setText(R.string.budget_c1);
             View ev = layout.findViewById(R.id.empty);
             ((ListView) layout.findViewById(android.R.id.list)).setEmptyView(ev);
+
+            ListView lv = (ListView) layout.findViewById(android.R.id.list);
+            header = LayoutInflater.from(act).inflate(R.layout.budget_listitem, null);
+            ((TextView) header.findViewById(R.id.textViewLabel)).setText(R.string.gp_10);
+            header.setBackgroundColor(getResources().getColor(R.color.yellow));
+            header.setOnClickListener(null);
+            lv.addHeaderView(header);
 
             return layout;
         }
@@ -193,24 +195,30 @@ public class Budget extends ActionBarActivity implements OnClickListener {
     	}
     	
         public void renderList() {
-        	String queryOption;
         	BudgetAdapter adapter = (BudgetAdapter) getListAdapter();
-        	if(n == 0)
-        		queryOption = Db.Table4.T_TYPE + " = " + Db.Table4.TYPE_TOTAL_BY_MONTH + " OR " + Db.Table4.T_TYPE + " = " + Db.Table4.TYPE_CAT_BY_MONTH;
-        	else
-        		queryOption = Db.Table4.T_TYPE + " = " + Db.Table4.TYPE_TOTAL + " OR " + Db.Table4.T_TYPE + " = " + Db.Table4.TYPE_CAT;
-        	
-        	SQLiteDatabase db = DatabaseHelper.quickDb(getActivity(), DatabaseHelper.MODE_READ);
-    		Cursor c = db.rawQuery("SELECT "
-    				+ Db.Table4.T_ID + ","
-    				+ Db.Table4.T_TYPE + ","
-    				+ Db.Table4.T_AMOUNT + ","
-    				+ Db.Table4.T_ID_CATEGORY +
-    				" FROM " + Db.Table4.TABLE_NAME +
-    				" WHERE " + Db.Table4.T_ID_GROUP + " = " + app.activeGroupId +
-    				" AND (" + queryOption + ")" +
-    				" ORDER BY " + Db.Table4.T_ALERT + " DESC, "
-                    + Db.Table4.T_TYPE + " ASC", null);
+
+            SQLiteDatabase db = DatabaseHelper.quickDb(getActivity(), DatabaseHelper.MODE_READ);
+
+            String queryModifier = "";
+            if(type == Db.Table4.TYPE_BY_MONTH)
+                queryModifier = " AND strftime('%Y-%m'," + Db.Table1.T_DATE + ") = '" + App.dateToDb("yyyy-MM", date.getTime()) + "'";
+
+            Cursor c = db.rawQuery("SELECT "
+                    + Db.Table4.T_ID + ","
+                    + Db.Table4.T_TYPE + ","
+                    + Db.Table4.T_AMOUNT + ","
+                    + Db.Table4.T_ID_CATEGORY + ","
+                    + Db.Table2.T_CATEGORY_NAME + ","
+                    + "SUM(" + Db.Table1.T_AMOUNT + ")" +
+                    " FROM " + Db.Table4.TABLE_NAME +
+                    " INNER JOIN " + Db.Table2.TABLE_NAME + " ON " + Db.Table4.T_ID_CATEGORY + " = " + Db.Table2.T_ID +
+                    " LEFT OUTER JOIN " + Db.Table1.TABLE_NAME + " ON " + Db.Table4.T_ID_CATEGORY + " = " + Db.Table1.T_ID_CATEGORY +
+                    " AND " + Db.Table4.T_ID_GROUP + " = " + Db.Table1.T_ID_GROUP +
+                    queryModifier +
+                    " WHERE " + Db.Table4.T_ID_GROUP + " = " + app.activeGroupId +
+                    " AND " + Db.Table4.T_TYPE + " = " + type +
+                    " GROUP BY " + Db.Table4.T_ID +
+                    " ORDER BY " + Db.Table4.T_ALERT + " DESC, " + Db.Table2.T_CATEGORY_NAME + " ASC", null);
     		if(adapter == null) {
     			adapter = new BudgetAdapter(act, c);
     			setListAdapter(adapter);
@@ -219,54 +227,38 @@ public class Budget extends ActionBarActivity implements OnClickListener {
     			adapter.swapCursor(c);
     			adapter.notifyDataSetChanged();
     		}
-    		db.close();
+
+            float totalSpent = 0;
+            float totalBudget = 0;
+
+            c.moveToFirst();
+            while(!c.isAfterLast()) {
+                totalSpent += c.getFloat(5);
+                totalBudget += c.getFloat(2);
+                c.moveToNext();
+            }
+
+            float rate = totalSpent/totalBudget;
+
+            ((TextView) header.findViewById(R.id.textViewPercentage)).setText(String.format("%.1f", (totalSpent/totalBudget)*100) + "%");
+            ProgressBar pb = (ProgressBar) header.findViewById(R.id.progressBar1);
+            pb.setProgress(Math.round(rate*pb.getMax()));
+            GradientDrawable gd = (GradientDrawable) ((ScaleDrawable) ((LayerDrawable) pb.getProgressDrawable()).findDrawableByLayerId(android.R.id.progress)).getDrawable();
+            if(pb.getProgress() == pb.getMax())
+                gd.setColor(res.getColor(R.color.red));
+            else
+                gd.setColor(res.getColor(R.color.green));
+            ((TextView) header.findViewById(R.id.textViewValues)).setText(app.printMoney(totalSpent) + " / " + app.printMoney(totalBudget));
+
+            db.close();
         }
 
         public void showAddDialog() {
             BudgetDialog addDg = new BudgetDialog(act,null, BudgetDialog.ADD);
-            addDg.show();
+            if(!addDg.failed)
+                addDg.show();
         }
 
-        public static float sumExpensesOfBudgetItem(App application, long groupId, int itemType, long categoryId, Calendar cal) {
-            SQLiteDatabase db = application.dbH.getReadableDatabase();
-            Cursor c;
-
-            switch(itemType) {
-                case Db.Table4.TYPE_TOTAL_BY_MONTH:
-                    c = db.rawQuery("SELECT "
-                            + "SUM(" + Db.Table1.AMOUNT + ")" +
-                            " FROM " + Db.Table1.TABLE_NAME +
-                            " WHERE " + Db.Table1.ID_GROUP + " = " + groupId +
-                            " AND strftime('%Y-%m'," + Db.Table1.DATE + ") = '" + App.dateToDb("yyyy-MM", cal.getTime()) + "'", null);
-                    break;
-                case Db.Table4.TYPE_CAT:
-                    c = db.rawQuery("SELECT "
-                            + "SUM(" + Db.Table1.AMOUNT + ")" +
-                            " FROM " + Db.Table1.TABLE_NAME +
-                            " WHERE " + Db.Table1.ID_GROUP + " = " + groupId +
-                            " AND " + Db.Table1.ID_CATEGORY + " = " + categoryId, null);
-                    break;
-                case Db.Table4.TYPE_CAT_BY_MONTH:
-                    c = db.rawQuery("SELECT "
-                            + "SUM(" + Db.Table1.AMOUNT + ")" +
-                            " FROM " + Db.Table1.TABLE_NAME +
-                            " WHERE " + Db.Table1.ID_GROUP + " = " + groupId +
-                            " AND " + Db.Table1.ID_CATEGORY + " = " + categoryId +
-                            " AND strftime('%Y-%m'," + Db.Table1.DATE + ") = '" + App.dateToDb("yyyy-MM", cal.getTime()) + "'", null);
-                    break;
-                default: //Db.Table4.TYPE_TOTAL
-                    c = db.rawQuery("SELECT "
-                            + "SUM(" + Db.Table1.AMOUNT + ")" +
-                            " FROM " + Db.Table1.TABLE_NAME +
-                            " WHERE " + Db.Table1.ID_GROUP + " = " + groupId, null);
-                    break;
-            }
-
-            c.moveToFirst();
-
-            return c.getFloat(0);
-        }
-        
         private class BudgetAdapter extends CursorAdapter {
         	private LayoutInflater mInflater;
         	
@@ -281,120 +273,94 @@ public class Budget extends ActionBarActivity implements OnClickListener {
             }
         	
         	public void bindView(View view, Context context, Cursor cursor) {
-                //TODO: Estilo diferente para o background dos itens totais para que eles fiquem visualmente "separados" dos resto
-        		SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_READ);
-        		Cursor c;
-        		int type = cursor.getInt(1);
-        		if(type == Db.Table4.TYPE_TOTAL)
-        			((TextView) view.findViewById(R.id.textView2)).setText(R.string.gp_10);
-        		else if(type == Db.Table4.TYPE_TOTAL_BY_MONTH)
-        			((TextView) view.findViewById(R.id.textView2)).setText(R.string.budget_c2);
-        		else if(type == Db.Table4.TYPE_CAT || type == Db.Table4.TYPE_CAT_BY_MONTH) {
-        			c = db.rawQuery("SELECT "
-        					+ Db.Table2.CATEGORY_NAME +
-        					" FROM " + Db.Table2.TABLE_NAME +
-        					" WHERE " + Db.Table2.T_ID + " = " + cursor.getInt(3), null);
-        			c.moveToFirst();
-        			((TextView) view.findViewById(R.id.textView2)).setText(c.getString(0));
-        		}
+                ((TextView) view.findViewById(R.id.textViewLabel)).setText(cursor.getString(4));
         		
-                float sum = sumExpensesOfBudgetItem(app, app.activeGroupId, type, cursor.getInt(3), date);
-        		float rate = sum/cursor.getFloat(2);
-        		((TextView) view.findViewById(R.id.textView1)).setText(String.format("%.1f", rate*100) + "%");
+                float spent = cursor.getFloat(5);
+                float budget = cursor.getFloat(2);
+        		float rate = spent/budget;
+
+        		((TextView) view.findViewById(R.id.textViewPercentage)).setText(String.format("%.1f", rate * 100) + "%");
         		ProgressBar pb = (ProgressBar) view.findViewById(R.id.progressBar1);
-        		pb.setProgress(Math.round(rate*pb.getMax()));
+        		pb.setProgress((int)Math.floor(rate*pb.getMax()));
         		GradientDrawable gd = (GradientDrawable) ((ScaleDrawable) ((LayerDrawable) pb.getProgressDrawable()).findDrawableByLayerId(android.R.id.progress)).getDrawable();
         		if(pb.getProgress() == pb.getMax())
         			gd.setColor(res.getColor(R.color.red));
         		else
         			gd.setColor(res.getColor(R.color.green));
-        		((TextView) view.findViewById(R.id.textView3)).setText(app.printMoney(sum) + " / " + app.printMoney(cursor.getFloat(2)));
-        	
-        		db.close();
+        		((TextView) view.findViewById(R.id.textViewValues)).setText(app.printMoney(spent) + " / " + app.printMoney(budget));
         	}
         }
 
-        private class BudgetDialog extends Dialog implements View.OnClickListener, OnCheckedChangeListener {
+        private class BudgetDialog extends Dialog implements View.OnClickListener {
             public static final int ADD = 0, EDIT = 1;
             private long editId;
             private int mode;
+            private boolean failed = false;
+            private Bundle params;
+            private EditText edtValue;
 
             public BudgetDialog(Context ctx, Bundle args, int md) {
                 super(ctx);
-                setContentView(R.layout.budget_dialog);
+                params = args;
                 mode = md;
+            }
 
-                RadioGroup rg = (RadioGroup) findViewById(R.id.radioGroup);
-                EditText edt = (EditText) findViewById(R.id.editText1);
+            @Override
+            public void onCreate(Bundle savedInstance) {
+                setContentView(R.layout.budget_dialog);
+
+                edtValue = (EditText) findViewById(R.id.editText1);
 
                 findViewById(R.id.button1).setOnClickListener(this);
                 findViewById(R.id.button2).setOnClickListener(this);
                 findViewById(R.id.button3).setOnClickListener(this);
 
-                edt.setOnFocusChangeListener(new OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if (hasFocus) {
-                            BudgetDialog.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                        }
-                    }
-                });
-
-                ((RadioButton) findViewById(R.id.radio1)).setOnCheckedChangeListener(this);
-
                 Spinner sp = (Spinner) findViewById(R.id.spinner1);
                 SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_READ);
-                Cursor c = db.rawQuery("SELECT "
-                        + Db.Table2._ID + ","
-                        + Db.Table2.CATEGORY_NAME +
-                        " FROM " + Db.Table2.TABLE_NAME +
-                        " ORDER BY " + Db.Table2.CATEGORY_NAME + " ASC",null);
-                SimpleCursorAdapter adapter = new SimpleCursorAdapter(act, android.R.layout.simple_spinner_item, c, new String[] {Db.Table2.CATEGORY_NAME}, new int[] {android.R.id.text1}, 0);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                sp.setAdapter(adapter);
 
                 if(mode == ADD) {
-                    setTitle(R.string.budget_c3);
-                    sp.setEnabled(false);
-                    findViewById(R.id.button3).setVisibility(View.GONE);
+                    Cursor c = db.rawQuery("SELECT "
+                            + Db.Table2.T_ID + ","
+                            + Db.Table2.T_CATEGORY_NAME +
+                            " FROM " + Db.Table2.TABLE_NAME +
+                            " WHERE NOT EXISTS(" +
+                            "SELECT * FROM " + Db.Table4.TABLE_NAME +
+                            " WHERE " + Db.Table4.T_ID_CATEGORY + " = " + Db.Table2.T_ID +
+                            " AND " + Db.Table4.T_ID_GROUP + " = " + app.activeGroupId +
+                            " AND " + Db.Table4.T_TYPE + " = " + type + ")" +
+                            " ORDER BY " + Db.Table2.T_CATEGORY_NAME + " ASC",null);
+
+                    if(c.getCount() == 0) {
+                        App.Toast(act, "All categories are already in the budget");
+                        failed = true;
+                        c.close();
+                    }
+                    else {
+                        SimpleCursorAdapter adapter = new SimpleCursorAdapter(act, android.R.layout.simple_spinner_item, c, new String[]{Db.Table2.CATEGORY_NAME}, new int[]{android.R.id.text1}, 0);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        sp.setAdapter(adapter);
+
+                        setTitle(R.string.budget_c3);
+                        findViewById(R.id.button3).setVisibility(View.GONE);
+
+                        app.showKeyboard(edtValue);
+                    }
                 }
                 else {
                     setTitle(R.string.budget_c4);
-                    editId = args.getLong("EDIT_ID");
+                    editId = params.getLong("EDIT_ID");
 
                     Cursor c2 = db.rawQuery("SELECT "
-                            + Db.Table4.AMOUNT + ","
-                            + Db.Table4.ID_CATEGORY + ","
-                            + Db.Table4.TYPE +
+                            + Db.Table4.AMOUNT +
                             " FROM " + Db.Table4.TABLE_NAME +
                             " WHERE " + Db.Table4._ID + " = " + editId, null);
                     c2.moveToFirst();
 
-                    ((EditText) findViewById(R.id.editText1)).setText(c2.getString(0));
-
-                    int type = c2.getInt(2);
-                    /*if(type == Db.Table4.TYPE_CAT_BY_MONTH || type == Db.Table4.TYPE_TOTAL_BY_MONTH)
-                        rg1.check(R.id.radio0);
-                    else
-                        rg1.check(R.id.radio1);*/
-
-                    if(type == Db.Table4.TYPE_CAT_BY_MONTH || type == Db.Table4.TYPE_CAT) {
-                        rg.check(R.id.radio1);
-                        sp.setEnabled(true);
-                        int catId = c2.getInt(1);
-                        c.moveToFirst();
-                        int i;
-                        for(i = 0;i < c.getCount();i++) {
-                            if(c.getLong(c.getColumnIndex(Db.Table2._ID)) == catId)
-                                break;
-                            c.moveToNext();
-                        }
-                        sp.setSelection(i);
-                    }
-                    else {
-                        rg.check(R.id.radio0);
-                        sp.setEnabled(false);
-                    }
+                    edtValue.setText(c2.getString(0));
+                    app.showKeyboard(edtValue);
+                    c2.close();
+                    sp.setVisibility(View.GONE);
+                    findViewById(R.id.textView1).setVisibility(View.GONE);
                 }
 
                 db.close();
@@ -410,19 +376,12 @@ public class Budget extends ActionBarActivity implements OnClickListener {
                     deleteItem();
             }
 
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                findViewById(R.id.spinner1).setEnabled(isChecked);
-            }
-
             private void saveItem() {
                 float amount;
-                EditText edt = (EditText) findViewById(R.id.editText1);
-                RadioGroup rg = (RadioGroup) findViewById(R.id.radioGroup);
-                int type;
                 Spinner sp = (Spinner) findViewById(R.id.spinner1);
 
                 try {
-                    amount = Float.parseFloat(edt.getText().toString());
+                    amount = Float.parseFloat(edtValue.getText().toString());
                     if(amount == 0)
                         throw new Exception();
                 }
@@ -431,25 +390,14 @@ public class Budget extends ActionBarActivity implements OnClickListener {
                     return;
                 }
 
-                if(n == 0) {
-                    if(rg.getCheckedRadioButtonId() == R.id.radio0)
-                        type = Db.Table4.TYPE_TOTAL_BY_MONTH;
-                    else
-                        type = Db.Table4.TYPE_CAT_BY_MONTH;
-                }
-                else {
-                    if(rg.getCheckedRadioButtonId() == R.id.radio0)
-                        type = Db.Table4.TYPE_TOTAL;
-                    else
-                        type = Db.Table4.TYPE_CAT;
-                }
-
                 SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_WRITE);
                 ContentValues cv = new ContentValues();
                 cv.put(Db.Table4.AMOUNT, amount);
                 cv.put(Db.Table4.TYPE, type);
-                if(type == Db.Table4.TYPE_CAT || type == Db.Table4.TYPE_CAT_BY_MONTH)
+                if(mode == ADD) {
                     cv.put(Db.Table4.ID_CATEGORY, sp.getSelectedItemId());
+                    cv.put(Db.Table4.ALERT, 0);
+                }
                 cv.put(Db.Table4.ID_GROUP, app.activeGroupId);
                 long result;
                 if(mode == EDIT)
@@ -508,7 +456,7 @@ public class Budget extends ActionBarActivity implements OnClickListener {
 	    public ListPage getItem(int position) {
 	    	ListPage lp = new ListPage();
 	    	Bundle args = new Bundle();
-	    	args.putInt("POS", position);
+	    	args.putInt("TYPE", position == 0 ? Db.Table4.TYPE_BY_MONTH : Db.Table4.TYPE_NO_TIME);
 	    	lp.setArguments(args);
 	    	pages[position] = lp;
 	    	return lp;

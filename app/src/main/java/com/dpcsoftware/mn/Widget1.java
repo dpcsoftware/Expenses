@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013, 2014 Daniel Pereira Coelho
+ *   Copyright 2013-2015 Daniel Pereira Coelho
  *   
  *   This file is part of the Expenses Android Application.
  *
@@ -107,18 +107,29 @@ public class Widget1 extends AppWidgetProvider {
     		views.setTextViewText(R.id.textView3, printMoney(c.getFloat(0)));
     		
             appWidgetManager.updateAppWidget(appWidgetId, views);
+
+            c.close();
+            c2.close();
             
             db.close();
         }
     }
-    
-	public String printMoney(float value) {
-		int nFractionDigits = Currency.getInstance(Locale.getDefault()).getDefaultFractionDigits();
-		String val = String.format("%."+nFractionDigits+"f", value);
-		String symbol = prefs.getString("currencySymbol",rs.getString(R.string.standard_currency));
-		if(prefs.getBoolean("cSymbolBefore",rs.getBoolean(R.bool.standard_currency_pos)))
-			return symbol + " " + val;
-		else
-			return val + " " + symbol;
-	}
+
+    public String printMoney(float value) {
+        int nFractionDigits;
+
+        try {
+            nFractionDigits = Currency.getInstance(Locale.getDefault()).getDefaultFractionDigits();
+        }
+        catch(IllegalArgumentException e) {
+            nFractionDigits = 2;
+        }
+
+        String val = String.format("%."+nFractionDigits+"f", value);
+        String symbol = prefs.getString("currencySymbol",rs.getString(R.string.standard_currency));
+        if(prefs.getBoolean("cSymbolBefore",rs.getBoolean(R.bool.standard_currency_pos)))
+            return symbol + " " + val;
+        else
+            return val + " " + symbol;
+    }
 }

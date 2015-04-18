@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013, 2014 Daniel Pereira Coelho
+ *   Copyright 2013-2015 Daniel Pereira Coelho
  *   
  *   This file is part of the Expenses Android Application.
  *
@@ -166,7 +166,7 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 			if (tryCopy) {
 				SharedPreferences.Editor pEdit = prefs.edit();
 				pEdit.putLong("BACKUP_TIME", (new Date().getTime()));
-				pEdit.commit();
+				pEdit.apply();
 				App.Toast(this, R.string.exportdata_c8);
 				renderList();
 			}
@@ -194,6 +194,7 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 				app.setFlag(1);
 				app.setFlag(2);
 				app.setFlag(3);
+                app.setFlag(4);
 	    	}
 	    	else
 	    		App.Toast(this, R.string.exportdata_c10);
@@ -544,11 +545,14 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	    			writeString(ods, "</table:table-row>");
 	    			cData.moveToNext();
 	    		}
+
+                cData.close();
 	    		
 	    		writeString(ods, "</table:table>");
 	    		
 	    		c.moveToNext();
 	    	}
+            c.close();
 	    	
 	    	writeString(ods, "<table:named-expressions/></office:spreadsheet></office:body></office:document-content>");
 	    	ods.closeEntry();
