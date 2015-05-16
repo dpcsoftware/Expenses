@@ -55,9 +55,14 @@ public class Db {
 		public static final String TABLE_NAME = "grupos";
 		
 		public static final String GROUP_NAME = "ngrupo";
+		public static final String GROUP_TYPE = "tipo";
 		
 		public static final String T_ID = TABLE_NAME + "." + _ID;
 		public static final String T_GROUP_NAME = TABLE_NAME + "." + GROUP_NAME;
+		public static final String T_GROUP_TYPE = TABLE_NAME + "." + GROUP_TYPE;
+
+		public static final int TYPE_MONTH = 0;
+		public static final int TYPE_TOTAL = 1;
 	}
 	
 	public static class Table4 implements BaseColumns {
@@ -66,17 +71,23 @@ public class Db {
 		public static final String ID_GROUP = "idgrupo";
 		public static final String ID_CATEGORY = "idcat";
 		public static final String AMOUNT = "valor";
-		public static final String TYPE = "tipo";
 		public static final String ALERT = "alerta";
 		
 		public static final String T_ID = TABLE_NAME + "." + _ID;
 		public static final String T_ID_GROUP = TABLE_NAME + "." + ID_GROUP;
 		public static final String T_ID_CATEGORY = TABLE_NAME + "." + ID_CATEGORY;
 		public static final String T_AMOUNT = TABLE_NAME + "." + AMOUNT;
-		public static final String T_TYPE = TABLE_NAME + "." + TYPE;
 		public static final String T_ALERT = TABLE_NAME + "." + ALERT;
-		
-		public static final int TYPE_BY_MONTH = 0;
-		public static final int TYPE_NO_TIME = 1;
+	}
+
+	public static class Table5 implements BaseColumns {
+		public static final String TABLE_NAME = "config";
+
+		public static final String TAG = "tag";
+		public static final String VALUE = "valor";
+
+		public static final String T_ID = TABLE_NAME + "." + _ID;
+		public static final String T_TAG = TABLE_NAME + "." + TAG;
+		public static final String T_VALUE = TABLE_NAME + "." + VALUE;
 	}
 }

@@ -22,7 +22,7 @@ package com.dpcsoftware.mn;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +41,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class FolderPicker extends ActionBarActivity implements FileFilter {
+public class FolderPicker extends AppCompatActivity implements FileFilter {
 	private File currentDir;
 	private File root;
 	private ListView lv;

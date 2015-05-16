@@ -27,7 +27,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -37,7 +37,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 
 
-public class TimeStats extends ActionBarActivity {	
+public class TimeStats extends AppCompatActivity {
 	private App app;
 	private String[] labels;
 	private TimeChart chart;

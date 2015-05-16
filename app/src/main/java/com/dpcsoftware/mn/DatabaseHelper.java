@@ -44,26 +44,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     		+ Db.Table1.ID_CATEGORY + " INTEGER,"
     		+ "FOREIGN KEY(" + Db.Table1.ID_GROUP + ") REFERENCES " + Db.Table3.TABLE_NAME + "(" + Db.Table3._ID + "),"
     		+ "FOREIGN KEY(" + Db.Table1.ID_CATEGORY + ") REFERENCES " + Db.Table2.TABLE_NAME + "(" + Db.Table2._ID + "))";
-    public static final String SQL_DELETE_T1 = "DROP TABLE IF EXISTS " + Db.Table1.TABLE_NAME;
     
     public static final String SQL_CREATE_T2 = "CREATE TABLE " + Db.Table2.TABLE_NAME + " ( "
     		+ Db.Table2._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
     		+ Db.Table2.CATEGORY_NAME + " TEXT,"
     		+ Db.Table2.CATEGORY_COLOR + " INTEGER)";
-    public static final String SQL_DELETE_T2 = "DROP TABLE IF EXISTS " + Db.Table2.TABLE_NAME;
         
     public static final String SQL_CREATE_T3 = "CREATE TABLE " + Db.Table3.TABLE_NAME + " ( "
     		+ Db.Table3._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-    		+ Db.Table3.GROUP_NAME + " TEXT)";
-    public static final String SQL_DELETE_T3 = "DROP TABLE IF EXISTS " + Db.Table3.TABLE_NAME;
-    
+    		+ Db.Table3.GROUP_NAME + " TEXT,"
+			+ Db.Table3.GROUP_TYPE + " INTEGER)";
+	public static final String SQL_UPDATE_T3 = "ALTER TABLE " + Db.Table3.TABLE_NAME + " ADD COLUMN "
+			+ Db.Table3.GROUP_TYPE + " INTEGER DEFAULT " + Db.Table3.TYPE_MONTH;
+
     public static final String SQL_CREATE_T4 = "CREATE TABLE " + Db.Table4.TABLE_NAME + " ( "
     		+ Db.Table4._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
     		+ Db.Table4.ID_GROUP + " INTEGER,"
     		+ Db.Table4.ID_CATEGORY + " INTEGER,"
-    		+ Db.Table4.TYPE + " INTEGER,"
     		+ Db.Table4.AMOUNT + " REAL,"
     		+ Db.Table4.ALERT + " INTEGER)";
+
+	public static final String SQL_CREATE_T5 = "CREATE TABLE " + Db.Table5.TABLE_NAME + " ("
+			+ Db.Table5._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+			+ Db.Table5.TAG + " TEXT,"
+			+ Db.Table5.VALUE + " TEXT)";
     	
     private Resources rs;
     
@@ -89,18 +93,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		database.execSQL(SQL_CREATE_T1);
 		
 		database.execSQL(SQL_CREATE_T4);
-		
-		ContentValues cv = new ContentValues();
-		cv.put(Db.Table4.ID_GROUP, 1);
-		cv.put(Db.Table4.AMOUNT, 50);
-		cv.put(Db.Table4.TYPE, 1);
-		database.insert(Db.Table4.TABLE_NAME, null, cv);
+
+		database.execSQL(SQL_CREATE_T5);
+		insertConfig(database, "db_version", String.valueOf(DATABASE_VERSION));
 	}
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-		if(oldVersion == 1)
+		upgradeDb(database, oldVersion, newVersion);
+	}
+
+	public static void upgradeDb(SQLiteDatabase database, int oldVersion, int newVersion) {
+		if(oldVersion == 1) {
+			database.execSQL(SQL_UPDATE_T3);
 			database.execSQL(SQL_CREATE_T4);
+			database.execSQL(SQL_CREATE_T5);
+			insertConfig(database, "db_version", String.valueOf(DATABASE_VERSION));
+		}
 	}
 	
 	private long insertCategory(SQLiteDatabase db, int catName, int catColor) {
@@ -114,6 +123,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		ContentValues cv = new ContentValues();
 		cv.put(Db.Table3.GROUP_NAME, rs.getString(grName));
 		return db.insert(Db.Table3.TABLE_NAME,null,cv);
+	}
+
+	private static long insertConfig(SQLiteDatabase db, String tag, String value) {
+		ContentValues cv = new ContentValues();
+		cv.put(Db.Table5.TAG, tag);
+		cv.put(Db.Table5.VALUE, value);
+		return db.insert(Db.Table5.TABLE_NAME, null, cv);
 	}
 
 	public static SQLiteDatabase quickDb(Activity activity, int mode) {

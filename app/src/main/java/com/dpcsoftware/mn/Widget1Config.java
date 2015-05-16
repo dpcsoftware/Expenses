@@ -28,13 +28,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-public class Widget1Config extends ActionBarActivity {
+public class Widget1Config extends AppCompatActivity {
 	private Intent resultIntent;
 	private int wId;
 	private SharedPreferences wPrefs;
@@ -62,7 +62,7 @@ public class Widget1Config extends ActionBarActivity {
 		resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, wId);
 				
 	    ActionBar abar = getSupportActionBar();
-	    abar.setTitle("Configurações do Widget");
+	    abar.setTitle(R.string.widget1config_c1);
 	    
 	    SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_READ);
 	    Cursor c = db.rawQuery("SELECT " + Db.Table3._ID + "," + Db.Table3.GROUP_NAME +

@@ -76,6 +76,7 @@
 	            android:layout_height="wrap_content"
 	            android:background="@drawable/statelist_normal"
 	            android:layout_toRightOf="@+id/textView1"
+				android:layout_toLeftOf="@+id/imageButton2"
 	            android:layout_marginLeft="10dp"
 	            android:layout_centerVertical="true" />
 	

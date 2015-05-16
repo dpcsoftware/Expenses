@@ -19,22 +19,7 @@
 
 package com.dpcsoftware.mn;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Currency;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,16 +30,34 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ExportData extends ActionBarActivity implements View.OnClickListener, FileFilter {
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Currency;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+public class ExportData extends AppCompatActivity implements View.OnClickListener, FileFilter {
 	private static final int REQUEST_STD_FOLDER = 1;
 	
 	private SharedPreferences prefs;
@@ -73,10 +76,11 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
     		else if(t1 < t2)
     			return 1;
     		else
-    			return 0;
-    	}	    	
+                return 0;
+		}
 	};
-	
+    private Calendar sprFrom, sprTo;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {    
 	    super.onCreate(savedInstanceState);
@@ -88,17 +92,68 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	    stdAppFolder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + r.getString(R.string.app_name);
 	    
 	    setContentView(R.layout.exportdata_list);
-	    
-	    header = getLayoutInflater().inflate(R.layout.exportdata, null);
+
+        sprFrom = Calendar.getInstance();
+        sprTo = Calendar.getInstance();
+
+        header = getLayoutInflater().inflate(R.layout.exportdata, null);
 	    lv = (ListView) findViewById(R.id.listView1);
 	    lv.addHeaderView(header);
 	    
         header.findViewById(R.id.button1).setOnClickListener(this);
         header.findViewById(R.id.button2).setOnClickListener(this);
+        header.findViewById(R.id.imageButton1).setOnClickListener(this);
+        header.findViewById(R.id.imageButton2).setOnClickListener(this);
+        header.findViewById(R.id.imageButton3).setOnClickListener(this);
+        header.findViewById(R.id.imageButton4).setOnClickListener(this);
         Button bt3 = ((Button) header.findViewById(R.id.button3));
         bt3.setOnClickListener(this);
         String path = prefs.getString("STD_FOLDER", stdAppFolder);
         bt3.setText(path.substring(path.lastIndexOf("/")+1));
+
+        SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_READ);
+        Cursor c = db.rawQuery("SELECT " +
+                Db.Table1.DATE +
+                " FROM " + Db.Table1.TABLE_NAME +
+                " ORDER BY " + Db.Table1.DATE + " ASC LIMIT 1", null);
+        if(c.getCount() > 0) {
+            c.moveToFirst();
+            String[] date = c.getString(c.getColumnIndex(Db.Table1.DATE)).split("-");
+            sprFrom.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
+        }
+        c.close();
+        db.close();
+
+        updateDateText(1);
+        updateDateText(2);
+
+        findViewById(R.id.dateView1).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog.OnDateSetListener dListener = new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        sprFrom.set(year, monthOfYear, dayOfMonth);
+                        updateDateText(1);
+                    }
+                };
+                DatePickerDialog dialog = new DatePickerDialog(ExportData.this, dListener, sprFrom.get(Calendar.YEAR), sprFrom.get(Calendar.MONTH), sprFrom.get(Calendar.DAY_OF_MONTH));
+                dialog.show();
+            }
+        });
+
+        findViewById(R.id.dateView2).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog.OnDateSetListener dListener = new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        sprTo.set(year, monthOfYear, dayOfMonth);
+                        updateDateText(2);
+                    }
+                };
+                DatePickerDialog dialog = new DatePickerDialog(ExportData.this, dListener, sprTo.get(Calendar.YEAR), sprTo.get(Calendar.MONTH), sprTo.get(Calendar.DAY_OF_MONTH));
+                dialog.show();
+            }
+        });
         
 	    getSupportActionBar().setTitle(R.string.exportdata_c1);
 	    
@@ -108,19 +163,42 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.button1:
-			backupDb();
-			break;
-		case R.id.button2:
-			exportODS();
-			break;
-		case R.id.button3:
-			Intent intentFolder = new Intent(this, FolderPicker.class);
-			intentFolder.putExtra("START_FOLDER",prefs.getString("STD_FOLDER", ""));
-			startActivityForResult(intentFolder, REQUEST_STD_FOLDER);
-			break;
-		}
+            case R.id.button1:
+                backupDb();
+                break;
+            case R.id.button2:
+                exportODS();
+                break;
+            case R.id.button3:
+                Intent intentFolder = new Intent(this, FolderPicker.class);
+                intentFolder.putExtra("START_FOLDER",prefs.getString("STD_FOLDER", ""));
+                startActivityForResult(intentFolder, REQUEST_STD_FOLDER);
+                break;
+            case R.id.imageButton1:
+                sprFrom.add(Calendar.DAY_OF_MONTH, -1);
+                updateDateText(1);
+                break;
+            case R.id.imageButton2:
+                sprFrom.add(Calendar.DAY_OF_MONTH, 1);
+                updateDateText(1);
+                break;
+            case R.id.imageButton3:
+                sprTo.add(Calendar.DAY_OF_MONTH, -1);
+                updateDateText(2);
+                break;
+            case R.id.imageButton4:
+                sprTo.add(Calendar.DAY_OF_MONTH, 1);
+                updateDateText(2);
+                break;
+        }
 	}
+
+    private void updateDateText(int widget) {
+        if(widget == 1)
+            ((TextView) header.findViewById(R.id.dateView1)).setText(App.dateToUser(null, sprFrom.getTime()));
+        else
+            ((TextView) header.findViewById(R.id.dateView2)).setText(App.dateToUser(null, sprTo.getTime()));
+    }
 
 	@Override
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
@@ -181,12 +259,28 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	}
 	
 	private void restoreDb(File source) {
-		try {
-	    	if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-	    		App.Toast(this, R.string.exportdata_c2);
-	    		return;
-	    	}
-	    	
+        if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            App.Toast(this, R.string.exportdata_c2);
+            return;
+        }
+
+        SQLiteDatabase new_db = SQLiteDatabase.openDatabase(source.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
+        try {
+            Cursor c = new_db.rawQuery("SELECT " + Db.Table5.VALUE +
+                    " FROM " + Db.Table5.TABLE_NAME +
+                    " WHERE " + Db.Table5.TAG + " = 'db_version'", null);
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                DatabaseHelper.upgradeDb(new_db, c.getInt(0), DatabaseHelper.DATABASE_VERSION);
+            }
+            c.close();
+        }
+        catch (Exception e) {
+            DatabaseHelper.upgradeDb(new_db, 1, DatabaseHelper.DATABASE_VERSION);
+        }
+        new_db.close();
+
+        try {
 	    	boolean tryCopy = App.copyFile(source.getAbsolutePath(),getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath());
 	    	
 	    	if(tryCopy) {
@@ -195,6 +289,7 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 				app.setFlag(2);
 				app.setFlag(3);
                 app.setFlag(4);
+                app.setFlag(5);
 	    	}
 	    	else
 	    		App.Toast(this, R.string.exportdata_c10);
@@ -329,6 +424,11 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	}
 	
 	private void exportODS() {
+        if(sprTo.before(sprFrom)) {
+            App.Toast(this, R.string.exportdata_c19);
+            return;
+        }
+
 		try {
 			if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 	    		App.Toast(this, R.string.exportdata_c2);
@@ -524,14 +624,15 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	    		writeString(ods, "</table:table-row>");
 	    		
 	    		Cursor cData = db.rawQuery("SELECT " +
-	    				Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + "," +
-	    				Db.Table2.TABLE_NAME + "." + Db.Table2.CATEGORY_NAME + "," +
-	    				Db.Table1.TABLE_NAME + "." + Db.Table1.AMOUNT + "," +
-	    				Db.Table1.TABLE_NAME + "." + Db.Table1.DETAILS + 
+	    				Db.Table1.T_DATE + "," +
+	    				Db.Table2.T_CATEGORY_NAME + "," +
+	    				Db.Table1.T_AMOUNT + "," +
+	    				Db.Table1.T_DETAILS +
 	    				" FROM " + Db.Table1.TABLE_NAME + "," + Db.Table2.TABLE_NAME +
-	    				" WHERE " +
-	    				Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + " = " + Db.Table2.TABLE_NAME + "." + Db.Table2._ID +
-	    				" AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_GROUP + " = " + c.getInt(0) +
+	    				" WHERE " + Db.Table1.T_ID_CATEGORY + " = " + Db.Table2.T_ID +
+	    				" AND " + Db.Table1.T_ID_GROUP + " = " + c.getInt(0) +
+                        " AND " + Db.Table1.T_DATE + " >= '" + App.dateToDb("yyyy-MM-dd", sprFrom.getTime()) + "'" +
+                        " AND " + Db.Table1.T_DATE + " <= '" + App.dateToDb("yyyy-MM-dd", sprTo.getTime()) + "'" +
 	    				" ORDER BY " + Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + " ASC", null);
 	    		cData.moveToFirst();
 	    		
@@ -560,6 +661,8 @@ public class ExportData extends ActionBarActivity implements View.OnClickListene
 	    	ods.close();
 	    	
 	    	renderList();
+
+            App.Toast(this, R.string.exportdata_c20);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

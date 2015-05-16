@@ -20,16 +20,19 @@
 package com.dpcsoftware.mn;
 
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,18 +48,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-public class EditGroups extends ActionBarActivity {
-	private App app;
+public class EditGroups extends AppCompatActivity {
 	private ListView lv;
 	private GroupsAdapter adapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		app = (App) getApplication();
 		setContentView(R.layout.listview);
 		lv = (ListView) findViewById(R.id.listView1);
 				
@@ -75,8 +75,11 @@ public class EditGroups extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
     		case R.id.item1:
-    			AddEditDialog addDg = new AddEditDialog(this,null,AddEditDialog.ADD);
-    			addDg.show();
+                Bundle args = new Bundle();
+                args.putInt("MODE", AddEditDialog.ADD);
+    			AddEditDialog addDg = new AddEditDialog();
+                addDg.setArguments(args);
+    			addDg.show(getSupportFragmentManager(), null);
     			break;
     	}
     	return true;
@@ -136,8 +139,9 @@ public class EditGroups extends ActionBarActivity {
 				else {
 					Bundle args = new Bundle();
 					args.putLong("DELETE_ID", getItemId((Integer) v.getTag()));
-					DeleteDialog delDg = new DeleteDialog(EditGroups.this,args);
-					delDg.show();
+					DeleteDialog delDg = new DeleteDialog();
+                    delDg.setArguments(args);
+					delDg.show(getSupportFragmentManager(), null);
 				}
 				break;
 			case R.id.imageButtonEdit:
@@ -146,136 +150,168 @@ public class EditGroups extends ActionBarActivity {
 				Cursor c = getCursor();
 				c.moveToPosition((Integer) v.getTag());
 				args2.putString("CURRENT_NAME", c.getString(c.getColumnIndex(Db.Table3.GROUP_NAME)));
-				AddEditDialog edtDg = new AddEditDialog(EditGroups.this,args2,AddEditDialog.EDIT);
-				edtDg.show();
+                args2.putInt("MODE", AddEditDialog.EDIT);
+				AddEditDialog edtDg = new AddEditDialog();
+                edtDg.setArguments(args2);
+				edtDg.show(getSupportFragmentManager(), null);
 				break;
 			}
 		}
     	
     }
 	
-	private class DeleteDialog extends Dialog implements OnCheckedChangeListener, View.OnClickListener {
+	public static class DeleteDialog extends DialogFragment implements OnCheckedChangeListener, DialogInterface.OnClickListener {
 		private long deleteId;
-		
-		public DeleteDialog(Context ctx, Bundle args) {
-			super(ctx);
-			
-			setContentView(R.layout.editgroupseditcategories_deldialog);
+		private EditGroups act;
+		private App app;
+		private View layout;
+
+        @NonNull
+        public Dialog onCreateDialog(Bundle savedInstance) {
+            act = (EditGroups) getActivity();
+            app = (App) act.getApplication();
+
+            Bundle args = getArguments();
+
+            LayoutInflater li = LayoutInflater.from(act);
+            layout = li.inflate(R.layout.editgroupseditcategories_deldialog, null);
+
 			deleteId = args.getLong("DELETE_ID");
 			
-			Spinner sp = (Spinner) findViewById(R.id.spinner1);
-			SQLiteDatabase db = DatabaseHelper.quickDb(EditGroups.this, 0);
+			Spinner sp = (Spinner) layout.findViewById(R.id.spinner1);
+			SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_READ);
 			Cursor c = db.rawQuery("SELECT "
 					+ Db.Table3._ID + ","
 					+ Db.Table3.GROUP_NAME +
 					" FROM " + Db.Table3.TABLE_NAME +
 					" WHERE " + Db.Table3._ID + " <> " + deleteId +
-					" ORDER BY " + Db.Table3.GROUP_NAME + " ASC",null);
-			SimpleCursorAdapter adapter = new SimpleCursorAdapter(EditGroups.this, android.R.layout.simple_spinner_item, c, new String[] {Db.Table3.GROUP_NAME}, new int[] {android.R.id.text1}, 0);
+					" ORDER BY " + Db.Table3.GROUP_NAME + " ASC", null);
+			SimpleCursorAdapter adapter = new SimpleCursorAdapter(act, android.R.layout.simple_spinner_item, c, new String[] {Db.Table3.GROUP_NAME}, new int[] {android.R.id.text1}, 0);
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			sp.setAdapter(adapter);
 			sp.setEnabled(false);
 			
-			setTitle(R.string.editgroups_c4);
-			
-			((RadioButton) findViewById(R.id.radio1)).setOnCheckedChangeListener(this);
-			findViewById(R.id.button1).setOnClickListener(this);
-			findViewById(R.id.button2).setOnClickListener(this);
+			((RadioButton) layout.findViewById(R.id.radio1)).setOnCheckedChangeListener(this);
 			db.close();
+
+            return new AlertDialog.Builder(act)
+                    .setView(layout)
+                    .setTitle(R.string.editgroups_c4)
+                    .setPositiveButton(R.string.gp_2, this)
+                    .setNegativeButton(R.string.gp_3, this)
+                    .create();
 		}
 		
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			findViewById(R.id.spinner1).setEnabled(isChecked);
+			layout.findViewById(R.id.spinner1).setEnabled(isChecked);
 		}
 		
 		@Override
-		public void onClick(View v) {
-			switch(v.getId()) {
-				case R.id.button1:
-					this.dismiss();
-					break;
-				case R.id.button2:
-					deleteGroup();
-					break;
-			}
-			
+        public void onClick(DialogInterface dialog, int which) {
+			if(which == DialogInterface.BUTTON_POSITIVE)
+				deleteGroup();
+			else
+                dismiss();
 		}
 		
 		private void deleteGroup() {
-			SQLiteDatabase db = DatabaseHelper.quickDb(EditGroups.this, 1);
-			RadioGroup rg = (RadioGroup) findViewById(R.id.radioGroup1);
+			SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_WRITE);
+			RadioGroup rg = (RadioGroup) layout.findViewById(R.id.radioGroup1);
 			int toastString;
 			
 			int result = db.delete(Db.Table3.TABLE_NAME, Db.Table3._ID + " = " + deleteId, null);
 			if(result == 1) {
-				if(rg.getCheckedRadioButtonId() == R.id.radio0)
-					db.delete(Db.Table1.TABLE_NAME,Db.Table1.ID_GROUP + " = " + deleteId, null);
+				if(rg.getCheckedRadioButtonId() == R.id.radio0) {
+                    //Delete expenses
+                    db.delete(Db.Table1.TABLE_NAME, Db.Table1.ID_GROUP + " = " + deleteId, null);
+                    //Delete budget items
+                    db.delete(Db.Table4.TABLE_NAME, Db.Table4.ID_GROUP + " = " + deleteId, null);
+                }
 				else {
+                    long newId = ((Spinner) layout.findViewById(R.id.spinner1)).getSelectedItemId();
+                    //Update expenses
 					ContentValues cv = new ContentValues();
-					cv.put(Db.Table1.ID_GROUP, ((Spinner) findViewById(R.id.spinner1)).getSelectedItemId());
-					db.update(Db.Table1.TABLE_NAME,cv,Db.Table1.ID_GROUP + " = " + deleteId,null);
+					cv.put(Db.Table1.ID_GROUP, newId);
+					db.update(Db.Table1.TABLE_NAME, cv, Db.Table1.ID_GROUP + " = " + deleteId, null);
+
+                    //Update budget items
+                    cv = new ContentValues();
+                    cv.put(Db.Table4.ID_GROUP, newId);
+                    db.update(Db.Table4.TABLE_NAME, cv, Db.Table4.ID_GROUP + " = " + deleteId, null);
 				}
 				toastString = R.string.editgroups_c5;
 				app.setFlag(1);
 				app.setFlag(3);
-				renderGroups();
+                app.setFlag(4);
+				act.renderGroups();
 				this.dismiss();
 			}
 			else
 				toastString = R.string.editgroups_c6;
 			
-			Toast ts = Toast.makeText(EditGroups.this,toastString,Toast.LENGTH_SHORT);
-			ts.show();
+			App.Toast(act, toastString);
 			db.close();
 		}
 	}
 	
-	private class AddEditDialog extends Dialog implements View.OnClickListener {
+	public static class AddEditDialog extends DialogFragment implements DialogInterface.OnClickListener {
 		public static final int ADD = 0, EDIT = 1;
 		private long editId;
 		private int mode;
-		
-		public AddEditDialog(Context ctx, Bundle args, int md) {
-			super(ctx);
-			setContentView(R.layout.editgroups_editdialog);			
-			mode = md;
-			
+        private EditGroups act;
+        private App app;
+        private View layout;
+
+        @NonNull
+        public Dialog onCreateDialog(Bundle savedInstance) {
+            act = (EditGroups) getActivity();
+            app = (App) act.getApplication();
+
+            Bundle args = getArguments();
+            mode = args.getInt("MODE", ADD);
+
+            int titleResource;
+
+            LayoutInflater li = LayoutInflater.from(act);
+            layout = li.inflate(R.layout.editgroups_editdialog, null);
+
 			if(mode == ADD) {
-				setTitle(R.string.editgroups_c7);
+				titleResource = R.string.editgroups_c7;
 			}
 			else {
-				setTitle(R.string.editgroups_c8);
+				titleResource = R.string.editgroups_c8;
 				editId = args.getLong("EDIT_ID");
-				((EditText) findViewById(R.id.editText1)).setText(args.getString("CURRENT_NAME"));
+				((EditText) layout.findViewById(R.id.editText1)).setText(args.getString("CURRENT_NAME"));
 			}
-			
-			findViewById(R.id.button1).setOnClickListener(this);
-			findViewById(R.id.button2).setOnClickListener(this);
-			
-            app.showKeyboard(findViewById(R.id.editText1));
+
+            app.showKeyboard(layout.findViewById(R.id.editText1));
+
+            return new AlertDialog.Builder(act)
+                    .setView(layout)
+                    .setTitle(titleResource)
+                    .setPositiveButton(R.string.gp_2, this)
+                    .setNegativeButton(R.string.gp_3, this)
+                    .create();
 		}
-		
-		@Override			
-		public void onClick(View v) {
-			switch(v.getId()) {
-				case R.id.button2:
-					if(((EditText) findViewById(R.id.editText1)).getText().toString().equals("")) {
-						App.Toast(EditGroups.this, R.string.editgroups_c12);
-						return;
-					}
-					saveGroupName();
-					break;
-				case R.id.button1:
-					this.dismiss();
-					break;
-			}
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+			if(which == DialogInterface.BUTTON_POSITIVE) {
+                if (((EditText) layout.findViewById(R.id.editText1)).getText().toString().equals("")) {
+                    App.Toast(act, R.string.editgroups_c12);
+                    return;
+                }
+                saveGroupName();
+            }
+            else
+				dismiss();
 		}
 		
 		private void saveGroupName() {
-			SQLiteDatabase db = DatabaseHelper.quickDb(EditGroups.this, 1);
+			SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_WRITE);
 			ContentValues cv = new ContentValues();
-			cv.put(Db.Table3.GROUP_NAME, ((EditText) findViewById(R.id.editText1)).getText().toString());
+			cv.put(Db.Table3.GROUP_NAME, ((EditText) layout.findViewById(R.id.editText1)).getText().toString());
 			long result;
 			if(mode == EDIT)
 				result = db.update(Db.Table3.TABLE_NAME, cv, Db.Table3._ID + " = " + editId, null);
@@ -287,15 +323,14 @@ public class EditGroups extends ActionBarActivity {
 					toastText = R.string.editgroups_c9;
 				else
 					toastText = R.string.editgroups_c10;
-				App app = (App) getApplication();
 				app.setFlag(3);
-				renderGroups();
-				this.dismiss();
+				act.renderGroups();
+				dismiss();
 			}
 			else
 				toastText = R.string.editgroups_c11;
-			Toast ts = Toast.makeText(EditGroups.this, toastText, Toast.LENGTH_SHORT);
-			ts.show();
+
+			App.Toast(act, toastText);
 			db.close();
 		}
 	}

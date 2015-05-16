@@ -20,51 +20,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="horizontal"
-    	android:background="@color/background_material_light" >
-            
-		<TextView
-			android:layout_width="80dp"
-		    android:layout_height="40dp"
-		    android:id="@+id/textView1"
-			android:text="@string/budget_l1"
-			android:padding="5dp"
-			android:gravity="center"
-            android:background="@drawable/statelist_normal"/>
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/gray"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
-
-        <TextView 
-         	android:layout_width="80dp"
-         	android:layout_height="40dp"
-         	android:id="@+id/textView2"
-         	android:text="@string/budget_l2"
-         	android:padding="5dp"
-         	android:gravity="center"
-            android:background="@drawable/statelist_normal"/>
-
-    </LinearLayout>
-    
-    <ImageView
-        android:id="@+id/tab_indicator"
+    <RadioGroup
+        android:id="@+id/radioGroup1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/tabs_indicator"
-        android:paddingLeft="0dp"
-        android:background="@color/background_material_light"
-        android:scaleType="fitStart"/>
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:padding="3dp" >
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gp_14" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gp_10" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:id="@+id/dateLayout">
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MN.Widget.ImageButton"
+            android:src="@drawable/arrow_left"
+            android:contentDescription="@string/budget_l_img2"/>
+
+        <TextView
+            android:id="@+id/dateView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MN.Widget.ImageButton"
+            android:src="@drawable/arrow_right"
+            android:contentDescription="@string/budget_l_img1"/>
+
+    </LinearLayout>
+
+    <View
+        style="@style/MN.HBar"
+        android:layout_height="1dp"/>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="none" >
+    </ListView>
+
+    <include
+        android:id="@+id/empty"
+        layout="@layout/empty_msg"
+        android:visibility="gone" />
     
-	<com.dpcsoftware.mn.VPager
-	    android:id="@+id/pager"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" />
 </LinearLayout>

@@ -37,12 +37,11 @@ import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -94,7 +93,7 @@ public class App extends Application {
 	}
 	
 	public static void Log(String msg) {
-		Log.d("Expenses-Debug",msg);
+		Log.d("Expenses-Debug", msg);
 	}
 	
 	public static final String WIDGET_PREFS_FNAME = "WigetPreferences";
@@ -141,58 +140,70 @@ public class App extends Application {
                 //Check if any budget item was surpassed
                 if(prefs.getBoolean("budgetAlert", true)) {
                     boolean notified = false;
-                    int flag, goalType;
+                    int flag, budgetType;
+					String queryModifier = "";
+
                     NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     Intent it = new Intent(this, Budget.class);
-                    Bundle args = new Bundle();
                     it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                     SQLiteDatabase db = dbH.getWritableDatabase();
-                    Cursor c = db.rawQuery("SELECT "
-                            + Db.Table4.T_ID + ","
-                            + Db.Table4.T_TYPE + ","
-                            + Db.Table4.T_AMOUNT + ","
-                            + Db.Table4.T_ALERT + ","
-                            + "SUM(" + Db.Table1.T_AMOUNT + ")" +
-                            " FROM " + Db.Table4.TABLE_NAME +
-                            " LEFT OUTER JOIN " + Db.Table1.TABLE_NAME + " ON " + Db.Table4.T_ID_CATEGORY + " = " + Db.Table1.T_ID_CATEGORY +
-                            " AND " + Db.Table4.T_ID_GROUP + " = " + Db.Table1.T_ID_GROUP +
-                            " AND (" + Db.Table4.T_TYPE + " = " + Db.Table4.TYPE_NO_TIME +
-                            " OR strftime('%Y-%m'," + Db.Table1.T_DATE + ") = '" + dateToDb("yyyy-MM", Calendar.getInstance().getTime()) + "')" +
-                            " WHERE " + Db.Table4.T_ID_GROUP + " = " + activeGroupId +
-                            " GROUP BY " + Db.Table4.T_ID, null);
-                    c.moveToFirst();
-                    while (!c.isAfterLast()) {
-                        goalType = c.getInt(1);
-                        if (c.getFloat(4) > c.getFloat(2)) {
-                            if (!notified && c.getInt(3) == 0) {
-                                if (goalType == Db.Table4.TYPE_BY_MONTH)
-                                    args.putInt("SET_TAB_INDEX", 0);
-                                else
-                                    args.putInt("SET_TAB_INDEX", 1);
-                                it.putExtras(args);
-                                PendingIntent pi = PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_ONE_SHOT);
-                                NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
-                                        .setContentTitle(rs.getString(R.string.app_name))
-                                        .setContentText("You have spent more than you should!")
-                                        .setSmallIcon(R.drawable.money_white)
-                                        .setLargeIcon(drawableToBitmap(rs.getDrawable(R.drawable.logo)))
-                                        .setContentIntent(pi)
-                                        .setAutoCancel(true);
-                                notifManager.notify(1, notifBuilder.build());
-                                notified = true;
+
+					Cursor cType = db.rawQuery("SELECT " +
+							Db.Table3.GROUP_TYPE +
+							" FROM " + Db.Table3.TABLE_NAME +
+							" WHERE " + Db.Table3._ID + " = " + activeGroupId, null);
+                    if(cType.getCount() > 0) {
+                        cType.moveToFirst();
+                        budgetType = cType.getInt(0);
+                        cType.close();
+
+                        if (budgetType == Db.Table3.TYPE_MONTH)
+                            queryModifier = " AND strftime('%Y-%m'," + Db.Table1.T_DATE + ") = '" + dateToDb("yyyy-MM", Calendar.getInstance().getTime()) + "'";
+
+                        Cursor c = db.rawQuery("SELECT "
+                                + Db.Table4.T_ID + ","
+                                + Db.Table4.T_AMOUNT + ","
+                                + Db.Table4.T_ALERT + ","
+                                + "SUM(" + Db.Table1.T_AMOUNT + ")" +
+                                " FROM " + Db.Table4.TABLE_NAME +
+                                " LEFT OUTER JOIN " + Db.Table1.TABLE_NAME + " ON " + Db.Table4.T_ID_CATEGORY + " = " + Db.Table1.T_ID_CATEGORY +
+                                " AND " + Db.Table4.T_ID_GROUP + " = " + Db.Table1.T_ID_GROUP +
+                                queryModifier +
+                                " WHERE " + Db.Table4.T_ID_GROUP + " = " + activeGroupId +
+                                " GROUP BY " + Db.Table4.T_ID, null);
+                        c.moveToFirst();
+                        while (!c.isAfterLast()) {
+                            if (c.getFloat(3) > c.getFloat(1)) {
+                                if (!notified && c.getInt(2) == 0) {
+                                    PendingIntent pi = PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_ONE_SHOT);
+                                    NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
+                                            .setContentTitle(rs.getString(R.string.app_name))
+                                            .setContentText(rs.getString(R.string.app_c1))
+                                            .setSmallIcon(R.drawable.money_white)
+                                            .setLargeIcon(drawableToBitmap(rs.getDrawable(R.drawable.logo)))
+                                            .setContentIntent(pi)
+                                            .setAutoCancel(true);
+                                    notifManager.notify(1, notifBuilder.build());
+                                    notified = true;
+                                }
+                                flag = 1;
                             }
-                            flag = 1;
-                        } else
-                            flag = 0;
+                            else
+                                flag = 0;
 
-                        //set flag alert on database
-                        ContentValues values = new ContentValues();
-                        values.put(Db.Table4.ALERT, flag);
-                        db.update(Db.Table4.TABLE_NAME, values, Db.Table4._ID + " = " + c.getLong(0), null);
+                            //set flag alert on database
+                            ContentValues values = new ContentValues();
+                            values.put(Db.Table4.ALERT, flag);
+                            db.update(Db.Table4.TABLE_NAME, values, Db.Table4._ID + " = " + c.getLong(0), null);
 
-                        c.moveToNext();
+                            c.moveToNext();
+                        }
+                        c.close();
                     }
-                    c.close();
+                    else
+                        cType.close();
+
                     db.close();
                 }
 
@@ -212,18 +223,18 @@ public class App extends Application {
 		private Spinner gSpinner;
 		private SimpleCursorAdapter mAdapter;
 		private Runnable callback;
-		private ActionBarActivity activity;
+		private AppCompatActivity activity;
         private EditText searchEditText;
         private boolean searchBar;
 	
-		public SpinnerMenu(ActionBarActivity act, Runnable updateFunction) {
+		public SpinnerMenu(AppCompatActivity act, Runnable updateFunction) {
 			callback = updateFunction;
 			activity = act;
             searchBar = false;
 			renderMenu();
 		}
 
-        public SpinnerMenu(ActionBarActivity act, Runnable updateFunction, boolean sBar) {
+        public SpinnerMenu(AppCompatActivity act, Runnable updateFunction, boolean sBar) {
             callback = updateFunction;
             activity = act;
             searchBar = sBar;
@@ -261,10 +272,10 @@ public class App extends Application {
 		    	if(activeGroupPos == -1)
 		    		activeGroupPos = prefs.getInt("ACTIVE_GROUP_POS", 0);
 		    	
-		    	if(activeGroupPos >=0 && activeGroupPos < gSpinner.getCount()) 
-		    		gSpinner.setSelection(activeGroupPos);
-		    	else
-		    		activeGroupPos = 0;
+		    	if(activeGroupPos >= gSpinner.getCount())
+					activeGroupPos = 0;
+
+				gSpinner.setSelection(activeGroupPos);
 		
 		        abar.setCustomView(menuView);
 		        abar.setDisplayShowCustomEnabled(true);

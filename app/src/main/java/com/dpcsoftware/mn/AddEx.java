@@ -23,11 +23,15 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -50,7 +54,7 @@ import java.util.ArrayDeque;
 import java.util.Calendar;
 import java.util.Stack;
 
-public class AddEx extends ActionBarActivity {
+public class AddEx extends AppCompatActivity {
 	private App app;
 	private boolean editMode;
 	private long editModeId;
@@ -88,8 +92,9 @@ public class AddEx extends ActionBarActivity {
                 Bundle args = new Bundle();
                 String value = ((EditText) findViewById(R.id.editText1)).getText().toString();
                 args.putString("NUMBER", value);
-                CalculatorDialog calcDialog = new CalculatorDialog(AddEx.this, args);
-                calcDialog.show();
+                CalculatorDialog calcDialog = new CalculatorDialog();
+				calcDialog.setArguments(args);
+                calcDialog.show(getSupportFragmentManager(), null);
             }
         });
         
@@ -297,28 +302,28 @@ public class AddEx extends ActionBarActivity {
     	}
     }
     
-    private class CalculatorDialog extends Dialog implements View.OnClickListener {
+    public static class CalculatorDialog extends DialogFragment implements View.OnClickListener, DialogInterface.OnClickListener {
     	private EditText expression;
     	private boolean calcError = false;
         private Bundle params;
+		private AddEx act;
+		private App app;
 
-		public CalculatorDialog(Context ctx, Bundle args) {
-			super(ctx);
+        @NonNull
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+			params = getArguments();
+			act = (AddEx) getActivity();
+			app = (App) act.getApplication();
 
-            params = args;
-		}
+            LayoutInflater li = LayoutInflater.from(getActivity());
+			View v = li.inflate(R.layout.addex_calculator, null);
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            setContentView(R.layout.addex_calculator);
-            expression = (EditText) findViewById(R.id.editText1);
+			expression = (EditText) v.findViewById(R.id.editText1);
 
             expression.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-                    ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(expression, 0);
+                    ((InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(expression, 0);
                 }
             });
 
@@ -328,17 +333,20 @@ public class AddEx extends ActionBarActivity {
                 expression.setSelection(expression.length());
             }
 
-            setTitle(R.string.addex_c5);
+            v.findViewById(R.id.button1).setOnClickListener(this);
+            v.findViewById(R.id.button2).setOnClickListener(this);
+            v.findViewById(R.id.button3).setOnClickListener(this);
+            v.findViewById(R.id.button4).setOnClickListener(this);
+            v.findViewById(R.id.button5).setOnClickListener(this);
 
-            findViewById(R.id.button1).setOnClickListener(this);
-            findViewById(R.id.button2).setOnClickListener(this);
-            findViewById(R.id.button3).setOnClickListener(this);
-            findViewById(R.id.button4).setOnClickListener(this);
-            findViewById(R.id.button5).setOnClickListener(this);
-            findViewById(R.id.button6).setOnClickListener(this);
-            findViewById(R.id.button7).setOnClickListener(this);
+			app.showKeyboard(expression);
 
-            app.showKeyboard(expression);
+			return new AlertDialog.Builder(act)
+					.setView(v)
+					.setTitle(R.string.addex_c5)
+					.setPositiveButton(R.string.gp_2, this)
+					.setNegativeButton(R.string.gp_3, null)
+					.create();
         }
 
 		@Override
@@ -364,19 +372,20 @@ public class AddEx extends ActionBarActivity {
 						expression.setSelection(expression.length());
 					}
 					break;
-				case R.id.button6:
-					calcError = false;
-					float result2 = calc(expression.getText().toString());
-					if(!calcError) {
-						((EditText) AddEx.this.findViewById(R.id.editText1)).setText(String.valueOf(result2));
-						this.dismiss();
-					}
-					break;
-				case R.id.button7:
-					this.dismiss();
-					break;
 			}
 			
+		}
+
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			if(which == DialogInterface.BUTTON_POSITIVE) {
+				calcError = false;
+				float result2 = calc(expression.getText().toString());
+				if(!calcError) {
+					((EditText) act.findViewById(R.id.editText1)).setText(String.valueOf(result2));
+					this.dismiss();
+				}
+			}
 		}
 		
 		private float calc(String s) {
@@ -488,7 +497,7 @@ public class AddEx extends ActionBarActivity {
 				return stcalc.pop();
 			}
 			catch (Exception e) {
-				App.Toast(AddEx.this, R.string.addex_c4);
+				App.Toast(act, R.string.addex_c4);
 	    		calcError = true;
 	    		return 0;
 			}

@@ -47,34 +47,10 @@
         android:layout_marginBottom="5dp" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button1"
         style="@style/MN.Widget.DialogButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/budget_l5" />
-
-    <LinearLayout
-        android:id="@+id/LinearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/button1"
-            style="@style/MN.Widget.DialogButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/gp_3" />
-        
-        <Button
-            android:id="@+id/button2"
-            style="@style/MN.Widget.DialogButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/gp_2" />
-
-    </LinearLayout>
 
 </LinearLayout>

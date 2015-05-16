@@ -78,27 +78,4 @@
             android:text="@string/nt_calculator_l5" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/button7"
-            style="@style/MN.Widget.DialogButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/gp_3" />
-        
-        <Button
-            android:id="@+id/button6"
-            style="@style/MN.Widget.DialogButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/gp_2" />
-
-    </LinearLayout>
-
 </LinearLayout>
