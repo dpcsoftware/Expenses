@@ -64,10 +64,7 @@
         <item name="android:background">@drawable/statelist_normal</item>
         <item name="android:padding">10dp</item>
     </style>
-    
-    <style name="MN.Widget.DialogButton" parent="@android:style/Widget.Button">
-    </style>
-    
+
     <style name="MN.Widget.ActionButton.CloseMode" parent="Widget.AppCompat.Light.ActionButton.CloseMode">
         <item name="android:background">@drawable/statelist_normal</item>
     </style>

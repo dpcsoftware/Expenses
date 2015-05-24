@@ -21,6 +21,7 @@ package com.dpcsoftware.mn;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -30,8 +31,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.view.KeyEvent;
@@ -153,13 +157,13 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
 		getSupportActionBar().setHomeButtonEnabled(true);
 		
 		if(app.showChangesDialog) {
-			ChangesDialog cdg = new ChangesDialog(this);
-			cdg.show();
+			ChangesDialog cdg = new ChangesDialog();
+			cdg.show(getSupportFragmentManager(), null);
 			SharedPreferences.Editor pEditor = prefs.edit();
 			pEditor.putInt("APP_VERSION", app.appVersion);
 			pEditor.apply();
 			app.showChangesDialog = false;
-		}		
+		}
  	}
 	
 	@Override
@@ -551,23 +555,24 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
     	db.close();
     }
     
-    private class ChangesDialog extends Dialog implements OnClickListener {
-    	
-    	public ChangesDialog(Context ctx) {
-    		super(ctx);
-    		
-    		setTitle(R.string.expenseslist_c1);
-    		setContentView(R.layout.expenseslist_changesdialog);
-    		
-    		findViewById(R.id.button1).setOnClickListener(this);
-    	}
-    	
-    	public void onClick(View v) {
-    		switch(v.getId()) {
-    		case R.id.button1:
-    			this.dismiss();
-    			break;
-    		}
+    public static class ChangesDialog extends DialogFragment implements DialogInterface.OnClickListener {
+
+        public Dialog onCreateDialog(Bundle savedInstance) {
+			FragmentActivity act = getActivity();
+
+			LayoutInflater li = LayoutInflater.from(act);
+            View layout = li.inflate(R.layout.expenseslist_changesdialog, null);
+
+            return new AlertDialog.Builder(act)
+                    .setView(layout)
+                    .setTitle(R.string.expenseslist_c1)
+                    .setPositiveButton(R.string.gp_2, this)
+                    .create();
+        }
+
+        public void onClick(DialogInterface dialog, int which) {
+    		if(which == DialogInterface.BUTTON_POSITIVE)
+                dismiss();
     	}
     }
 }

@@ -106,7 +106,7 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         header.findViewById(R.id.imageButton2).setOnClickListener(this);
         header.findViewById(R.id.imageButton3).setOnClickListener(this);
         header.findViewById(R.id.imageButton4).setOnClickListener(this);
-        Button bt3 = ((Button) header.findViewById(R.id.button3));
+        TextView bt3 = ((TextView) header.findViewById(R.id.button3));
         bt3.setOnClickListener(this);
         String path = prefs.getString("STD_FOLDER", stdAppFolder);
         bt3.setText(path.substring(path.lastIndexOf("/")+1));
@@ -212,7 +212,7 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
 	    	SharedPreferences.Editor pEdit = prefs.edit();
 	    	pEdit.putString("STD_FOLDER", path);
 	    	pEdit.apply();
-	    	((Button) header.findViewById(R.id.button3)).setText(path.substring(path.lastIndexOf("/")+1));
+	    	((TextView) header.findViewById(R.id.button3)).setText(path.substring(path.lastIndexOf("/")+1));
 	    	renderList();
 	    	break;
     	}

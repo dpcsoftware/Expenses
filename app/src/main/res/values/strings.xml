@@ -288,4 +288,6 @@
     <string name="exportdata_c19">Date interval is invalid</string>
     <string name="exportdata_c20">Spreadsheet created!</string>
     <string name="widget1config_c1">Widget Configurations</string>
+    <string name="expenseslist_l2">Please, help us improve the application by answering to the following survey. It is quick and anonymous!</string>
+    <string name="expenseslist_l3">http://goo.gl/forms/ldyQTzOJCD</string>
 </resources>

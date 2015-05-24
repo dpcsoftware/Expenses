@@ -264,5 +264,7 @@
     <string name="exportdata_c20">Planilha criada!</string>
     <string name="exportdata_c19">Intervalo de tempo inválido</string>
     <string name="widget1config_c1">Configurações do Widget</string>
+    <string name="expenseslist_l2">Por favor, nos ajude a melhorar o aplicativo respondendo ao questionário a seguir. Ele é rápido e anônimo!</string>
+    <string name="expenseslist_l3">http://goo.gl/forms/KDc7hBVNgJ</string>
 
 </resources>

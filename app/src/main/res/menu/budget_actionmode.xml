@@ -16,9 +16,13 @@
    along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <style name="MN.Widget.DialogButton" parent="android:Widget.Holo.Light.Button.Borderless.Small">
-    </style>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:expenses="http://schemas.android.com/apk/res-auto">
     
-</resources>
+    <item android:id="@+id/item1"
+        expenses:showAsAction="always"
+        android:titleCondensed="@string/menu_content_readex_1"
+        android:title="@string/menu_content_readex_1"
+        android:icon="@drawable/delete_white">
+    </item>
+</menu>

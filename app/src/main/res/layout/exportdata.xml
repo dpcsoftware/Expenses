@@ -181,14 +181,15 @@
 			android:padding="5dp"
 			android:gravity="center_vertical" />
 
-	    <Button
+	    <TextView
 	        android:id="@+id/button3"
-	        style="@style/MN.Widget.DialogButton"
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:gravity="center_vertical"
-	        android:textStyle="bold" />
+	        android:textStyle="bold"
+            android:padding="10dp"
+            android:background="@drawable/statelist_normal"/>
 	    
 	</LinearLayout>
 

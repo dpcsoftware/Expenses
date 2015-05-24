@@ -31,13 +31,16 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +54,8 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 
-public class Budget extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, RadioGroup.OnCheckedChangeListener {
+public class Budget extends AppCompatActivity implements View.OnClickListener,
+        AdapterView.OnItemClickListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemLongClickListener {
 	private App app;
 	private Runnable menuCallback = new Runnable() {
 		public void run() {
@@ -77,6 +81,10 @@ public class Budget extends AppCompatActivity implements View.OnClickListener, A
     private BudgetAdapter adapter;
     private int gType;
     private RadioGroup rg;
+    private ActionMode.Callback actModeCallback;
+    private ActionMode actMode;
+    private long selectedId;
+    private boolean pickMode = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +94,9 @@ public class Budget extends AppCompatActivity implements View.OnClickListener, A
 		setContentView(R.layout.budget);
 
         res = getResources();
+
+        actModeCallback = new BudActionModeCallback();
+        actMode = null;
 
         date = Calendar.getInstance();
         findViewById(R.id.imageButton1).setOnClickListener(this);
@@ -100,6 +111,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener, A
         ((TextView) findViewById(R.id.textView1)).setText(R.string.budget_c1);
         lv.setEmptyView(findViewById(R.id.empty));
         lv.setOnItemClickListener(this);
+        lv.setOnItemLongClickListener(this);
 
         header = LayoutInflater.from(this).inflate(R.layout.budget_listitem, null);
         ((TextView) header.findViewById(R.id.textViewLabel)).setText(R.string.gp_10);
@@ -154,6 +166,19 @@ public class Budget extends AppCompatActivity implements View.OnClickListener, A
         BudgetDialog edtDg = new BudgetDialog();
         edtDg.setArguments(args);
         edtDg.show(getSupportFragmentManager(), null);
+
+        if(pickMode)
+            actMode.finish();
+    }
+
+    @Override
+    public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long id) {
+        if(!pickMode) {
+            pickMode = true;
+            selectItem(view, id);
+            actMode = startSupportActionMode(actModeCallback);
+        }
+        return true;
     }
 
     @Override
@@ -229,6 +254,85 @@ public class Budget extends AppCompatActivity implements View.OnClickListener, A
         db.close();
     }
 
+    private class BudActionModeCallback implements ActionMode.Callback {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.budget_actionmode, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.item1:
+                    deleteItem();
+                    renderList();
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            pickMode = false;
+            clearSelections();
+            actMode = null;
+        }
+    }
+
+    private void selectItem(View v, long id) {
+        v.setBackgroundColor(getResources().getColor(R.color.gray));
+        if(id >= 0)
+            selectedId = id;
+    }
+
+    private void unselectItem(View v, long id) {
+        v.setBackgroundResource(R.drawable.statelist_normal);
+        if(id >= 0)
+            selectedId = -1;
+    }
+
+    private void clearSelections() {
+        int i,max,start;
+        if(selectedId >= 0) {
+            max = lv.getChildCount();
+            if(lv.getHeaderViewsCount() == 0)
+                start = 0;
+            else if(lv.getFirstVisiblePosition() == 0)
+                start = 1;
+            else
+                start = 0;
+            for(i = start;i < max;i++)
+                unselectItem(lv.getChildAt(i), -1);
+            selectedId = -1;
+        }
+    }
+
+    private void deleteItem() {
+        SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_WRITE);
+        int toastString;
+        int result = db.delete(Db.Table4.TABLE_NAME, Db.Table4._ID + " = " + selectedId, null);
+
+        if(result == 1) {
+            toastString = R.string.budget_c9;
+            app.setFlag(4);
+        }
+        else
+            toastString = R.string.gp_11;
+
+        App.Toast(this, toastString);
+        db.close();
+    }
+
     private class BudgetAdapter extends CursorAdapter {
         private LayoutInflater mInflater;
 
@@ -251,17 +355,23 @@ public class Budget extends AppCompatActivity implements View.OnClickListener, A
 
             ((TextView) view.findViewById(R.id.textViewPercentage)).setText(String.format("%.1f", rate * 100) + "%");
             ProgressBar pb = (ProgressBar) view.findViewById(R.id.progressBar1);
-            pb.setProgress((int)Math.floor(rate*pb.getMax()));
+            pb.setProgress((int) Math.floor(rate * pb.getMax()));
             GradientDrawable gd = (GradientDrawable) ((ScaleDrawable) ((LayerDrawable) pb.getProgressDrawable()).findDrawableByLayerId(android.R.id.progress)).getDrawable();
             if(pb.getProgress() == pb.getMax())
                 gd.setColor(res.getColor(R.color.red));
             else
                 gd.setColor(res.getColor(R.color.green));
             ((TextView) view.findViewById(R.id.textViewValues)).setText(app.printMoney(spent) + " / " + app.printMoney(budget));
+
+            long id = cursor.getLong(0);
+            if(id == selectedId)
+                selectItem(view, -1);
+            else
+                unselectItem(view, -1);
         }
     }
 
-    public static class BudgetDialog extends DialogFragment implements View.OnClickListener, DialogInterface.OnClickListener {
+    public static class BudgetDialog extends DialogFragment implements DialogInterface.OnClickListener {
         public static final int ADD = 0, EDIT = 1;
 
         private long editId;
@@ -271,7 +381,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener, A
         private Budget act;
         private App app;
 
-        @Override
+        @NonNull
         public Dialog onCreateDialog(Bundle savedInstance) {
             int titleResource;
 
@@ -285,8 +395,6 @@ public class Budget extends AppCompatActivity implements View.OnClickListener, A
             View v = li.inflate(R.layout.budget_dialog, null);
 
             edtValue = (EditText) v.findViewById(R.id.editText1);
-
-            v.findViewById(R.id.button1).setOnClickListener(this);
 
             Spinner sp = (Spinner) v.findViewById(R.id.spinner1);
             SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_READ);
@@ -313,8 +421,6 @@ public class Budget extends AppCompatActivity implements View.OnClickListener, A
                     SimpleCursorAdapter adapter = new SimpleCursorAdapter(act, android.R.layout.simple_spinner_item, c, new String[]{Db.Table2.CATEGORY_NAME}, new int[]{android.R.id.text1}, 0);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     sp.setAdapter(adapter);
-
-                    v.findViewById(R.id.button1).setVisibility(View.GONE);
 
                     app.showKeyboard(edtValue);
                 }
@@ -350,10 +456,6 @@ public class Budget extends AppCompatActivity implements View.OnClickListener, A
                 saveItem();
             else
                 dismiss();
-        }
-
-        public void onClick(View v) {
-            deleteItem();
         }
 
         private void saveItem() {
@@ -395,24 +497,6 @@ public class Budget extends AppCompatActivity implements View.OnClickListener, A
             else
                 toastText = R.string.gp_11;
             App.Toast(act, toastText);
-            db.close();
-        }
-
-        private void deleteItem() {
-            SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_WRITE);
-            int toastString;
-            int result = db.delete(Db.Table4.TABLE_NAME, Db.Table4._ID + " = " + editId, null);
-
-            if(result == 1) {
-                toastString = R.string.budget_c9;
-                app.setFlag(4);
-                act.renderList();
-                this.dismiss();
-            }
-            else
-                toastString = R.string.gp_11;
-
-            App.Toast(act, toastString);
             db.close();
         }
     }

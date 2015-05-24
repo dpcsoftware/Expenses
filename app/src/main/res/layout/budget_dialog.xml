@@ -46,11 +46,4 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp" />
 
-    <Button
-        android:id="@+id/button1"
-        style="@style/MN.Widget.DialogButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/budget_l5" />
-
 </LinearLayout>

@@ -263,4 +263,6 @@
     <string name="exportdata_c20">Le classeur a été crée!</string>
     <string name="exportdata_c19">L\'intervalle de temps n\'est pas valide</string>
     <string name="widget1config_c1">Paramètres du Widget</string>
+    <string name="expenseslist_l2">Répondez s\'il vous plaît à l\'enquête suivante pour nois aider à amélior l\'application. C\'est rapide et anonyme!</string>
+    <string name="expenseslist_l3">http://goo.gl/forms/Li2mRYueTy</string>
 </resources>
