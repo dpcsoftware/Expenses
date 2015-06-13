@@ -4,17 +4,14 @@ Expenses
 Expenses is a simple Android application to manage personal
 expenses.
 
-Version: 1.2.1
+Version: 1.3
 
 Developed By Daniel Pereira Coelho <dpcsoftware@gmail.com>
-
-Special thanks to Jake Wharton, developer of ActionBarSherlock
-library.
 
 License
 =============================================================
 
-Copyright 2013, 2014 Daniel Pereira Coelho
+Copyright 2013-2015 Daniel Pereira Coelho
    
 Expenses is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,33 +28,21 @@ Buil Instructions
 ==============================================================
 
 *Download the Android SDK and set up a full development
-environment for Android using Eclipse. Instructions:
+environment for Android using Android Studio. Instructions:
 [http://developer.android.com/sdk/index.html]
 
-*Download ActionBarSherlock v 4.4.0
-[http://www.actionbarsherlock.com]
+*Clone the repository
 
-*Open Eclipse
+*Open Android Studio
+	- Select Open an existing Android Studio project
+	- Select the correct folder
 
-*Import the Expenses project and the ActionBarSherlock project
-into workspace:
-	- Go to Menu -> File -> Import... -> Existing
-	Android Code Into Workspace
-	- Pick up the folder where you extracted the source code
-	and click Finish
-
-*Add Dependency
-	- Right click on the Expenses project -> Properties -> Android
-	-> Library Section -> Add...
-	- Then Pick ActionBarSherlock
-	
 *Export APK Package
-	- Right click on the Expenses project -> Export -> Export
-	Android Application
+	- Click on Build -> Generate Signed APK...
 	- Follow instructions to sign and export your application
 	- More infomation about how to sign the application:
 	[http://developer.android.com/tools/publishing/app-signing.html]
-	
+
 *Have fun with your builds and modifications!
 
 *Collaborate with the project on:
@@ -65,16 +50,18 @@ into workspace:
 
 Changelog
 ==============================================================
+1.3:
+	- Redesigned interface matching new Android standards
+	- You can now search over your expenses records
+	- You can define a Budget, track it over time and receive notifications
+	- ActionBarSherlock was droped in favor of android-support-v7 library app-compat
+	- Project is now build using Android Studio IDE rather than Eclipse ADT
 
 1.2.1:
 	- Minor bug fixes
 
 1.2:
 	- Expenses is now free software (as in freedom) licensed under the GPL version 3
-  - Backups are saved only on the SD card. Tight integration with Google Drive is no longer available. Reason: incompatibility with the GPL, make possible to use other cloud storage services
-  - Added an option to export data to a Open Document Spreadsheet
-  - Added a widget for quick access to add an expense and to view the total of a group
-        
-
-
-
+	- Backups are saved only on the SD card. Tight integration with Google Drive is no longer available. Reason: incompatibility with the GPL, make possible to use other cloud storage services
+	- Added an option to export data to a Open Document Spreadsheet
+	- Added a widget for quick access to add an expense and to view the total of a group

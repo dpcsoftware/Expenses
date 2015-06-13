@@ -1,0 +1,196 @@
+<!-- 
+   Copyright 2013-2015 Daniel Pereira Coelho
+   
+   This file is part of the Expenses Android Application.
+
+   Expenses is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation in version 3.
+
+   Expenses is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exportdata_l6"
+        android:textAppearance="@style/MN.TextAppearance.Subtitle"
+        android:layout_marginTop="5dp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/hBar"/>
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exportdata_l7"
+        android:layout_marginTop="5dp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/exportdata_l2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exportdata_l8"
+        android:textAppearance="@style/MN.TextAppearance.Subtitle"
+        android:layout_marginTop="5dp" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="@color/hBar"/>
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exportdata_l9"
+        android:layout_marginTop="5dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exportdata_l10"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MN.Widget.ImageButton"
+            android:src="@drawable/arrow_left"
+            android:contentDescription="@string/gp_7"/>
+
+        <TextView
+            android:id="@+id/dateView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@drawable/statelist_normal"
+            android:padding="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MN.Widget.ImageButton"
+            android:src="@drawable/arrow_right"
+            android:contentDescription="@string/gp_8"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/exportdata_l11"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MN.Widget.ImageButton"
+            android:src="@drawable/arrow_left"
+            android:contentDescription="@string/gp_7"/>
+
+        <TextView
+            android:id="@+id/dateView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:background="@drawable/statelist_normal"
+            android:padding="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/MN.Widget.ImageButton"
+            android:src="@drawable/arrow_right"
+            android:contentDescription="@string/gp_8"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/exportdata_l5" />
+    
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/exportdata_l3"
+        android:textAppearance="@style/MN.TextAppearance.Subtitle"
+        android:layout_marginTop="5dp" />
+    
+    <View
+	    android:layout_width="fill_parent"
+	    android:layout_height="2dp"
+	    android:background="@color/hBar"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+    
+	    <TextView
+	        android:id="@+id/textView10"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:text="@string/exportdata_l4"
+			android:padding="5dp"
+			android:gravity="center_vertical" />
+
+	    <TextView
+	        android:id="@+id/button3"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center_vertical"
+	        android:textStyle="bold"
+            android:padding="10dp"
+            android:background="@drawable/statelist_normal"/>
+	    
+	</LinearLayout>
+
+</LinearLayout>

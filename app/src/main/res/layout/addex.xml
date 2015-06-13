@@ -1,0 +1,153 @@
+<!-- 
+   Copyright 2013-2015 Daniel Pereira Coelho
+   
+   This file is part of the Expenses Android Application.
+
+   Expenses is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation in version 3.
+
+   Expenses is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+	
+	    <RelativeLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="70dp"
+	        android:paddingLeft="8dp" >
+	
+	        <EditText
+	            android:id="@+id/editText1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:ems="10"
+	            android:inputType="numberDecimal"
+	            android:layout_centerVertical="true"
+	            android:layout_alignParentLeft="true"
+	            android:hint="@string/addex_l1"
+	            android:background="?android:attr/windowBackground"
+	            android:padding="5dp"
+                android:imeOptions="actionDone"
+                android:layout_toLeftOf="@+id/imageButton1"/>
+	
+	        <ImageButton
+	            android:id="@+id/imageButton1"
+	            style="@style/MN.Widget.ImageButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
+	            android:contentDescription="@string/addex_l_img1"
+	            android:src="@drawable/calc" />
+	
+	    </RelativeLayout>
+	    
+	    <View style="@style/MN.HBarThin" />
+	
+	    <RelativeLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="70dp"
+	        android:paddingLeft="8dp" >
+	        
+	        <TextView
+		        android:id="@+id/textView1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/addex_l2"
+		        android:layout_centerVertical="true"
+		        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+	
+	        <Spinner
+	            android:id="@+id/spinner1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/statelist_normal"
+	            android:layout_toRightOf="@+id/textView1"
+				android:layout_toLeftOf="@+id/imageButton2"
+	            android:layout_marginLeft="10dp"
+	            android:layout_centerVertical="true" />
+	
+	        <ImageButton
+	            android:id="@+id/imageButton2"
+   	            style="@style/MN.Widget.ImageButton"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerVertical="true"
+	            android:layout_alignParentRight="true"
+	            android:src="@drawable/add_box_grey"
+	            android:contentDescription="@string/addex_l_img2" />
+	
+	    </RelativeLayout>
+	    
+	    <View style="@style/MN.HBarThin" />
+	    
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="70dp"
+	        android:orientation="horizontal"
+	        android:paddingLeft="8dp"
+	        android:gravity="center_vertical" >
+	        
+	        <TextView
+		        android:id="@+id/textView3"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/addex_l4"
+		        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+	        
+	        <ImageButton 
+	            android:id="@+id/imageButton3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            style="@style/MN.Widget.ImageButton"
+	            android:src="@drawable/arrow_left"
+                android:contentDescription="@string/addex_l_img4"/>
+	        
+	        <TextView
+	            android:id="@+id/dateView"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:clickable="true"
+	            android:background="@drawable/statelist_normal"
+	            android:padding="10dp"
+	            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+	        
+	        <ImageButton 
+	            android:id="@+id/imageButton4"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            style="@style/MN.Widget.ImageButton"
+	            android:src="@drawable/arrow_right"
+                android:contentDescription="@string/addex_l_img3"/>
+	        
+	    </LinearLayout>
+	    
+	    <View style="@style/MN.HBarThin" />
+	
+	    <EditText
+	        android:id="@+id/editText2"
+	        android:layout_width="match_parent"
+	        android:layout_height="70dp"
+	        android:ems="10"
+	        android:inputType="textMultiLine"
+	        android:hint="@string/addex_l3"
+	        android:background="?android:attr/windowBackground"
+	        android:padding="8dp"/>
+	
+	</LinearLayout>
+    
+    
+</ScrollView>

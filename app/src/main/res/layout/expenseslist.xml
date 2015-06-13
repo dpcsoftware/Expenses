@@ -1,0 +1,130 @@
+<!-- 
+   Copyright 2013-2015 Daniel Pereira Coelho
+   
+   This file is part of the Expenses Android Application.
+
+   Expenses is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation in version 3.
+
+   Expenses is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+	
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical" >
+	
+	    <ListView
+	        android:id="@+id/listView1"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:choiceMode="none" >
+	    </ListView>
+	            
+	    <include
+	        android:id="@+id/empty"
+	        layout="@layout/empty_msg"
+	        android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/addExpenseButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/add_exp_btn_bg"
+            android:src="@drawable/add_white"
+            android:contentDescription="@string/expenseslist_l_img2"/>
+	</RelativeLayout>
+	
+	<ScrollView
+	    android:id="@+id/drawer_frame"
+	    android:layout_width="240dp"
+	    android:layout_height="match_parent"
+	    android:layout_gravity="start"
+	    android:fillViewport="true">
+	    
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:background="@color/background_material_light">
+		
+            <TextView
+                style="@style/MN.MenuSubtitle"
+                android:text="@string/expenseslist_dr1"/>
+
+            <TextView
+                android:id="@+id/menu1"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr2"
+                android:drawableLeft="@drawable/stats_grey" />
+
+            <TextView
+                android:id="@+id/menu2"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr3"
+                android:drawableLeft="@drawable/stats_time_grey" />
+
+            <TextView
+                style="@style/MN.MenuSubtitle"
+                android:text="@string/expenseslist_dr4"/>
+
+            <TextView
+                android:id="@+id/menu3"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr5"
+                android:drawableLeft="@drawable/groups_grey" />
+
+            <TextView
+                android:id="@+id/menu4"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr6"
+                android:drawableLeft="@drawable/categories_grey" />
+
+            <TextView
+                style="@style/MN.MenuSubtitle"
+                android:text="@string/expenseslist_dr7"/>
+
+            <TextView
+                android:id="@+id/menu5"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr8"
+                android:drawableLeft="@drawable/money_grey" />
+
+            <TextView
+                android:id="@+id/menu6"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr9"
+                android:drawableLeft="@drawable/sd_storage_grey" />
+
+            <TextView
+                android:id="@+id/menu7"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr10"
+                android:drawableLeft="@drawable/checkbox_grey" />
+
+            <TextView
+                android:id="@+id/menu8"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr11"
+                android:drawableLeft="@drawable/info_grey" />
+		    
+		</LinearLayout>
+	</ScrollView>
+</android.support.v4.widget.DrawerLayout>
