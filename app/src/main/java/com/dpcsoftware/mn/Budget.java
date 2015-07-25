@@ -46,6 +46,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -118,6 +119,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         ((TextView) header.findViewById(R.id.textViewLabel)).setTypeface(Typeface.DEFAULT_BOLD);
         ((TextView) header.findViewById(R.id.textViewPercentage)).setTypeface(Typeface.DEFAULT_BOLD);
         ((TextView) header.findViewById(R.id.textViewValues)).setTypeface(Typeface.DEFAULT_BOLD);
+        header.findViewById(R.id.imageView1).setVisibility(View.GONE);
         header.setBackgroundColor(getResources().getColor(R.color.yellow));
         header.setOnClickListener(null);
         lv.addHeaderView(header);
@@ -211,7 +213,8 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
                 + Db.Table4.T_ID + ","
                 + Db.Table4.T_AMOUNT + ","
                 + Db.Table2.T_CATEGORY_NAME + ","
-                + "SUM(" + Db.Table1.T_AMOUNT + ")" +
+                + "SUM(" + Db.Table1.T_AMOUNT + "),"
+                + Db.Table2.T_CATEGORY_COLOR +
                 " FROM " + Db.Table4.TABLE_NAME +
                 " INNER JOIN " + Db.Table2.TABLE_NAME + " ON " + Db.Table4.T_ID_CATEGORY + " = " + Db.Table2.T_ID +
                 " LEFT OUTER JOIN " + Db.Table1.TABLE_NAME + " ON " + Db.Table4.T_ID_CATEGORY + " = " + Db.Table1.T_ID_CATEGORY +
@@ -347,6 +350,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         }
 
         public void bindView(View view, Context context, Cursor cursor) {
+            ((ImageView) view.findViewById(R.id.imageView1)).getDrawable().setColorFilter(cursor.getInt(4), App.colorFilterMode);
             ((TextView) view.findViewById(R.id.textViewLabel)).setText(cursor.getString(2));
 
             float spent = cursor.getFloat(3);
