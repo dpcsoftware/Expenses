@@ -290,4 +290,11 @@
     <string name="widget1config_c1">Widget Configurations</string>
     <string name="expenseslist_l2">Please, help us improve the application by answering to the following survey. It is quick and anonymous!</string>
     <string name="expenseslist_l3">http://goo.gl/forms/ldyQTzOJCD</string>
+    <string name="editcategoryactivity_c1">Edit Category</string>
+    <string name="editcategoryactivity_l1">Pick a color:</string>
+    <string name="editcategoryactivity_c2">Add Category</string>
+    <string name="menu_categoryactivity_1">Save</string>
+    <string name="editcategoryactivity_c3">Done!</string>
+    <string name="editcategoryactivity_c4">Done!</string>
+    <string name="editcategoryactivity_c5">Type the category name</string>
 </resources>

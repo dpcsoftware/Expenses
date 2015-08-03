@@ -71,6 +71,7 @@ public class App extends Application {
 	public boolean mnUpdateList = false;
 	public boolean mnUpdateMenu = false;
 	public boolean addExUpdateCategories = false;
+    public boolean editCategoriesUpdateList = false;
 	public long addExUpdateCategoryId;
 	public OnSharedPreferenceChangeListener prefsListener = new OnSharedPreferenceChangeListener() {
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
@@ -416,5 +417,9 @@ public class App extends Application {
                 ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(v, 0);
             }
         }, 50);
+    }
+
+    public int dpToPx(float dp) {
+        return Math.round(getApplicationContext().getResources().getDisplayMetrics().density*dp);
     }
 }

@@ -23,6 +23,7 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -67,16 +68,6 @@ public class EditCategories extends AppCompatActivity {
 		renderCategories();
 		
 		getSupportActionBar().setTitle(R.string.editcategories_c1);
-		
-		Bundle args = getIntent().getExtras();
-		if(args != null && args.getBoolean("ADD_CATEGORY",false)) {
-			comingFromAddEx = true;
-			Bundle params = new Bundle();
-			params.putInt("MODE", AddEditDialog.ADD);
-			AddEditDialog addDg = new AddEditDialog();
-			addDg.setArguments(params);
-			addDg.show(getSupportFragmentManager(), null);
-		}
 	}
 	
 	@Override
@@ -89,14 +80,23 @@ public class EditCategories extends AppCompatActivity {
     	switch (item.getItemId()) {
     		case R.id.item1:
 				Bundle params = new Bundle();
-				params.putInt("MODE", AddEditDialog.ADD);
-				AddEditDialog addDg = new AddEditDialog();
-				addDg.setArguments(params);
-				addDg.show(getSupportFragmentManager(), null);
+				params.putInt("MODE", EditCategoryActivity.ADD);
+                Intent it = new Intent(EditCategories.this, EditCategoryActivity.class);
+                it.putExtras(params);
+                startActivity(it);
     			break;
     	}
     	return true;
 	}
+
+    public void onResume() {
+        super.onResume();
+
+        if(app.editCategoriesUpdateList) {
+            renderCategories();
+            app.editCategoriesUpdateList = false;
+        }
+    }
 	
 	private void renderCategories() {
 		SQLiteDatabase db = DatabaseHelper.quickDb(this, 0);
@@ -158,17 +158,17 @@ public class EditCategories extends AppCompatActivity {
     				}
     				break;
     			case R.id.imageButtonEdit:
-    				Bundle args2 = new Bundle();
-    				args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
-    				Cursor c = getCursor();
-    				c.moveToPosition((Integer) v.getTag());
-    				args2.putString("CURRENT_NAME", c.getString(c.getColumnIndex(Db.Table2.CATEGORY_NAME)));
-    				args2.putInt("CURRENT_COLOR", c.getInt(c.getColumnIndex(Db.Table2.CATEGORY_COLOR)));
-					args2.putInt("MODE", AddEditDialog.EDIT);
-    				AddEditDialog edtDg = new AddEditDialog();
-					edtDg.setArguments(args2);
-    				edtDg.show(getSupportFragmentManager(), null);
-    				break;
+                    Bundle args2 = new Bundle();
+                    args2.putInt("MODE", EditCategoryActivity.EDIT);
+                    args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
+                    Cursor c = getCursor();
+                    c.moveToPosition((Integer) v.getTag());
+                    args2.putString("CURRENT_NAME", c.getString(c.getColumnIndex(Db.Table2.CATEGORY_NAME)));
+                    args2.putInt("CURRENT_COLOR", c.getInt(c.getColumnIndex(Db.Table2.CATEGORY_COLOR)));
+                    Intent it = new Intent(EditCategories.this, EditCategoryActivity.class);
+                    it.putExtras(args2);
+                    startActivity(it);
+                    return;
     		}
     	}
     	
@@ -266,126 +266,4 @@ public class EditCategories extends AppCompatActivity {
 			db.close();
 		}
 	}
-	
-	public static class AddEditDialog extends DialogFragment implements DialogInterface.OnClickListener {
-		public static final int ADD = 0, EDIT = 1;
-		private long editId;
-		private int mode, selectedColor;
-		private int[] colors = {R.color.c0,R.color.c1,
-	    		R.color.c2,R.color.c3,
-	    		R.color.c4,R.color.c5,
-	    		R.color.c6,R.color.c7,
-	    		R.color.c8,R.color.c9,
-	    		R.color.c10,R.color.c11,
-	    		R.color.c12,R.color.c13,
-	    		R.color.c14,R.color.c15};
-		private LinearLayout colorList;
-		private View.OnClickListener selectColorListener = new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ImageView target = (ImageView) layout.findViewById(R.id.imageView1);
-				target.getDrawable().clearColorFilter();
-				selectedColor = getResources().getColor(colors[colorList.indexOfChild(v)]);
-				target.getDrawable().setColorFilter(selectedColor, App.colorFilterMode);
-				target.invalidate();
-			}
-		};
-		private EditCategories act;
-		private App app;
-		private View layout;
-
-		@NonNull
-		public Dialog onCreateDialog(Bundle savedInstance) {
-			act = (EditCategories) getActivity();
-			app = (App) act.getApplication();
-
-			Bundle args = getArguments();
-			mode = args.getInt("MODE", ADD);
-
-			int titleResource;
-
-			LayoutInflater li = LayoutInflater.from(act);
-			layout = li.inflate(R.layout.editcategories_editdialog, null);
-			
-			colorList = (LinearLayout) layout.findViewById(R.id.colorList);
-			int i;
-			for(i = 0;i < 16;i++) {
-				ImageButton item = new ImageButton(act);
-				item.setImageResource(R.drawable.square_shape);
-				item.setPadding(20,20,20,20);
-				item.getDrawable().setColorFilter(getResources().getColor(colors[i]), App.colorFilterMode);
-				item.setOnClickListener(selectColorListener);
-				colorList.addView(item);
-			}
-			
-			if(mode == ADD) {
-				titleResource = R.string.editcategories_c7;
-				colorList.getChildAt(0).performClick();
-			}
-			else {
-				titleResource = R.string.editcategories_c8;
-				editId = args.getLong("EDIT_ID");
-				selectedColor = args.getInt("CURRENT_COLOR");
-				ImageView target = (ImageView) layout.findViewById(R.id.imageView1);
-				target.getDrawable().setColorFilter(selectedColor, App.colorFilterMode);
-				((EditText) layout.findViewById(R.id.editText1)).setText(args.getString("CURRENT_NAME"));
-			}
-
-			app.showKeyboard(layout.findViewById(R.id.editText1));
-
-			return new AlertDialog.Builder(act)
-					.setView(layout)
-					.setTitle(titleResource)
-					.setPositiveButton(R.string.gp_2, this)
-					.setNegativeButton(R.string.gp_3, this)
-					.create();
-		}
-
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			if(which == DialogInterface.BUTTON_POSITIVE) {
-				if (((EditText) layout.findViewById(R.id.editText1)).getText().toString().equals("")) {
-					App.Toast(act, R.string.editcategories_c14);
-					return;
-				}
-				saveCategory();
-			}
-			else
-				dismiss();
-
-			if(act.comingFromAddEx)
-				dismiss();
-		}
-
-		private void saveCategory() {
-			SQLiteDatabase db = DatabaseHelper.quickDb(act, 1);
-			ContentValues cv = new ContentValues();
-			cv.put(Db.Table2.CATEGORY_NAME, ((EditText) layout.findViewById(R.id.editText1)).getText().toString());
-			cv.put(Db.Table2.CATEGORY_COLOR, selectedColor);
-			long result;
-			if(mode == EDIT)
-				result = db.update(Db.Table2.TABLE_NAME, cv, Db.Table2._ID + " = " + editId, null);
-			else
-				result = db.insert(Db.Table2.TABLE_NAME, null, cv);
-			int toastText;
-			if((mode == EDIT && result == 1) | (mode == ADD && result != -1)) {
-				if(mode == EDIT)
-					toastText = R.string.editcategories_c9;
-				else
-					toastText = R.string.editcategories_c10;
-				app.setFlag(2);
-				if(act.comingFromAddEx) {
-					app.addExUpdateCategoryId = result;
-					app.addExUpdateCategories = true;
-				}
-				act.renderCategories();
-				this.dismiss();
-			}
-			else
-				toastText = R.string.editcategories_c11;
-			App.Toast(act, toastText);
-			db.close();
-		}
-	}
-	
 }

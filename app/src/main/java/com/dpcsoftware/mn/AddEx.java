@@ -100,9 +100,9 @@ public class AddEx extends AppCompatActivity {
         
         findViewById(R.id.imageButton2).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Intent openAct = new Intent(AddEx.this, EditCategories.class);
+                Intent openAct = new Intent(AddEx.this, EditCategoryActivity.class);
                 Bundle args = new Bundle();
-                args.putBoolean("ADD_CATEGORY", true);
+                args.putBoolean("FROM_ADDEX", true);
                 openAct.putExtras(args);
                 startActivity(openAct);
             }

@@ -51,6 +51,7 @@
         <activity android:name="ExportData" />
         <activity android:name="FolderPicker" />
         <activity android:name="Budget" />
+        <activity android:name="EditCategoryActivity" />
         
         <activity android:name="Widget1Config">
 		    <intent-filter>
