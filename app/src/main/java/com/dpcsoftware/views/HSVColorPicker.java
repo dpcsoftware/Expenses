@@ -100,7 +100,7 @@ public class HSVColorPicker extends LinearLayout {
     private class BarView extends View {
         private float left, right, top, bottom, height, range;
         private float cursorWidth, cursorBorderWidth, cursorPos;
-        private float lastX = 0;
+        private float lastX = 0, i;
         private Paint p, pCursorBorder;
 
         public static final int HUE = 1;
@@ -172,7 +172,6 @@ public class HSVColorPicker extends LinearLayout {
 
         @Override
         protected void onDraw (Canvas canvas) {
-            float i;
             if(type == HUE) {
                 for (i = left; i < right; i += 3) {
                     p.setColor(Color.HSVToColor(new float[]{(i - left) / range * 360, 0.9f, 0.9f}));
