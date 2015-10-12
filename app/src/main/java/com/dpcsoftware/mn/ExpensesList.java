@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
@@ -357,19 +358,22 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
     	SQLiteDatabase db = DatabaseHelper.quickDb(this, 0);
     	String queryModifier = "", queryModifier2 = "", queryModifier3 = "";
     	if(filterId != -1)
-    		queryModifier = " AND " + Db.Table1.TABLE_NAME + "." + Db.Table1.ID_CATEGORY + " = " + filterId;
+    		queryModifier = " AND " + Db.Table1.T_ID_CATEGORY + " = " + filterId;
     	if(filterDate != null)
-    		queryModifier2 = " AND strftime('%Y-%m'," + Db.Table1.TABLE_NAME + "." + Db.Table1.DATE + ") = '" + App.dateToDb("yyyy-MM", filterDate) + "'";
+    		queryModifier2 = " AND strftime('%Y-%m'," + Db.Table1.T_DATE + ") = '" + App.dateToDb("yyyy-MM", filterDate) + "'";
         if(searchMode) {
             String[] words = sMenu.getEditText().getText().toString().split(" ");
-            queryModifier3 = " AND (";
-            for(String w : words) {
-                queryModifier3 += Db.Table1.T_DETAILS + " LIKE '%" + w + "%' OR ";
-                queryModifier3 += Db.Table1.T_AMOUNT + " LIKE '%" + w + "%' OR ";
-                queryModifier3 += Db.Table2.CATEGORY_NAME + " LIKE '%" + w + "%' OR ";
+            if(words.length > 0) {
+                queryModifier3 = " AND (";
+                for (String w : words) {
+                    String wEscaped = DatabaseUtils.sqlEscapeString('%' + w + '%');
+                    queryModifier3 += Db.Table1.T_DETAILS + " LIKE " + wEscaped + " OR ";
+                    queryModifier3 += Db.Table1.T_AMOUNT + " LIKE " + wEscaped + " OR ";
+                    queryModifier3 += Db.Table2.CATEGORY_NAME + " LIKE " + wEscaped + " OR ";
+                }
+                queryModifier3 = queryModifier3.substring(0, queryModifier3.length() - 3);
+                queryModifier3 += ")";
             }
-            queryModifier3 = queryModifier3.substring(0, queryModifier3.length()-3);
-            queryModifier3 += ")";
         }
 
     	Cursor c = db.rawQuery("SELECT " +

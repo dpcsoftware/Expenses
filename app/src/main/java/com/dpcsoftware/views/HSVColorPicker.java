@@ -154,7 +154,7 @@ public class HSVColorPicker extends LinearLayout {
                  case MotionEvent.ACTION_DOWN:
                      float x = event.getX();
                      if(x >= left && x <= right && Math.abs(x - lastX) > 5) {
-                         cursorPos = event.getX();
+                         cursorPos = x;
                          if (type == HUE)
                              hue = (cursorPos - left) / range * 360;
                          else if (type == SAT)
