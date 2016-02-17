@@ -300,7 +300,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
     	creating = false;
 
     	//Verify auto backup
-    	if(prefs.getBoolean("BACKUP_AUTO", false)) {    	
+    	if(prefs.getBoolean("BACKUP_AUTO", false) && Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			int days;
 			if(prefs.getString("BACKUP_AUTO_INT", "M").equals("M"))
 				days = 30;

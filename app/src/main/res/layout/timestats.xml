@@ -16,22 +16,26 @@
    along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/RelativeLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="3dp" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <RadioGroup
         android:id="@+id/radioGroup1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="5dp"
         android:checkedButton="@+id/radio1"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timestats_l3"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_marginRight="8dp"/>
 
         <RadioButton
             android:id="@+id/radio1"
@@ -46,12 +50,20 @@
             android:text="@string/timestats_l2" />
     </RadioGroup>
 
+    <View style="@style/MN.HBarThin" />
+
     <LinearLayout
         android:id="@+id/RelativeLayout2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/radioGroup1"
-        android:layout_centerHorizontal="true">
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/timestats_l4"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
         <ImageButton
             android:id="@+id/imageButton1"
@@ -69,7 +81,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_gravity="center_vertical"
-            android:text="teste"/>
+            android:text="@string/nt_empty"/>
 
         <ImageButton
             android:id="@+id/imageButton2"
@@ -82,12 +94,41 @@
 
     </LinearLayout>
 
+    <View style="@style/MN.HBarThin" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/timestats_l5"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_marginRight="8dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timestats_l6"
+            android:id="@+id/checkBoxCumulative"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timestats_l7"
+            android:id="@+id/checkBoxBudget"/>
+
+    </LinearLayout>
+
+    <View style="@style/MN.HBarThin" />
+
     <FrameLayout
         android:id="@+id/FrameLayoutTimeChart"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/RelativeLayout2" >
+        android:layout_height="wrap_content">
     </FrameLayout>
 
-</RelativeLayout>
+</LinearLayout>
