@@ -31,6 +31,7 @@
     <string name="nt_calculator_l3" translatable="false">x</string>
     <string name="nt_calculator_l4" translatable="false">÷</string>
     <string name="nt_calculator_l5" translatable="false">=</string>
+    <string name="nt_empty" translatable="false">----</string>
     
     
     
@@ -205,7 +206,11 @@
     
     
     <string name="timestats_l1">Year</string>
-    <string name="timestats_l2">Week</string>
+    <string name="timestats_l3">Interval</string>
+    <string name="timestats_l4">Date</string>
+    <string name="timestats_l5">Options</string>
+    <string name="timestats_l6">Cumulative</string>
+    <string name="timestats_l7">Budget Line</string>
     
     
     
@@ -297,4 +302,5 @@
     <string name="editcategoryactivity_c3">Done!</string>
     <string name="editcategoryactivity_c4">Done!</string>
     <string name="editcategoryactivity_c5">Type the category name</string>
+    <string name="timestats_l2">Month</string>
 </resources>
