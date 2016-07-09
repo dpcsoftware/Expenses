@@ -286,7 +286,7 @@
     <string name="budget_c8">All categories are already in the budget</string>
     <string name="budget_c9">Budget item deleted!</string>
     <string name="exportdata_l6">Data Backup</string>
-    <string name="exportdata_l7">Backups are a copy of the application\'s database. They are saved into the the phone\'s memory and are specially useful for restoring your data in another phone, but you have to transfer the file between the devices on your own (through e-mail for example).</string>
+    <string name="exportdata_l7">Backups are a copy of the application\'s database. They are saved into the phone\'s memory and are specially useful for restoring your data in another phone, but you have to transfer the file between the devices on your own (through e-mail for example).</string>
     <string name="exportdata_l8">Export to a Spreadsheet</string>
     <string name="exportdata_l9">Select the time interval to export your expenses to a ODS spreadsheet:</string>
     <string name="exportdata_l10">From</string>
