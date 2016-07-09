@@ -76,6 +76,12 @@
                 android:drawableLeft="@drawable/stats_grey" />
 
             <TextView
+                android:id="@+id/menu9"
+                style="@style/MN.MenuTextView"
+                android:text="@string/expenseslist_dr12"
+                android:drawableLeft="@drawable/groups_grey" />
+
+            <TextView
                 android:id="@+id/menu2"
                 style="@style/MN.MenuTextView"
                 android:text="@string/expenseslist_dr3"

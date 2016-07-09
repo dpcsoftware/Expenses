@@ -200,6 +200,7 @@
     <string name="expenseslist_dr9">Export Data</string>
     <string name="expenseslist_dr10">Preferences</string>
     <string name="expenseslist_dr11">About</string>
+    <string name="expenseslist_dr12">By Group</string>
     <string name="expenseslist_l_img1">Show More</string>
     <string name="expenseslist_l_img2">Add Expense</string>
     
@@ -303,4 +304,7 @@
     <string name="editcategoryactivity_c4">Done!</string>
     <string name="editcategoryactivity_c5">Type the category name</string>
     <string name="timestats_l2">Month</string>
+
+
+    <string name="groupstats_c1">Group Balance</string>
 </resources>

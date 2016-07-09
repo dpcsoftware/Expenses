@@ -52,6 +52,7 @@
         <activity android:name="FolderPicker" />
         <activity android:name="Budget" />
         <activity android:name="EditCategoryActivity" />
+        <activity android:name=".GroupStats" />
         
         <activity android:name="Widget1Config">
 		    <intent-filter>

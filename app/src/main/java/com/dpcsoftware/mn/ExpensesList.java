@@ -279,6 +279,10 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
     			Intent intent10 = new Intent(this, Budget.class);
     			startActivity(intent10);
     			break;
+            case R.id.menu9:
+                Intent intent11 = new Intent(this, GroupStats.class);
+                startActivity(intent11);
+                break;
     	}
     	drawerLayout.closeDrawers();
     }
