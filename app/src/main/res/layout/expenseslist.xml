@@ -69,6 +69,9 @@
                 style="@style/MN.MenuSubtitle"
                 android:text="@string/expenseslist_dr1"/>
 
+            <View
+                style="@style/MN.HBarMenu" />
+
             <TextView
                 android:id="@+id/menu1"
                 style="@style/MN.MenuTextView"
@@ -87,9 +90,15 @@
                 android:text="@string/expenseslist_dr3"
                 android:drawableLeft="@drawable/stats_time_grey" />
 
+            <View
+                style="@style/MN.HBarMenu" />
+
             <TextView
                 style="@style/MN.MenuSubtitle"
                 android:text="@string/expenseslist_dr4"/>
+
+            <View
+                style="@style/MN.HBarMenu" />
 
             <TextView
                 android:id="@+id/menu3"
@@ -103,9 +112,15 @@
                 android:text="@string/expenseslist_dr6"
                 android:drawableLeft="@drawable/categories_grey" />
 
+            <View
+                style="@style/MN.HBarMenu" />
+
             <TextView
                 style="@style/MN.MenuSubtitle"
                 android:text="@string/expenseslist_dr7"/>
+
+            <View
+                style="@style/MN.HBarMenu" />
 
             <TextView
                 android:id="@+id/menu5"

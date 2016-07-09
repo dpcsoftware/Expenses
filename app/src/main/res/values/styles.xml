@@ -84,8 +84,7 @@
     <style name="MN.MenuSubtitle" parent="@android:style/Widget.TextView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/petroGreen</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/green</item>
         <item name="android:padding">5dp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -97,7 +96,7 @@
     </style>
 
     <style name="MN.HBarMenu" parent="@style/MN.HBar">
-        <item name="android:background">@color/hBarMenu</item>
+        <item name="android:background">@color/gray</item>
     </style>
     
     <style name="MN.HBarThin" parent="@android:style/Widget">
