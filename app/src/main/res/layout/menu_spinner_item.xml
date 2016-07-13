@@ -23,6 +23,6 @@
     android:gravity="center_vertical"
     android:layout_gravity="left"
     android:padding="5dp"
-    android:textAppearance="@style/MN.ActionBar.Title"
+    style="@style/MN.ActionBar.Title"
     android:drawableRight="@drawable/arrow_drop_down_white" />
 
