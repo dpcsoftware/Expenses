@@ -59,15 +59,16 @@
 
 
 
-    <string name="changes">-- Redesigned interface matching new Android standards\n
-    -- You can now search over your expenses records\n
-    -- You can define a Budget, track it over time and receive notifications</string>
+    <string name="changes">-- Categories can now have custom colors\n
+    -- Statistics on time have new options\n
+    -- Added statistics by group screen\n
+    -- Minor design changes</string>
 
     
 	
     <string name="about_c1">About the app</string>
     
-    <string name="about_l1">Version 1.3</string>
+    <string name="about_l1">Version 1.3.1</string>
     <string name="about_l3">Send us your feedback:</string>
     <string name="about_l4">Version Changes</string>
     <string name="about_l6">Expenses is free software (as in freedom) released under the GNU GPL license version 3</string>
@@ -294,8 +295,6 @@
     <string name="exportdata_c19">Date interval is invalid</string>
     <string name="exportdata_c20">Spreadsheet created!</string>
     <string name="widget1config_c1">Widget Configurations</string>
-    <string name="expenseslist_l2">Please, help us improve the application by answering to the following survey. It is quick and anonymous!</string>
-    <string name="expenseslist_l3">http://goo.gl/forms/ldyQTzOJCD</string>
     <string name="editcategoryactivity_c1">Edit Category</string>
     <string name="editcategoryactivity_l1">Pick a color:</string>
     <string name="editcategoryactivity_c2">Add Category</string>

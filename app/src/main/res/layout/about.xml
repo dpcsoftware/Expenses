@@ -114,18 +114,6 @@
             android:text="@string/nt_about_l2"
             android:autoLink="email" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/expenseslist_l2"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/expenseslist_l3"
-            android:autoLink="web" />
-
 
         <TextView
             android:id="@+id/textView6"

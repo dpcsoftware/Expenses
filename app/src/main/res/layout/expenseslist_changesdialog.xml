@@ -39,17 +39,4 @@
     <View
         style="@style/MN.HBarThin" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/expenseslist_l2"
-        android:padding="10dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:text="@string/expenseslist_l3"
-        android:padding="10dp"/>
-
 </LinearLayout>
