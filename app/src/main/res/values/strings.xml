@@ -31,6 +31,7 @@
     <string name="nt_calculator_l3" translatable="false">x</string>
     <string name="nt_calculator_l4" translatable="false">÷</string>
     <string name="nt_calculator_l5" translatable="false">=</string>
+    <string name="nt_empty" translatable="false">----</string>
     
     
     
@@ -58,15 +59,16 @@
 
 
 
-    <string name="changes">-- Redesigned interface matching new Android standards\n
-    -- You can now search over your expenses records\n
-    -- You can define a Budget, track it over time and receive notifications</string>
+    <string name="changes">-- Categories can now have custom colors\n
+    -- Statistics on time have new options\n
+    -- Added statistics by group screen\n
+    -- Minor design changes</string>
 
     
 	
     <string name="about_c1">About the app</string>
     
-    <string name="about_l1">Version 1.3</string>
+    <string name="about_l1">Version 1.3.1</string>
     <string name="about_l3">Send us your feedback:</string>
     <string name="about_l4">Version Changes</string>
     <string name="about_l6">Expenses is free software (as in freedom) released under the GNU GPL license version 3</string>
@@ -199,13 +201,18 @@
     <string name="expenseslist_dr9">Export Data</string>
     <string name="expenseslist_dr10">Preferences</string>
     <string name="expenseslist_dr11">About</string>
+    <string name="expenseslist_dr12">By Group</string>
     <string name="expenseslist_l_img1">Show More</string>
     <string name="expenseslist_l_img2">Add Expense</string>
     
     
     
     <string name="timestats_l1">Year</string>
-    <string name="timestats_l2">Week</string>
+    <string name="timestats_l3">Interval</string>
+    <string name="timestats_l4">Date</string>
+    <string name="timestats_l5">Options</string>
+    <string name="timestats_l6">Cumulative</string>
+    <string name="timestats_l7">Budget Line</string>
     
     
     
@@ -280,7 +287,7 @@
     <string name="budget_c8">All categories are already in the budget</string>
     <string name="budget_c9">Budget item deleted!</string>
     <string name="exportdata_l6">Data Backup</string>
-    <string name="exportdata_l7">Backups are a copy of the application\'s database. They are saved into the the phone\'s memory and are specially useful for restoring your data in another phone, but you have to transfer the file between the devices on your own (through e-mail for example).</string>
+    <string name="exportdata_l7">Backups are a copy of the application\'s database. They are saved into the phone\'s memory and are specially useful for restoring your data in another phone, but you have to transfer the file between the devices on your own (through e-mail for example).</string>
     <string name="exportdata_l8">Export to a Spreadsheet</string>
     <string name="exportdata_l9">Select the time interval to export your expenses to a ODS spreadsheet:</string>
     <string name="exportdata_l10">From</string>
@@ -288,6 +295,15 @@
     <string name="exportdata_c19">Date interval is invalid</string>
     <string name="exportdata_c20">Spreadsheet created!</string>
     <string name="widget1config_c1">Widget Configurations</string>
-    <string name="expenseslist_l2">Please, help us improve the application by answering to the following survey. It is quick and anonymous!</string>
-    <string name="expenseslist_l3">http://goo.gl/forms/ldyQTzOJCD</string>
+    <string name="editcategoryactivity_c1">Edit Category</string>
+    <string name="editcategoryactivity_l1">Pick a color:</string>
+    <string name="editcategoryactivity_c2">Add Category</string>
+    <string name="menu_categoryactivity_1">Save</string>
+    <string name="editcategoryactivity_c3">Done!</string>
+    <string name="editcategoryactivity_c4">Done!</string>
+    <string name="editcategoryactivity_c5">Type the category name</string>
+    <string name="timestats_l2">Month</string>
+
+
+    <string name="groupstats_c1">Group Balance</string>
 </resources>

@@ -52,6 +52,7 @@ import com.dpcsoftware.mn.App.SpinnerMenu;
 
 import java.util.ArrayDeque;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Stack;
 
 public class AddEx extends AppCompatActivity {
@@ -100,9 +101,9 @@ public class AddEx extends AppCompatActivity {
         
         findViewById(R.id.imageButton2).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Intent openAct = new Intent(AddEx.this, EditCategories.class);
+                Intent openAct = new Intent(AddEx.this, EditCategoryActivity.class);
                 Bundle args = new Bundle();
-                args.putBoolean("ADD_CATEGORY", true);
+                args.putBoolean("FROM_ADDEX", true);
                 openAct.putExtras(args);
                 startActivity(openAct);
             }
@@ -368,7 +369,7 @@ public class AddEx extends AppCompatActivity {
 					calcError = false;
 					float result = calc(expression.getText().toString());
 					if(!calcError) {
-						expression.setText(String.valueOf(result));
+						expression.setText(String.format(Locale.US, "%.2f", result));
 						expression.setSelection(expression.length());
 					}
 					break;
@@ -382,7 +383,7 @@ public class AddEx extends AppCompatActivity {
 				calcError = false;
 				float result2 = calc(expression.getText().toString());
 				if(!calcError) {
-					((EditText) act.findViewById(R.id.editText1)).setText(String.valueOf(result2));
+					((EditText) act.findViewById(R.id.editText1)).setText(String.format(Locale.US, "%.2f", result2));
 					this.dismiss();
 				}
 			}

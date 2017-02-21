@@ -33,7 +33,11 @@ assets/
 
 #Temp Files
 *~
+*.swp
+*.swo
 
 #Android Studio
 .idea/workspace.xml
 .idea/tasks.xml
+.idea/runConfigurations.xml
+.idea/codeStyleSettings.xml

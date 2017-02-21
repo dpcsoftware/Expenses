@@ -37,15 +37,16 @@
 
 
 
-    <string name="changes">-- Interface renovada de acordo com os novos padrões do Android\n
-    -- Agora você pode fazer buscas na lista de despesas\n
-    -- Você pode também definir um Orçamento, acompanhá-lo ao longo do tempo e receber alertas</string>
+    <string name="changes">-- Categorias agora podem ter cores customizadas\n
+    -- Estatísticas no tempo ganharam novas opções\n
+    -- Nova funcionalidade: estatísticas por grupo\n
+    -- Pequenas mudanças no design</string>
 
 
         
     <string name="about_c1">Sobre o aplicativo</string>
     
-    <string name="about_l1">Versão 1.3</string>
+    <string name="about_l1">Versão 1.3.1</string>
     <string name="about_l3">Envie seu feedback:</string>
     <string name="about_l4">Novidades desta versão</string>
     <string name="about_l6">Despesas é um software livre publicado sob a licença GNU GPL versão 3</string>
@@ -177,7 +178,7 @@
     
     
     <string name="timestats_l1">Anual</string>
-    <string name="timestats_l2">Semanal</string>
+    <string name="timestats_l2">Mensal</string>
     
     
     
@@ -264,7 +265,19 @@
     <string name="exportdata_c20">Planilha criada!</string>
     <string name="exportdata_c19">Intervalo de tempo inválido</string>
     <string name="widget1config_c1">Configurações do Widget</string>
-    <string name="expenseslist_l2">Por favor, nos ajude a melhorar o aplicativo respondendo ao questionário a seguir. Ele é rápido e anônimo!</string>
-    <string name="expenseslist_l3">http://goo.gl/forms/KDc7hBVNgJ</string>
+    <string name="editcategoryactivity_c1">Editar Categoria</string>
+    <string name="editcategoryactivity_c2">Adicionar Categoria</string>
+    <string name="editcategoryactivity_c5">Digite o nome da categoria</string>
+    <string name="editcategoryactivity_l1">Escolha uma cor:</string>
+    <string name="menu_categoryactivity_1">Salvar</string>
+    <string name="timestats_l3">Período</string>
+    <string name="timestats_l4">Data</string>
+    <string name="timestats_l5">Opções</string>
+    <string name="timestats_l6">Cumulativo</string>
+    <string name="timestats_l7">Linha do orçamento</string>
+    <string name="editcategoryactivity_c3">Salvo!</string>
+    <string name="editcategoryactivity_c4">Salvo!</string>
+    <string name="groupstats_c1">Balanço dos Grupos</string>
+    <string name="expenseslist_dr12">Por Grupo</string>
 
 </resources>

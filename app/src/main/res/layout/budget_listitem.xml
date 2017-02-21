@@ -23,10 +23,25 @@
     android:padding="5dp"
     android:background="@drawable/statelist_normal" >
 
-    <TextView
-        android:id="@+id/textViewLabel"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/square_shape"
+            android:contentDescription="@string/gp_1" />
+
+        <TextView
+            android:id="@+id/textViewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
     
     <LinearLayout
 	    android:layout_width="match_parent"

@@ -33,6 +33,7 @@ import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -52,7 +53,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class CategoryStats extends ActionBarActivity {
+public class CategoryStats extends AppCompatActivity {
 	private App app;
 	private CategoryStatsAdapter adapter;
 	private View footer,footer2;

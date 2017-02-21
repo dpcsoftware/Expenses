@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 
    Copyright 2013-2015 Daniel Pereira Coelho
    
@@ -16,13 +17,10 @@
    along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/text1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:layout_gravity="left"
-    android:padding="5dp"
-    style="@style/MN.ActionBar.Title"
-    android:drawableRight="@drawable/arrow_drop_down_white" />
-
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+  <solid android:color="#FFFFFF" />
+  <size android:width="28dp"
+        android:height="28dp" />
+  <stroke android:width="4dp"
+      android:color="#CCCCCC" />
+</shape>
