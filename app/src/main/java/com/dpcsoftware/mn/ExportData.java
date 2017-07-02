@@ -19,10 +19,12 @@
 
 package com.dpcsoftware.mn;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,6 +32,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -88,7 +92,7 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
 	    prefs = PreferenceManager.getDefaultSharedPreferences(this);
 	    r = getResources();
 	    app = (App) getApplication();
-	    
+
 	    stdAppFolder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + r.getString(R.string.app_name);
 	    
 	    setContentView(R.layout.exportdata_list);
@@ -156,9 +160,42 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         });
         
 	    getSupportActionBar().setTitle(R.string.exportdata_c1);
-	    
-	    renderList();
+
+        // Check storage permission
+        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
+        else {
+            renderList();
+        }
 	}
+
+	@Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Canceled dialog
+        if (grantResults.length == 0) {
+            this.finish();
+            return;
+        }
+
+        if (requestCode == 1) {
+            int i;
+            for (i = 0; i < permissions.length; ++i) {
+                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        renderList();
+                    }
+                    else {
+                        this.finish();
+                    }
+                }
+            }
+        }
+    }
 	
 	@Override
 	public void onClick(View v) {
