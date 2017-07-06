@@ -4,7 +4,7 @@ Expenses
 Expenses is a simple Android application to manage personal
 expenses.
 
-Version: 1.3
+Version: 1.3.2
 
 Developed By Daniel Pereira Coelho <dpcsoftware@gmail.com>
 

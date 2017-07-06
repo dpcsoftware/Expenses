@@ -19,11 +19,13 @@
 
 package com.dpcsoftware.mn;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -34,6 +36,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -304,7 +307,10 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
     	creating = false;
 
     	//Verify auto backup
-    	if(prefs.getBoolean("BACKUP_AUTO", false) && Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(prefs.getBoolean("BACKUP_AUTO", false) &&
+                permission == PackageManager.PERMISSION_GRANTED &&
+                Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			int days;
 			if(prefs.getString("BACKUP_AUTO_INT", "M").equals("M"))
 				days = 30;
