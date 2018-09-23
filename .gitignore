@@ -41,3 +41,5 @@ assets/
 .idea/tasks.xml
 .idea/runConfigurations.xml
 .idea/codeStyleSettings.xml
+.idea/caches
+.idea/codeStyles
