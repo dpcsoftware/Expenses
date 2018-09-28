@@ -50,6 +50,15 @@ environment for Android using Android Studio. Instructions:
 
 Changelog
 ==============================================================
+1.3.2:
+	- Fixed a bug concerning the storage access permission
+
+1.3.1:
+	- Categories can now have custom colors
+	- Statistics on time have new options
+	- Added statistics by group screen
+	- Minor design changes
+
 1.3:
 	- Redesigned interface matching new Android standards
 	- You can now search over your expenses records
