@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "28.0.2"
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "com.dpcsoftware.mn"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 27
     }
 
@@ -19,5 +19,5 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:appcompat-v7:25.3.1'
+    api 'com.android.support:appcompat-v7:27.0.0'
 }

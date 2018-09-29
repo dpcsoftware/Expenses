@@ -249,6 +249,7 @@
     <string name="prefs_15">Cochez cette case si vous voulez recevoir des alertes quand vous dépensez plus que le budget établi</string>
     <string name="gp_13">Catégorie</string>
     <string name="app_c1">Vous avez dépensez plus que votre budget!</string>
+    <string name="app_c2">Budget</string>
     <string name="gp_14">Mensuel</string>
     <string name="budget_c8">Toutes les catégories sont déjà dans le budget</string>
     <string name="budget_c9">Elément supprimé!</string>

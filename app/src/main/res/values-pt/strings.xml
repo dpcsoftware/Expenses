@@ -250,6 +250,7 @@
     <string name="gp_13">Categoria</string>
     <string name="expenseslist_dr7">OUTROS</string>
     <string name="app_c1">Você gastou mais do que deveria!</string>
+    <string name="app_c2">Orçamento</string>
     <string name="gp_14">Mensal</string>
     <string name="budget_c8">Todas as categorias já estão no orçamento</string>
     <string name="budget_c9">Item excluído!</string>

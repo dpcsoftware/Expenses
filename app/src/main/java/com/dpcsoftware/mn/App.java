@@ -20,6 +20,7 @@
 package com.dpcsoftware.mn;
 
 import android.app.Application;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -37,6 +38,7 @@ import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -98,6 +100,8 @@ public class App extends Application {
 	}
 	
 	public static final String WIDGET_PREFS_FNAME = "WigetPreferences";
+
+	public static final String BUDGET_NOTIFICATIONS_CHANNEL_ID = "budget";
 	
 	public void onCreate() {
 		super.onCreate();
@@ -115,7 +119,15 @@ public class App extends Application {
 		catch (Exception e) {
 			showChangesDialog = false;
 		}
-	}
+
+		// Create notification channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(BUDGET_NOTIFICATIONS_CHANNEL_ID,
+                    getString(R.string.app_c2), NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 	
 	public void setFlag(int tableId) {
 		switch(tableId) {
@@ -178,7 +190,7 @@ public class App extends Application {
                             if (c.getFloat(3) > c.getFloat(1)) {
                                 if (!notified && c.getInt(2) == 0) {
                                     PendingIntent pi = PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_ONE_SHOT);
-                                    NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
+                                    NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this, BUDGET_NOTIFICATIONS_CHANNEL_ID)
                                             .setContentTitle(rs.getString(R.string.app_name))
                                             .setContentText(rs.getString(R.string.app_c1))
                                             .setSmallIcon(R.drawable.money_white)
