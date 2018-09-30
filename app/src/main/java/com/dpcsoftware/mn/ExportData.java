@@ -34,13 +34,13 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -430,12 +430,13 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
 				Intent intentApp = new Intent(android.content.Intent.ACTION_SEND);
 				File f = getItem(clickedIndex);
 				if(f.getName().endsWith(".backup"))
-					intentApp.setType("application/x-sqlite3");	
+					intentApp.setType("application/x-sqlite3");
 				else if(f.getName().endsWith(".ods"))
 					intentApp.setType("application/vnd.oasis.opendocument.spreadsheet");						
 				intentApp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-				Uri uri = Uri.fromFile(f);
+				Uri uri = FileProvider.getUriForFile(getApplicationContext(), "com.dpcsoftware.fileprovider", f);
 				intentApp.putExtra(Intent.EXTRA_STREAM, uri);
+                intentApp.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 			    startActivity(Intent.createChooser(intentApp, r.getString(R.string.exportdata_c12)));
 				break;
 			case R.id.imageButton3:
@@ -453,8 +454,9 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
 			case R.id.imageButton4:
 				Intent intentApp2 = new Intent(android.content.Intent.ACTION_VIEW);
 				intentApp2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-				Uri uri2 = Uri.fromFile(getItem(clickedIndex));
+				Uri uri2 = FileProvider.getUriForFile(getApplicationContext(), "com.dpcsoftware.fileprovider", getItem(clickedIndex));
 				intentApp2.setDataAndType(uri2, "application/vnd.oasis.opendocument.spreadsheet");
+				intentApp2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 			    startActivity(Intent.createChooser(intentApp2, r.getString(R.string.exportdata_c12)));
 			}
 		}

@@ -59,13 +59,13 @@
 
 
 
-    <string name="changes">-- Fixed a bug concerning the storage access permission.</string>
+    <string name="changes">-- Fixed a bug when sharing or opening files in the \"Export Data\" menu.</string>
 
     
 	
     <string name="about_c1">About the app</string>
     
-    <string name="about_l1">Version 1.3.2</string>
+    <string name="about_l1">Version 1.3.3</string>
     <string name="about_l3">Send us your feedback:</string>
     <string name="about_l4">Version Changes</string>
     <string name="about_l6">Expenses is free software (as in freedom) released under the GNU GPL license version 3</string>
@@ -280,6 +280,7 @@
     <string name="budget_l_img2">Previous Month</string>
     <string name="gp_13">Category</string>
     <string name="app_c1">You have spent more than you should!</string>
+    <string name="app_c2">Budget</string>
     <string name="gp_14">By Month</string>
     <string name="budget_c8">All categories are already in the budget</string>
     <string name="budget_c9">Budget item deleted!</string>

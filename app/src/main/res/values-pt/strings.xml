@@ -37,13 +37,13 @@
 
 
 
-    <string name="changes">-- Corrigido erro de permissão de acesso aos arquivos do dispositivo.</string>
+    <string name="changes">-- Corrigido erro ao compartilhar ou abrir arquivos no menu \"Exportar Dados\".</string>
 
 
         
     <string name="about_c1">Sobre o aplicativo</string>
     
-    <string name="about_l1">Versão 1.3.2</string>
+    <string name="about_l1">Versão 1.3.3</string>
     <string name="about_l3">Envie seu feedback:</string>
     <string name="about_l4">Novidades desta versão</string>
     <string name="about_l6">Despesas é um software livre publicado sob a licença GNU GPL versão 3</string>
@@ -250,6 +250,7 @@
     <string name="gp_13">Categoria</string>
     <string name="expenseslist_dr7">OUTROS</string>
     <string name="app_c1">Você gastou mais do que deveria!</string>
+    <string name="app_c2">Orçamento</string>
     <string name="gp_14">Mensal</string>
     <string name="budget_c8">Todas as categorias já estão no orçamento</string>
     <string name="budget_c9">Item excluído!</string>
