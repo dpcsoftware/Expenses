@@ -1,4 +1,4 @@
-#Expenses
+# Expenses
 
 Expenses is a simple Android application to manage personal
 expenses.
@@ -7,7 +7,7 @@ Version: 1.3.3
 
 Developed by Daniel Pereira Coelho (dpcsoftware@gmail.com)
 
-#License
+# License
 
 Copyright 2013-2015 Daniel Pereira Coelho
    
@@ -22,7 +22,7 @@ GNU General Public License for more details.
 
 Check the COPYING file to read the full license.
 
-#Buil Instructions
+# Buil Instructions
 
 * Download the Android SDK and set up a full development
 environment for Android using Android Studio. Instructions:
@@ -43,7 +43,7 @@ http://developer.android.com/sdk/index.html
 
 * Collaborate with the project on: http://github.com/dpcsoftware/Expenses
 
-#Changelog
+# Changelog
 
 1.3.3:
 
