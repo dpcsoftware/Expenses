@@ -161,16 +161,16 @@
     <string name="expenseslist_c2">Suas despesas vão aparecer aqui!</string>
     
     <string name="expenseslist_l1">Filtros:</string>
-    <string name="expenseslist_dr1">ESTATÍSTICAS</string>
-    <string name="expenseslist_dr2">Por Categoria</string>
-    <string name="expenseslist_dr3">No Tempo</string>
-    <string name="expenseslist_dr4">PERSONALIZAR</string>
-    <string name="expenseslist_dr5">Grupos</string>
-    <string name="expenseslist_dr6">Categorias</string>
-    <string name="expenseslist_dr8">Orçamento</string>
-    <string name="expenseslist_dr9">Exportar Dados</string>
-    <string name="expenseslist_dr10">Preferências</string>
-    <string name="expenseslist_dr11">Sobre</string>
+    <string name="menu_main_1">ESTATÍSTICAS</string>
+    <string name="menu_main_2">Por Categoria</string>
+    <string name="menu_main_4">No Tempo</string>
+    <string name="menu_main_5">PERSONALIZAR</string>
+    <string name="menu_main_6">Grupos</string>
+    <string name="menu_main_7">Categorias</string>
+    <string name="menu_main_9">Orçamento</string>
+    <string name="menu_main_10">Exportar Dados</string>
+    <string name="menu_main_11">Preferências</string>
+    <string name="menu_main_12">Sobre</string>
     <string name="expenseslist_l_img1">Expandir Lista</string>
     
     
@@ -183,7 +183,7 @@
     <string name="menu_content_readex_1">Excluir</string>
     <string name="menu_groups_1">Novo Grupo</string>
     <string name="menu_categories_1">Nova Categoria</string>
-    <string name="menu_main_1">Pesquisar</string>
+    <string name="menu_expenseslist_1">Pesquisar</string>
     <string name="menu_budget_1">Adicionar Meta</string>
     
     
@@ -243,12 +243,12 @@
     <string name="gp_10">Total</string>
     <string name="gp_11">Erro ao acessar banco de dados</string>
     <string name="gp_12">Valor</string>
-    <string name="menu_main_2">Fechar Pesquisa</string>
+    <string name="menu_expenseslist_2">Fechar Pesquisa</string>
     <string name="prefs_13">Orçamento</string>
     <string name="prefs_15">Escolha se quer receber notificações quando você gasta mais do que o previsto no orçamento</string>
     <string name="prefs_14">Notificações do Orçamento</string>
     <string name="gp_13">Categoria</string>
-    <string name="expenseslist_dr7">OUTROS</string>
+    <string name="menu_main_8">OUTROS</string>
     <string name="app_c1">Você gastou mais do que deveria!</string>
     <string name="app_c2">Orçamento</string>
     <string name="gp_14">Mensal</string>
@@ -276,6 +276,6 @@
     <string name="editcategoryactivity_c3">Salvo!</string>
     <string name="editcategoryactivity_c4">Salvo!</string>
     <string name="groupstats_c1">Balanço dos Grupos</string>
-    <string name="expenseslist_dr12">Por Grupo</string>
+    <string name="menu_main_3">Por Grupo</string>
 
 </resources>

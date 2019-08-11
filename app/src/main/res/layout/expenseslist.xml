@@ -18,6 +18,7 @@
 
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -52,14 +53,11 @@
             android:contentDescription="@string/expenseslist_l_img2"/>
 	</RelativeLayout>
 	
-	<ScrollView
-	    android:id="@+id/drawer_frame"
-	    android:layout_width="240dp"
-	    android:layout_height="match_parent"
-	    android:layout_gravity="start"
-	    android:fillViewport="true">
-
-        <include layout="@layout/mainmenu"/>
-
-	</ScrollView>
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/main">
+    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

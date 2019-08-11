@@ -187,18 +187,18 @@
     <string name="expenseslist_c5">No results found</string>
     
     <string name="expenseslist_l1">Filters:</string>
-    <string name="expenseslist_dr1">STATISTICS</string>
-    <string name="expenseslist_dr2">By Category</string>
-    <string name="expenseslist_dr3">Over Time</string>
-    <string name="expenseslist_dr4">CUSTOMIZE</string>
-    <string name="expenseslist_dr5">Groups</string>
-    <string name="expenseslist_dr6">Categories</string>
-    <string name="expenseslist_dr7">OTHER</string>
-    <string name="expenseslist_dr8">Budget</string>
-    <string name="expenseslist_dr9">Export Data</string>
-    <string name="expenseslist_dr10">Preferences</string>
-    <string name="expenseslist_dr11">About</string>
-    <string name="expenseslist_dr12">By Group</string>
+    <string name="menu_main_1">STATISTICS</string>
+    <string name="menu_main_2">By Category</string>
+    <string name="menu_main_4">Over Time</string>
+    <string name="menu_main_5">CUSTOMIZE</string>
+    <string name="menu_main_6">Groups</string>
+    <string name="menu_main_7">Categories</string>
+    <string name="menu_main_8">OTHER</string>
+    <string name="menu_main_9">Budget</string>
+    <string name="menu_main_10">Export Data</string>
+    <string name="menu_main_11">Preferences</string>
+    <string name="menu_main_12">About</string>
+    <string name="menu_main_3">By Group</string>
     <string name="expenseslist_l_img1">Show More</string>
     <string name="expenseslist_l_img2">Add Expense</string>
     
@@ -217,8 +217,8 @@
     <string name="menu_content_readex_1">Delete</string>
     <string name="menu_groups_1">New Group</string>
     <string name="menu_categories_1">New Category</string>
-    <string name="menu_main_1">Search</string>
-    <string name="menu_main_2">Close Search</string>
+    <string name="menu_expenseslist_1">Search</string>
+    <string name="menu_expenseslist_2">Close Search</string>
     <string name="menu_budget_1">Add Item</string>
 
     

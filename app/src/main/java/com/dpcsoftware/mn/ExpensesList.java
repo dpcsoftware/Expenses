@@ -34,6 +34,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -66,7 +68,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ExpensesList extends AppCompatActivity implements OnItemClickListener, OnItemLongClickListener {
+public class ExpensesList extends AppCompatActivity implements OnItemClickListener, OnItemLongClickListener, NavigationView.OnNavigationItemSelectedListener {
 	private static final int NUMBER_OF_ITEMS = 40;
 	
 	private App app;
@@ -145,7 +147,11 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
 		else {
 			filterId = -1;
 		}
-		
+
+        // Set menu listener
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
+
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.expenseslist_c3, R.string.expenseslist_c4) {
 			public void onDrawerClosed(View view) {
@@ -229,7 +235,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
                     imm.showSoftInput(et, 0);
                     item.setIcon(R.drawable.x_white);
                     ((TextView) listView.getEmptyView().findViewById(R.id.textView1)).setText(R.string.expenseslist_c5);
-                    item.setTitle(R.string.menu_main_2);
+                    item.setTitle(R.string.menu_expenseslist_2);
                 }
                 else {
                     sMenu.getSpinner().setVisibility(View.VISIBLE);
@@ -238,7 +244,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
                     imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
                     item.setIcon(R.drawable.search_white);
                     ((TextView) listView.getEmptyView().findViewById(R.id.textView1)).setText(R.string.expenseslist_c2);
-                    item.setTitle(R.string.menu_main_1);
+                    item.setTitle(R.string.menu_expenseslist_1);
                     renderList();
                 }
                 searchMode = !searchMode;
@@ -247,47 +253,48 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
 
     	return true;
     }
-    
-    public void menuClick(View v) {
-    	switch (v.getId()) {
-    		case R.id.menu3:
-    			Intent intent2 = new Intent(this, EditGroups.class);
-       			startActivity(intent2);
-       			break;
-    		case R.id.menu4:
-    			Intent intent3 = new Intent(this, EditCategories.class);
-       			startActivity(intent3);
-       			break;
-    		case R.id.menu1:
-    			Intent intent4 = new Intent(this, CategoryStats.class);
-       			startActivity(intent4);
-       			break;
-    		case R.id.menu2:
-    			Intent intent5 = new Intent(this, TimeStats.class);
-       			startActivity(intent5);
-       			break;
-    		case R.id.menu7:
-    			Intent intent6 = new Intent(this, EditPreferences.class);
-       			startActivity(intent6);
-       			break;
-    		case R.id.menu6:
-    			Intent intent8 = new Intent(this, ExportData.class);
-       			startActivity(intent8);
-       			break;
-    		case R.id.menu8:
-    			Intent intent9 = new Intent(this, About.class);
-       			startActivity(intent9);
-       			break;
-    		case R.id.menu5:
-    			Intent intent10 = new Intent(this, Budget.class);
-    			startActivity(intent10);
-    			break;
-            case R.id.menu9:
+
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_edit_groups:
+                Intent intent2 = new Intent(this, EditGroups.class);
+                startActivity(intent2);
+                break;
+            case R.id.menu_item_edit_categories:
+                Intent intent3 = new Intent(this, EditCategories.class);
+                startActivity(intent3);
+                break;
+            case R.id.menu_item_stats_category:
+                Intent intent4 = new Intent(this, CategoryStats.class);
+                startActivity(intent4);
+                break;
+            case R.id.menu_item_stats_time:
+                Intent intent5 = new Intent(this, TimeStats.class);
+                startActivity(intent5);
+                break;
+            case R.id.menu_item_prefs:
+                Intent intent6 = new Intent(this, EditPreferences.class);
+                startActivity(intent6);
+                break;
+            case R.id.menu_item_export_data:
+                Intent intent8 = new Intent(this, ExportData.class);
+                startActivity(intent8);
+                break;
+            case R.id.menu_item_about:
+                Intent intent9 = new Intent(this, About.class);
+                startActivity(intent9);
+                break;
+            case R.id.menu_item_budget:
+                Intent intent10 = new Intent(this, Budget.class);
+                startActivity(intent10);
+                break;
+            case R.id.menu_item_stats_group:
                 Intent intent11 = new Intent(this, GroupStats.class);
                 startActivity(intent11);
                 break;
-    	}
-    	drawerLayout.closeDrawers();
+        }
+        drawerLayout.closeDrawers();
+        return true;
     }
     
     @Override

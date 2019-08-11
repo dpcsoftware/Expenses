@@ -160,17 +160,17 @@
     <string name="expenseslist_c2">Votre liste de dépenses va apparaître ici!</string>
     
     <string name="expenseslist_l1">Filtres:</string>
-    <string name="expenseslist_dr1">STATISTIQUES</string>
-    <string name="expenseslist_dr2">Par Catégorie</string>
-    <string name="expenseslist_dr3">Au cours du temps</string>
-    <string name="expenseslist_dr4">PERSONNALISER</string>
-    <string name="expenseslist_dr5">Groupes</string>
-    <string name="expenseslist_dr6">Catégories</string>
-    <string name="expenseslist_dr7">AUTRES</string>
-    <string name="expenseslist_dr8">Budget</string>
-    <string name="expenseslist_dr9">Exporter les données</string>
-    <string name="expenseslist_dr10">Préférences</string>
-    <string name="expenseslist_dr11">A propos</string>
+    <string name="menu_main_1">STATISTIQUES</string>
+    <string name="menu_main_2">Par Catégorie</string>
+    <string name="menu_main_4">Au cours du temps</string>
+    <string name="menu_main_5">PERSONNALISER</string>
+    <string name="menu_main_6">Groupes</string>
+    <string name="menu_main_7">Catégories</string>
+    <string name="menu_main_8">AUTRES</string>
+    <string name="menu_main_9">Budget</string>
+    <string name="menu_main_10">Exporter les données</string>
+    <string name="menu_main_11">Préférences</string>
+    <string name="menu_main_12">A propos</string>
     <string name="expenseslist_l_img1">Voir Plus</string>
     
     
@@ -184,7 +184,7 @@
     <string name="menu_content_readex_1">Supprimer</string>
     <string name="menu_groups_1">Ajouter un groupe</string>
     <string name="menu_categories_1">Ajouter une catégorie</string>
-    <string name="menu_main_1">Rechercher</string>
+    <string name="menu_expenseslist_1">Rechercher</string>
     <string name="menu_budget_1">Ajouter un objectif</string>
     
     
@@ -243,7 +243,7 @@
     <string name="gp_10">Total</string>
     <string name="gp_11">Erreur lors de la connexion à la base de données</string>
     <string name="gp_12">Montant</string>
-    <string name="menu_main_2">Fermer Recherche</string>
+    <string name="menu_expenseslist_2">Fermer Recherche</string>
     <string name="prefs_13">Budget</string>
     <string name="prefs_14">Notifications sur le Budget</string>
     <string name="prefs_15">Cochez cette case si vous voulez recevoir des alertes quand vous dépensez plus que le budget établi</string>
@@ -275,5 +275,5 @@
     <string name="timestats_l7">Ligne du Budget</string>
     <string name="editcategoryactivity_c4">Bien sauvegardé!</string>
     <string name="groupstats_c1">Bilan des Groupes</string>
-    <string name="expenseslist_dr12">Par Groupe</string>
+    <string name="menu_main_3">Par Groupe</string>
 </resources>
