@@ -26,12 +26,12 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.Region;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 public class HSVColorPicker extends LinearLayout {
     private float hue, sat, val;
