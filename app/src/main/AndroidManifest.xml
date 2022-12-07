@@ -31,7 +31,8 @@
         android:allowBackup="true">
         <activity
             android:name="ExpensesList"
-            android:label="@string/title_activity_main">
+            android:label="@string/title_activity_main"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,13 +54,13 @@
         <activity android:name="EditCategoryActivity" />
         <activity android:name=".GroupStats" />
         
-        <activity android:name="Widget1Config">
+        <activity android:name="Widget1Config" android:exported="true">
 		    <intent-filter>
 		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
 		    </intent-filter>
 		</activity>
         
-        <receiver android:name="Widget1" >
+        <receiver android:name="Widget1" android:exported="false">
 	    	<intent-filter>
 	        	<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 	    	</intent-filter>
