@@ -189,7 +189,7 @@ public class HSVColorPicker extends LinearLayout {
         @Override
         protected void onDraw(Canvas canvas) {
             canvas.save();
-            canvas.clipPath(clipPath, Region.Op.REPLACE);
+            canvas.clipPath(clipPath);
             if (type == HUE) {
                 for (i = left; i < right; i += 5) {
                     p.setColor(Color.HSVToColor(new float[]{(i - left) / range * 360, 0.9f, 0.9f}));
