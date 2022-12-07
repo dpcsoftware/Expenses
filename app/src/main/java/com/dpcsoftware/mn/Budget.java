@@ -1,6 +1,6 @@
 /*
  *   Copyright 2013-2015 Daniel Pereira Coelho
- *   
+ *
  *   This file is part of the Expenses Android Application.
  *
  *   Expenses is free software: you can redistribute it and/or modify
@@ -14,7 +14,7 @@
  *
  *   You should have received a copy of the GNU General Public License
  *   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package com.dpcsoftware.mn;
@@ -57,9 +57,9 @@ import java.util.Calendar;
 
 public class Budget extends AppCompatActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemLongClickListener {
-	private App app;
-	private Runnable menuCallback = new Runnable() {
-		public void run() {
+    private App app;
+    private Runnable menuCallback = new Runnable() {
+        public void run() {
             SQLiteDatabase db = DatabaseHelper.quickDb(Budget.this, DatabaseHelper.MODE_READ);
 
             Cursor c = db.rawQuery("SELECT " + Db.Table3.GROUP_TYPE +
@@ -68,13 +68,13 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
             c.moveToFirst();
             gType = c.getInt(0);
             c.close();
-            if(gType == Db.Table3.TYPE_MONTH)
+            if (gType == Db.Table3.TYPE_MONTH)
                 rg.check(R.id.radio0);
             else
                 rg.check(R.id.radio1);
-			renderList();
-		}
-	};
+            renderList();
+        }
+    };
     private Resources res;
     private Calendar date;
     private ListView lv;
@@ -86,13 +86,13 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
     private ActionMode actMode;
     private long selectedId;
     private boolean pickMode = false;
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		app = (App) getApplication();
 
-		setContentView(R.layout.budget);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        app = (App) getApplication();
+
+        setContentView(R.layout.budget);
 
         res = getResources();
 
@@ -124,34 +124,34 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         header.setOnClickListener(null);
         lv.addHeaderView(header);
     }
-	
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {    	
-    	getMenuInflater().inflate(R.menu.budget, menu);
-    	
-    	app.new SpinnerMenu(this,menuCallback);
-    	
-    	return true;
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.budget, menu);
+
+        app.new SpinnerMenu(this, menuCallback);
+
+        return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-    	switch(item.getItemId()) {
-			case R.id.item1:
+        switch (item.getItemId()) {
+            case R.id.item1:
                 Bundle args = new Bundle();
                 args.putInt("MODE", BudgetDialog.ADD);
                 BudgetDialog addDg = new BudgetDialog();
                 addDg.setArguments(args);
                 addDg.show(getSupportFragmentManager(), null);
-				break;
-    	}
+                break;
+        }
 
-    	return true;
+        return true;
     }
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.imageButton1)
+        if (v.getId() == R.id.imageButton1)
             date.add(Calendar.MONTH, -1);
         else
             date.add(Calendar.MONTH, 1);
@@ -159,7 +159,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser("MMMM / y", date.getTime()));
         renderList();
     }
-    	
+
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         Bundle args = new Bundle();
@@ -169,13 +169,13 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         edtDg.setArguments(args);
         edtDg.show(getSupportFragmentManager(), null);
 
-        if(pickMode)
+        if (pickMode)
             actMode.finish();
     }
 
     @Override
-    public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long id) {
-        if(!pickMode) {
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        if (!pickMode) {
             pickMode = true;
             selectItem(view, id);
             actMode = startSupportActionMode(actModeCallback);
@@ -187,11 +187,10 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_WRITE);
         App.Log("here");
-        if(checkedId == R.id.radio0) {
+        if (checkedId == R.id.radio0) {
             gType = Db.Table3.TYPE_MONTH;
             findViewById(R.id.dateLayout).setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             gType = Db.Table3.TYPE_TOTAL;
             findViewById(R.id.dateLayout).setVisibility(View.GONE);
         }
@@ -201,12 +200,12 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         db.close();
         renderList();
     }
-    	
+
     public void renderList() {
         SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_READ);
 
         String queryModifier = "";
-        if(gType == Db.Table3.TYPE_MONTH)
+        if (gType == Db.Table3.TYPE_MONTH)
             queryModifier = " AND strftime('%Y-%m'," + Db.Table1.T_DATE + ") = '" + App.dateToDb("yyyy-MM", date.getTime()) + "'";
 
         Cursor c = db.rawQuery("SELECT "
@@ -223,11 +222,10 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
                 " WHERE " + Db.Table4.T_ID_GROUP + " = " + app.activeGroupId +
                 " GROUP BY " + Db.Table4.T_ID +
                 " ORDER BY " + Db.Table4.T_ALERT + " DESC, " + Db.Table2.T_CATEGORY_NAME + " ASC", null);
-        if(adapter == null) {
+        if (adapter == null) {
             adapter = new BudgetAdapter(this, c);
             lv.setAdapter(adapter);
-        }
-        else {
+        } else {
             adapter.swapCursor(c);
             adapter.notifyDataSetChanged();
         }
@@ -236,19 +234,19 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         float totalBudget = 0;
 
         c.moveToFirst();
-        while(!c.isAfterLast()) {
+        while (!c.isAfterLast()) {
             totalSpent += c.getFloat(3);
             totalBudget += c.getFloat(1);
             c.moveToNext();
         }
 
-        float rate = totalSpent/totalBudget;
+        float rate = totalSpent / totalBudget;
 
         ((TextView) header.findViewById(R.id.textViewPercentage)).setText(String.format("%.1f", (totalSpent / totalBudget) * 100) + "%");
         ProgressBar pb = (ProgressBar) header.findViewById(R.id.progressBar1);
-        pb.setProgress(Math.round(rate*pb.getMax()));
+        pb.setProgress(Math.round(rate * pb.getMax()));
         GradientDrawable gd = (GradientDrawable) ((ScaleDrawable) ((LayerDrawable) pb.getProgressDrawable()).findDrawableByLayerId(android.R.id.progress)).getDrawable();
-        if(pb.getProgress() == pb.getMax())
+        if (pb.getProgress() == pb.getMax())
             gd.setColor(res.getColor(R.color.red));
         else
             gd.setColor(res.getColor(R.color.green));
@@ -294,27 +292,27 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
 
     private void selectItem(View v, long id) {
         v.setBackgroundColor(getResources().getColor(R.color.gray));
-        if(id >= 0)
+        if (id >= 0)
             selectedId = id;
     }
 
     private void unselectItem(View v, long id) {
         v.setBackgroundResource(R.drawable.statelist_normal);
-        if(id >= 0)
+        if (id >= 0)
             selectedId = -1;
     }
 
     private void clearSelections() {
-        int i,max,start;
-        if(selectedId >= 0) {
+        int i, max, start;
+        if (selectedId >= 0) {
             max = lv.getChildCount();
-            if(lv.getHeaderViewsCount() == 0)
+            if (lv.getHeaderViewsCount() == 0)
                 start = 0;
-            else if(lv.getFirstVisiblePosition() == 0)
+            else if (lv.getFirstVisiblePosition() == 0)
                 start = 1;
             else
                 start = 0;
-            for(i = start;i < max;i++)
+            for (i = start; i < max; i++)
                 unselectItem(lv.getChildAt(i), -1);
             selectedId = -1;
         }
@@ -325,11 +323,10 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         int toastString;
         int result = db.delete(Db.Table4.TABLE_NAME, Db.Table4._ID + " = " + selectedId, null);
 
-        if(result == 1) {
+        if (result == 1) {
             toastString = R.string.budget_c9;
             app.setFlag(4);
-        }
-        else
+        } else
             toastString = R.string.gp_11;
 
         App.Toast(this, toastString);
@@ -346,7 +343,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         }
 
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            return mInflater.inflate(R.layout.budget_listitem,parent,false);
+            return mInflater.inflate(R.layout.budget_listitem, parent, false);
         }
 
         public void bindView(View view, Context context, Cursor cursor) {
@@ -355,20 +352,20 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
 
             float spent = cursor.getFloat(3);
             float budget = cursor.getFloat(1);
-            float rate = spent/budget;
+            float rate = spent / budget;
 
             ((TextView) view.findViewById(R.id.textViewPercentage)).setText(String.format("%.1f", rate * 100) + "%");
             ProgressBar pb = (ProgressBar) view.findViewById(R.id.progressBar1);
             pb.setProgress((int) Math.floor(rate * pb.getMax()));
             GradientDrawable gd = (GradientDrawable) ((ScaleDrawable) ((LayerDrawable) pb.getProgressDrawable()).findDrawableByLayerId(android.R.id.progress)).getDrawable();
-            if(pb.getProgress() == pb.getMax())
+            if (pb.getProgress() == pb.getMax())
                 gd.setColor(res.getColor(R.color.red));
             else
                 gd.setColor(res.getColor(R.color.green));
             ((TextView) view.findViewById(R.id.textViewValues)).setText(app.printMoney(spent) + " / " + app.printMoney(budget));
 
             long id = cursor.getLong(0);
-            if(id == selectedId)
+            if (id == selectedId)
                 selectItem(view, -1);
             else
                 unselectItem(view, -1);
@@ -403,7 +400,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
             Spinner sp = (Spinner) v.findViewById(R.id.spinner1);
             SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_READ);
 
-            if(mode == ADD) {
+            if (mode == ADD) {
                 titleResource = R.string.budget_c3;
 
                 Cursor c = db.rawQuery("SELECT "
@@ -416,20 +413,18 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
                         " AND " + Db.Table4.T_ID_GROUP + " = " + app.activeGroupId + ")" +
                         " ORDER BY " + Db.Table2.T_CATEGORY_NAME + " ASC", null);
 
-                if(c.getCount() == 0) {
+                if (c.getCount() == 0) {
                     App.Toast(act, R.string.budget_c8);
                     c.close();
                     dismiss();
-                }
-                else {
+                } else {
                     SimpleCursorAdapter adapter = new SimpleCursorAdapter(act, android.R.layout.simple_spinner_item, c, new String[]{Db.Table2.CATEGORY_NAME}, new int[]{android.R.id.text1}, 0);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     sp.setAdapter(adapter);
 
                     app.showKeyboard(edtValue);
                 }
-            }
-            else {
+            } else {
                 titleResource = R.string.budget_c4;
                 editId = params.getLong("EDIT_ID");
 
@@ -456,7 +451,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         }
 
         public void onClick(DialogInterface dialog, int which) {
-            if(which == DialogInterface.BUTTON_POSITIVE)
+            if (which == DialogInterface.BUTTON_POSITIVE)
                 saveItem();
             else
                 dismiss();
@@ -468,10 +463,9 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
 
             try {
                 amount = Float.parseFloat(edtValue.getText().toString());
-                if(amount == 0)
+                if (amount == 0)
                     throw new Exception();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 App.Toast(act, R.string.budget_c5);
                 return;
             }
@@ -479,26 +473,25 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
             SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_WRITE);
             ContentValues cv = new ContentValues();
             cv.put(Db.Table4.AMOUNT, amount);
-            if(mode == ADD) {
+            if (mode == ADD) {
                 cv.put(Db.Table4.ID_CATEGORY, sp.getSelectedItemId());
                 cv.put(Db.Table4.ALERT, 0);
             }
             cv.put(Db.Table4.ID_GROUP, app.activeGroupId);
             long result;
-            if(mode == EDIT)
+            if (mode == EDIT)
                 result = db.update(Db.Table4.TABLE_NAME, cv, Db.Table4._ID + " = " + editId, null);
             else
                 result = db.insert(Db.Table4.TABLE_NAME, null, cv);
             int toastText;
-            if((mode == EDIT && result == 1) | (mode == ADD && result != -1)) {
-                if(mode == EDIT)
+            if ((mode == EDIT && result == 1) | (mode == ADD && result != -1)) {
+                if (mode == EDIT)
                     toastText = R.string.budget_c6;
                 else
                     toastText = R.string.budget_c7;
                 act.renderList();
                 this.dismiss();
-            }
-            else
+            } else
                 toastText = R.string.gp_11;
             App.Toast(act, toastText);
             db.close();

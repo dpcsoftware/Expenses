@@ -45,7 +45,7 @@ public class GroupStats extends AppCompatActivity {
     private boolean isByMonth = true;
     private View.OnClickListener monthButtonCListener = new View.OnClickListener() {
         public void onClick(View v) {
-            switch(v.getId()) {
+            switch (v.getId()) {
                 case R.id.imageButton1:
                     date.add(Calendar.MONTH, -1);
                     break;
@@ -81,13 +81,12 @@ public class GroupStats extends AppCompatActivity {
         findViewById(R.id.imageButton2).setOnClickListener(monthButtonCListener);
 
         ((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged (RadioGroup group, int checkedId) {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
                 LinearLayout monthPicker = (LinearLayout) findViewById(R.id.LinearLayoutMonthPicker);
-                if(checkedId == R.id.radio0) {
+                if (checkedId == R.id.radio0) {
                     isByMonth = true;
                     monthPicker.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     isByMonth = false;
                     monthPicker.setVisibility(View.GONE);
                 }
@@ -102,7 +101,7 @@ public class GroupStats extends AppCompatActivity {
         SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_READ);
 
         String queryModifier = "";
-        if(isByMonth)
+        if (isByMonth)
             queryModifier = " AND strftime('%Y-%m'," + Db.Table1.T_DATE + ") = '" + App.dateToDb("yyyy-MM", date.getTime()) + "'";
 
         Cursor c = db.rawQuery("SELECT " +
@@ -120,7 +119,7 @@ public class GroupStats extends AppCompatActivity {
                 " ORDER BY " + Db.Table3.T_GROUP_NAME, null);
 
         float total = 0;
-        while(c.moveToNext()) {
+        while (c.moveToNext()) {
             total += c.getFloat(2);
         }
 
@@ -129,11 +128,10 @@ public class GroupStats extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.textViewMonth)).setText(App.dateToUser("MMMM / yyyy", date.getTime()));
 
-        if(adapter == null) {
-            adapter = new GroupStatsAdapter(this,c);
+        if (adapter == null) {
+            adapter = new GroupStatsAdapter(this, c);
             lv.setAdapter(adapter);
-        }
-        else {
+        } else {
             adapter.changeCursor(c);
             adapter.notifyDataSetChanged();
         }
@@ -144,12 +142,12 @@ public class GroupStats extends AppCompatActivity {
 
         public GroupStatsAdapter(Context context, Cursor c) {
             super(context, c, 0);
-            mInflater=LayoutInflater.from(context);
+            mInflater = LayoutInflater.from(context);
         }
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            return mInflater.inflate(R.layout.groupstats_listitem,parent,false);
+            return mInflater.inflate(R.layout.groupstats_listitem, parent, false);
         }
 
         @Override

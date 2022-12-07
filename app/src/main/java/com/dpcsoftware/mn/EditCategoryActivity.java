@@ -40,14 +40,14 @@ public class EditCategoryActivity extends AppCompatActivity {
     public static final int ADD = 0, EDIT = 1;
     private int mode, selectedColor;
     private long editId;
-    private int[] colors = {R.color.c0,R.color.c1,
-            R.color.c2,R.color.c3,
-            R.color.c4,R.color.c5,
-            R.color.c6,R.color.c7,
-            R.color.c8,R.color.c9,
-            R.color.c10,R.color.c11,
-            R.color.c12,R.color.c13,
-            R.color.c14,R.color.c15};
+    private int[] colors = {R.color.c0, R.color.c1,
+            R.color.c2, R.color.c3,
+            R.color.c4, R.color.c5,
+            R.color.c6, R.color.c7,
+            R.color.c8, R.color.c9,
+            R.color.c10, R.color.c11,
+            R.color.c12, R.color.c13,
+            R.color.c14, R.color.c15};
     private ImageView target;
     private ViewGroup colorList;
     private HSVColorPicker picker;
@@ -90,7 +90,7 @@ public class EditCategoryActivity extends AppCompatActivity {
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ViewGroup.MarginLayoutParams mParams = new ViewGroup.MarginLayoutParams(lp);
         mParams.setMargins(margin, margin, margin, margin);
-        for(i = 0;i < 16;i++) {
+        for (i = 0; i < 16; i++) {
             ImageButton item = new ImageButton(this, null, R.style.MN_Widget_ImageButton);
             item.setImageResource(R.drawable.square_shape_big);
             item.getDrawable().setColorFilter(getResources().getColor(colors[i]), App.colorFilterMode);
@@ -103,7 +103,7 @@ public class EditCategoryActivity extends AppCompatActivity {
         text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_DONE) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     if (((EditText) findViewById(R.id.editText1)).getText().toString().equals(""))
                         App.Toast(EditCategoryActivity.this, R.string.editcategoryactivity_c5);
                     else
@@ -119,11 +119,10 @@ public class EditCategoryActivity extends AppCompatActivity {
         comingFromAddEx = args.getBoolean("FROM_ADDEX", false);
 
         int titleResource;
-        if(mode == ADD) {
+        if (mode == ADD) {
             titleResource = R.string.editcategoryactivity_c2;
             colorList.getChildAt(0).performClick();
-        }
-        else {
+        } else {
             titleResource = R.string.editcategoryactivity_c1;
             editId = args.getLong("EDIT_ID");
             selectedColor = args.getInt("CURRENT_COLOR");
@@ -161,26 +160,24 @@ public class EditCategoryActivity extends AppCompatActivity {
         cv.put(Db.Table2.CATEGORY_NAME, ((EditText) findViewById(R.id.editText1)).getText().toString());
         cv.put(Db.Table2.CATEGORY_COLOR, selectedColor);
         long result;
-        if(mode == EDIT)
+        if (mode == EDIT)
             result = db.update(Db.Table2.TABLE_NAME, cv, Db.Table2._ID + " = " + editId, null);
         else
             result = db.insert(Db.Table2.TABLE_NAME, null, cv);
         int toastText;
-        if((mode == EDIT && result == 1) || (mode == ADD && result != -1)) {
-            if(mode == EDIT)
+        if ((mode == EDIT && result == 1) || (mode == ADD && result != -1)) {
+            if (mode == EDIT)
                 toastText = R.string.editcategoryactivity_c3;
             else
                 toastText = R.string.editcategoryactivity_c4;
             app.setFlag(2);
-            if(comingFromAddEx) {
+            if (comingFromAddEx) {
                 app.addExUpdateCategoryId = result;
                 app.addExUpdateCategories = true;
-            }
-            else
+            } else
                 app.editCategoriesUpdateList = true;
             finish();
-        }
-        else
+        } else
             toastText = R.string.gp_11;
         App.Toast(this, toastText);
         db.close();

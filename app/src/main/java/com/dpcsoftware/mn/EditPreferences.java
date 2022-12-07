@@ -1,6 +1,6 @@
 /*
  *   Copyright 2013-2015 Daniel Pereira Coelho
- *   
+ *
  *   This file is part of the Expenses Android Application.
  *
  *   Expenses is free software: you can redistribute it and/or modify
@@ -14,7 +14,7 @@
  *
  *   You should have received a copy of the GNU General Public License
  *   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package com.dpcsoftware.mn;
@@ -32,36 +32,34 @@ import android.support.v4.content.ContextCompat;
 public class EditPreferences extends PreferenceActivity {
     private CheckBoxPreference autoBackupPref;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {    
-	    super.onCreate(savedInstanceState);
-	    addPreferencesFromResource(R.xml.prefs);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.prefs);
 
         autoBackupPref = (CheckBoxPreference) findPreference("BACKUP_AUTO");
         autoBackupPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object obj) {
-                if ((Boolean)obj) {
+                if ((Boolean) obj) {
                     // Check storage permission
                     int permission = ContextCompat.checkSelfPermission(EditPreferences.this,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     if (permission == PackageManager.PERMISSION_GRANTED) {
                         return true;
-                    }
-                    else {
+                    } else {
                         ActivityCompat.requestPermissions(EditPreferences.this,
                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                         return false;
                     }
-                }
-                else {
+                } else {
                     return true;
                 }
             }
         });
-	    
-	    setTitle(R.string.editpreferences_c1);
-	}
+
+        setTitle(R.string.editpreferences_c1);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

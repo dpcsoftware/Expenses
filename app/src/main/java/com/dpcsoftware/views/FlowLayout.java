@@ -69,7 +69,7 @@ public class FlowLayout extends ViewGroup {
                 int chHeight = child.getMeasuredHeight() + mlp.topMargin + mlp.bottomMargin;
                 int chWidth = child.getMeasuredWidth() + mlp.leftMargin + mlp.rightMargin;
 
-                if(childLeft + chWidth > myWidth) { //put child in next row
+                if (childLeft + chWidth > myWidth) { //put child in next row
                     childLeft = 0;
                     childTop += rowHeight;
                     rowHeight = 0;
@@ -97,7 +97,7 @@ public class FlowLayout extends ViewGroup {
                 int chHeight = child.getMeasuredHeight() + mlp.topMargin + mlp.bottomMargin;
                 int chWidth = child.getMeasuredWidth() + mlp.leftMargin + mlp.rightMargin;
 
-                if(childLeft + chWidth > right) { //put child in next row
+                if (childLeft + chWidth > right) { //put child in next row
                     childLeft = 0;
                     childTop += rowHeight;
                     rowHeight = 0;

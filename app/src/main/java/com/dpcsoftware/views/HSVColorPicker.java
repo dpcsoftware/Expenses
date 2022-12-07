@@ -52,7 +52,7 @@ public class HSVColorPicker extends LinearLayout {
     }
 
     public int getColor() {
-        return Color.HSVToColor(new float[] {hue, sat, val});
+        return Color.HSVToColor(new float[]{hue, sat, val});
     }
 
     public void setColor(int color) {
@@ -93,7 +93,7 @@ public class HSVColorPicker extends LinearLayout {
         hv.invalidate();
         sv.invalidate();
         vv.invalidate();
-        if(mColorChangeListener != null)
+        if (mColorChangeListener != null)
             mColorChangeListener.onColorChange(getColor());
     }
 
@@ -118,7 +118,7 @@ public class HSVColorPicker extends LinearLayout {
         }
 
         private int dpToPx(float dp) {
-            return Math.round(screenDensity*dp);
+            return Math.round(screenDensity * dp);
         }
 
         private void init() {
@@ -143,7 +143,7 @@ public class HSVColorPicker extends LinearLayout {
         }
 
         @Override
-        protected void onSizeChanged (int w, int h, int oldw, int oldh) {
+        protected void onSizeChanged(int w, int h, int oldw, int oldh) {
             left = getPaddingLeft();
             right = w - getPaddingRight();
             range = right - left;
@@ -154,62 +154,60 @@ public class HSVColorPicker extends LinearLayout {
             clipPath.reset();
             clipPath.moveTo(left, top + radius);
             clipPath.rQuadTo(0, -radius, radius, -radius);
-            clipPath.rLineTo(range - 2*radius, 0);
+            clipPath.rLineTo(range - 2 * radius, 0);
             clipPath.rQuadTo(radius, 0, radius, radius);
-            clipPath.rLineTo(0, bottom - top - 2*radius);
+            clipPath.rLineTo(0, bottom - top - 2 * radius);
             clipPath.rQuadTo(0, radius, -radius, radius);
-            clipPath.rLineTo(-range + 2*radius, 0);
+            clipPath.rLineTo(-range + 2 * radius, 0);
             clipPath.rQuadTo(-radius, 0, -radius, -radius);
             clipPath.close();
         }
 
         @Override
         public boolean onTouchEvent(MotionEvent event) {
-             switch(event.getAction()) {
-                 case MotionEvent.ACTION_MOVE:
-                 case MotionEvent.ACTION_DOWN:
-                     float x = event.getX();
-                     if(x >= left && x <= right && Math.abs(x - lastX) > 5) {
-                         cursorPos = x;
-                         if (type == HUE)
-                             hue = (cursorPos - left) / range * 360;
-                         else if (type == SAT)
-                             sat = (cursorPos - left) / range;
-                         else
-                             val = (cursorPos - left) / range;
-                         lastX = x;
-                         drawBars();
-                     }
-                     return true;
-                 default:
-                     return super.onTouchEvent(event);
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_MOVE:
+                case MotionEvent.ACTION_DOWN:
+                    float x = event.getX();
+                    if (x >= left && x <= right && Math.abs(x - lastX) > 5) {
+                        cursorPos = x;
+                        if (type == HUE)
+                            hue = (cursorPos - left) / range * 360;
+                        else if (type == SAT)
+                            sat = (cursorPos - left) / range;
+                        else
+                            val = (cursorPos - left) / range;
+                        lastX = x;
+                        drawBars();
+                    }
+                    return true;
+                default:
+                    return super.onTouchEvent(event);
             }
         }
 
         @Override
-        protected void onDraw (Canvas canvas) {
+        protected void onDraw(Canvas canvas) {
             canvas.save();
             canvas.clipPath(clipPath, Region.Op.REPLACE);
-            if(type == HUE) {
+            if (type == HUE) {
                 for (i = left; i < right; i += 5) {
                     p.setColor(Color.HSVToColor(new float[]{(i - left) / range * 360, 0.9f, 0.9f}));
                     canvas.drawLine(i, top, i, bottom, p);
                 }
-                cursorPos = hue/360.0f*range + left;
-            }
-            else if(type == SAT) {
+                cursorPos = hue / 360.0f * range + left;
+            } else if (type == SAT) {
                 for (i = left; i < right; i += 5) {
                     p.setColor(Color.HSVToColor(new float[]{hue, (i - left) / range, val}));
                     canvas.drawLine(i, top, i, bottom, p);
                 }
-                cursorPos = sat*range + left;
-            }
-            else {
+                cursorPos = sat * range + left;
+            } else {
                 for (i = left; i < right; i += 5) {
                     p.setColor(Color.HSVToColor(new float[]{hue, sat, (i - left) / range}));
                     canvas.drawLine(i, top, i, bottom, p);
                 }
-                cursorPos = val*range + left;
+                cursorPos = val * range + left;
             }
 
             canvas.restore();
@@ -217,9 +215,9 @@ public class HSVColorPicker extends LinearLayout {
             pCursorBorder.setColor(Color.GRAY);
             canvas.drawPath(clipPath, pCursorBorder);
             p.setColor(Color.WHITE);
-            canvas.drawRoundRect(new RectF(cursorPos - cursorWidth/2, 0, cursorPos + cursorWidth/2, height), cursorWidth/2, cursorWidth/2, p);
+            canvas.drawRoundRect(new RectF(cursorPos - cursorWidth / 2, 0, cursorPos + cursorWidth / 2, height), cursorWidth / 2, cursorWidth / 2, p);
             pCursorBorder.setColor(Color.BLACK);
-            canvas.drawRoundRect(new RectF(cursorPos - cursorWidth / 2, cursorBorderWidth / 2, cursorPos + cursorWidth / 2, height - cursorBorderWidth / 2), cursorWidth/2, cursorWidth/2, pCursorBorder);
+            canvas.drawRoundRect(new RectF(cursorPos - cursorWidth / 2, cursorBorderWidth / 2, cursorPos + cursorWidth / 2, height - cursorBorderWidth / 2), cursorWidth / 2, cursorWidth / 2, pCursorBorder);
         }
     }
 }
