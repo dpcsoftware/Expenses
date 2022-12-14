@@ -413,15 +413,6 @@ public class App extends Application {
         return bitmap;
     }
 
-    public void showKeyboard(final View v) {
-        v.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(v, 0);
-            }
-        }, 50);
-    }
-
     public int dpToPx(float dp) {
         return Math.round(getApplicationContext().getResources().getDisplayMetrics().density * dp);
     }

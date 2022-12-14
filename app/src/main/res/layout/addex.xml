@@ -41,7 +41,9 @@
 	            android:background="?android:attr/windowBackground"
 	            android:padding="5dp"
                 android:imeOptions="actionDone"
-                android:layout_toLeftOf="@+id/imageButton1"/>
+                android:layout_toLeftOf="@+id/imageButton1">
+				<requestFocus/>
+			</EditText>
 	
 	        <ImageButton
 	            android:id="@+id/imageButton1"

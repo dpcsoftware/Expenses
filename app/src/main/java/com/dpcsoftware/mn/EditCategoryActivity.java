@@ -132,8 +132,6 @@ public class EditCategoryActivity extends AppCompatActivity {
         }
 
         getSupportActionBar().setTitle(titleResource);
-
-        app.showKeyboard(text);
     }
 
     @Override

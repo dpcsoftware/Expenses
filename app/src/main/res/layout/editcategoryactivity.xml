@@ -48,7 +48,9 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/imageView1"
                 android:ems="10"
-                android:inputType="text" />
+                android:inputType="text">
+                <requestFocus/>
+            </EditText>
 
         </RelativeLayout>
 

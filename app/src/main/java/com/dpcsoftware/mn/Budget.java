@@ -37,6 +37,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -421,8 +423,6 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
                     SimpleCursorAdapter adapter = new SimpleCursorAdapter(act, android.R.layout.simple_spinner_item, c, new String[]{Db.Table2.CATEGORY_NAME}, new int[]{android.R.id.text1}, 0);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     sp.setAdapter(adapter);
-
-                    app.showKeyboard(edtValue);
                 }
             } else {
                 titleResource = R.string.budget_c4;
@@ -435,19 +435,26 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
                 c2.moveToFirst();
 
                 edtValue.setText(c2.getString(0));
-                app.showKeyboard(edtValue);
                 c2.close();
                 sp.setVisibility(View.GONE);
                 v.findViewById(R.id.textView1).setVisibility(View.GONE);
             }
             db.close();
 
-            return new AlertDialog.Builder(act)
+            Dialog dg = new AlertDialog.Builder(act)
                     .setView(v)
                     .setTitle(titleResource)
                     .setPositiveButton(R.string.gp_2, this)
                     .setNegativeButton(R.string.gp_3, this)
                     .create();
+
+            Window dgW = dg.getWindow();
+            dgW.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            dgW.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+            edtValue.requestFocus();
+
+            return dg;
         }
 
         public void onClick(DialogInterface dialog, int which) {

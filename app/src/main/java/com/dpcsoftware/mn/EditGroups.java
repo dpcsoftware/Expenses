@@ -33,6 +33,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
@@ -280,14 +282,20 @@ public class EditGroups extends AppCompatActivity {
                 ((EditText) layout.findViewById(R.id.editText1)).setText(args.getString("CURRENT_NAME"));
             }
 
-            app.showKeyboard(layout.findViewById(R.id.editText1));
-
-            return new AlertDialog.Builder(act)
+            Dialog dg = new AlertDialog.Builder(act)
                     .setView(layout)
                     .setTitle(titleResource)
                     .setPositiveButton(R.string.gp_2, this)
                     .setNegativeButton(R.string.gp_3, this)
                     .create();
+
+            Window dgW = dg.getWindow();
+            dgW.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            dgW.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+            layout.findViewById(R.id.editText1).requestFocus();
+
+            return dg;
         }
 
         @Override

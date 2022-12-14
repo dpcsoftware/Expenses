@@ -35,6 +35,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CursorAdapter;
@@ -153,8 +155,6 @@ public class AddEx extends AppCompatActivity {
         db.close();
 
         ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser("E", expDate.getTime()) + ", " + App.dateToUser(null, expDate.getTime()));
-
-        app.showKeyboard(findViewById(R.id.editText1));
     }
 
     @Override
@@ -318,13 +318,6 @@ public class AddEx extends AppCompatActivity {
 
             expression = (EditText) v.findViewById(R.id.editText1);
 
-            expression.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    ((InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(expression, 0);
-                }
-            });
-
             String value = params.getString("NUMBER");
             if (value != null) {
                 expression.setText(value);
@@ -337,14 +330,20 @@ public class AddEx extends AppCompatActivity {
             v.findViewById(R.id.button4).setOnClickListener(this);
             v.findViewById(R.id.button5).setOnClickListener(this);
 
-            app.showKeyboard(expression);
-
-            return new AlertDialog.Builder(act)
+            Dialog dg = new AlertDialog.Builder(act)
                     .setView(v)
                     .setTitle(R.string.addex_c5)
                     .setPositiveButton(R.string.gp_2, this)
                     .setNegativeButton(R.string.gp_3, null)
                     .create();
+
+            Window dgW = dg.getWindow();
+            dgW.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM|WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            dgW.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+            expression.requestFocus();
+
+            return dg;
         }
 
         @Override
