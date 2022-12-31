@@ -55,6 +55,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -322,6 +323,10 @@ public class App extends Application {
     }
 
     public String printMoney(float value) {
+        return printMoney(value, true);
+    }
+
+    public String printMoney(float value, boolean withSymbol) {
         int nFractionDigits;
 
         try {
@@ -331,11 +336,16 @@ public class App extends Application {
         }
 
         String val = String.format("%." + nFractionDigits + "f", value);
-        String symbol = prefs.getString("currencySymbol", rs.getString(R.string.standard_currency));
-        if (prefs.getBoolean("cSymbolBefore", rs.getBoolean(R.bool.standard_currency_pos)))
-            return symbol + " " + val;
-        else
-            return val + " " + symbol;
+        if (withSymbol) {
+            String symbol = prefs.getString("currencySymbol", rs.getString(R.string.standard_currency));
+            if (prefs.getBoolean("cSymbolBefore", rs.getBoolean(R.bool.standard_currency_pos)))
+                return symbol + " " + val;
+            else
+                return val + " " + symbol;
+        }
+        else {
+            return val;
+        }
     }
 
     public static SimpleDateFormat getDateDbFormater(String pattern) {
@@ -379,10 +389,18 @@ public class App extends Application {
 
     public static boolean copyFile(String sourcePath, String destinationPath) {
         try {
-            FileInputStream input = new FileInputStream(sourcePath);
-
             OutputStream output = new FileOutputStream(destinationPath);
+            FileInputStream input = new FileInputStream(sourcePath);
+            return copyStream(input, output);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
+    public static boolean copyStream(InputStream input, OutputStream output) {
+        try {
             byte[] buffer = new byte[1024];
             int length;
             while ((length = input.read(buffer)) > 0) {
@@ -415,5 +433,9 @@ public class App extends Application {
 
     public int dpToPx(float dp) {
         return Math.round(getApplicationContext().getResources().getDisplayMetrics().density * dp);
+    }
+
+    public static boolean isAndroidQOrAbove() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
     }
 }

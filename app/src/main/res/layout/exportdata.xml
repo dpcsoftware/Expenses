@@ -19,7 +19,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/textView1"
@@ -41,11 +42,29 @@
         android:text="@string/exportdata_l7"
         android:layout_marginTop="5dp" />
 
-    <Button
-        android:id="@+id/button1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/exportdata_l2" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/exportdata_l2" />
+
+        <Button
+            android:id="@+id/buttonRestore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/exportdata_l1">
+
+        </Button>
+    </LinearLayout>
+
+
 
     <TextView
         android:id="@+id/textView2"
@@ -149,48 +168,45 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="@string/exportdata_l3">
+        </TextView>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroupFormat"
+            android:checkedButton="@id/radioODS"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioODS"
+                android:text="@string/exportdata_l4"></RadioButton>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radioCSV"
+                android:text="@string/exportdata_l12"></RadioButton>
+        </RadioGroup>
+    </LinearLayout>
+
     <Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/exportdata_l5" />
-    
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/exportdata_l3"
-        android:textAppearance="@style/MN.TextAppearance.Subtitle"
-        android:layout_marginTop="5dp" />
-    
-    <View
-	    android:layout_width="fill_parent"
-	    android:layout_height="2dp"
-	    android:background="@color/hBar"/>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-    
-	    <TextView
-	        android:id="@+id/textView10"
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:text="@string/exportdata_l4"
-			android:padding="5dp"
-			android:gravity="center_vertical" />
-
-	    <TextView
-	        android:id="@+id/button3"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_vertical"
-	        android:textStyle="bold"
-            android:padding="10dp"
-            android:background="@drawable/statelist_normal"/>
-	    
-	</LinearLayout>
 
 </LinearLayout>

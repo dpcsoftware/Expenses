@@ -21,7 +21,9 @@ package com.dpcsoftware.mn;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -32,58 +34,43 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
-import androidx.core.app.ActivityCompat;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Currency;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class ExportData extends AppCompatActivity implements View.OnClickListener, FileFilter {
-    private static final int REQUEST_STD_FOLDER = 1;
-
+public class ExportData extends AppCompatActivity implements View.OnClickListener {
     private SharedPreferences prefs;
     private Resources r;
     private App app;
-    private String stdAppFolder;
-    private ListView lv;
-    private View header;
-    private Comparator<? super File> filecomparator = new Comparator<File>() {
-        public int compare(File file1, File file2) {
-            long t1 = file1.lastModified();
-            long t2 = file2.lastModified();
-
-            if (t1 > t2)
-                return -1;
-            else if (t1 < t2)
-                return 1;
-            else
-                return 0;
-        }
-    };
     private Calendar sprFrom, sprTo;
+    private RadioGroup radioGroupFormat;
+    private ActivityResultLauncher<String> restoreLauncher;
+    private ActivityResultLauncher<String> permissionLauncherBackup;
+    private ActivityResultLauncher<String> permissionLauncherExport;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,28 +80,22 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         r = getResources();
         app = (App) getApplication();
 
-        stdAppFolder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + r.getString(R.string.app_name);
-
-        setContentView(R.layout.exportdata_list);
+        setContentView(R.layout.exportdata);
 
         sprFrom = Calendar.getInstance();
         sprTo = Calendar.getInstance();
 
-        header = getLayoutInflater().inflate(R.layout.exportdata, null);
-        lv = (ListView) findViewById(R.id.listView1);
-        lv.addHeaderView(header);
+        radioGroupFormat = findViewById(R.id.radioGroupFormat);
 
-        header.findViewById(R.id.button1).setOnClickListener(this);
-        header.findViewById(R.id.button2).setOnClickListener(this);
-        header.findViewById(R.id.imageButton1).setOnClickListener(this);
-        header.findViewById(R.id.imageButton2).setOnClickListener(this);
-        header.findViewById(R.id.imageButton3).setOnClickListener(this);
-        header.findViewById(R.id.imageButton4).setOnClickListener(this);
-        TextView bt3 = ((TextView) header.findViewById(R.id.button3));
-        bt3.setOnClickListener(this);
-        String path = prefs.getString("STD_FOLDER", stdAppFolder);
-        bt3.setText(path.substring(path.lastIndexOf("/") + 1));
+        findViewById(R.id.button1).setOnClickListener(this);
+        findViewById(R.id.button2).setOnClickListener(this);
+        findViewById(R.id.buttonRestore).setOnClickListener(this);
+        findViewById(R.id.imageButton1).setOnClickListener(this);
+        findViewById(R.id.imageButton2).setOnClickListener(this);
+        findViewById(R.id.imageButton3).setOnClickListener(this);
+        findViewById(R.id.imageButton4).setOnClickListener(this);
 
+        // Get first expense date
         SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_READ);
         Cursor c = db.rawQuery("SELECT " +
                 Db.Table1.DATE +
@@ -122,7 +103,7 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
                 " ORDER BY " + Db.Table1.DATE + " ASC LIMIT 1", null);
         if (c.getCount() > 0) {
             c.moveToFirst();
-            String[] date = c.getString(c.getColumnIndex(Db.Table1.DATE)).split("-");
+            String[] date = c.getString(c.getColumnIndexOrThrow(Db.Table1.DATE)).split("-");
             sprFrom.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
         }
         c.close();
@@ -159,55 +140,62 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
             }
         });
 
-        getSupportActionBar().setTitle(R.string.exportdata_c1);
-
-        // Check storage permission
-        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        } else {
-            renderList();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // Canceled dialog
-        if (grantResults.length == 0) {
-            this.finish();
-            return;
-        }
-
-        if (requestCode == 1) {
-            int i;
-            for (i = 0; i < permissions.length; ++i) {
-                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        renderList();
-                    } else {
-                        this.finish();
+        // Create launcher to pick backup file to restore
+        restoreLauncher = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                uri -> {
+                    try {
+                        InputStream stream = getContentResolver().openInputStream(uri);
+                        restoreDb(stream);
+                    }
+                    catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     }
                 }
-            }
+        );
+
+        // Create launcher to ask for storage permission (only in versions prior to Q)
+        if (!App.isAndroidQOrAbove()) {
+            permissionLauncherBackup = registerForActivityResult(new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted) {
+                        backupDb(ExportDataChoiceDialog.Choice.SAVE);
+                    }
+                }
+            );
+
+            permissionLauncherExport = registerForActivityResult(new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted) {
+                        exportFile(ExportDataChoiceDialog.Choice.SAVE);
+                    }
+                }
+            );
         }
+
+        getSupportActionBar().setTitle(R.string.exportdata_c1);
     }
 
     @Override
     public void onClick(View v) {
+        ExportDataChoiceDialog chDg;
         switch (v.getId()) {
             case R.id.button1:
-                backupDb();
+                chDg = new ExportDataChoiceDialog();
+                chDg.setOnChosenListener(choice -> {
+                    backupDb(choice);
+                });
+                chDg.show(getSupportFragmentManager(), null);
                 break;
             case R.id.button2:
-                exportODS();
+                chDg = new ExportDataChoiceDialog();
+                chDg.setOnChosenListener(choice -> {
+                    exportFile(choice);
+                });
+                chDg.show(getSupportFragmentManager(), null);
                 break;
-            case R.id.button3:
-                Intent intentFolder = new Intent(this, FolderPicker.class);
-                intentFolder.putExtra("START_FOLDER", prefs.getString("STD_FOLDER", ""));
-                startActivityForResult(intentFolder, REQUEST_STD_FOLDER);
+            case R.id.buttonRestore:
+                restoreLauncher.launch("*/*");
                 break;
             case R.id.imageButton1:
                 sprFrom.add(Calendar.DAY_OF_MONTH, -1);
@@ -228,76 +216,143 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    private boolean checkStoragePermission() {
+        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return permission == PackageManager.PERMISSION_GRANTED;
+    }
+
     private void updateDateText(int widget) {
         if (widget == 1)
-            ((TextView) header.findViewById(R.id.dateView1)).setText(App.dateToUser(null, sprFrom.getTime()));
+            ((TextView) findViewById(R.id.dateView1)).setText(App.dateToUser(null, sprFrom.getTime()));
         else
-            ((TextView) header.findViewById(R.id.dateView2)).setText(App.dateToUser(null, sprTo.getTime()));
+            ((TextView) findViewById(R.id.dateView2)).setText(App.dateToUser(null, sprTo.getTime()));
     }
 
-    @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-        if (resultCode != -1)
-            return;
+    private void backupDb(ExportDataChoiceDialog.Choice choice) {
+        String srcPath = getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath();
+        String destName;
+        if (prefs.getBoolean("BACKUP_OVERRIDE_OLD", false))
+            destName = r.getString(R.string.app_name) + ".backup";
+        else
+            destName = r.getString(R.string.app_name) + "_" + App.dateToUser("yyyy-MM-dd_HH-mm", new Date()) + ".backup";
 
-        String path = data.getExtras().getString("PATH");
+        if (choice == ExportDataChoiceDialog.Choice.SHARE) { // Share file to another app (e-mail, file sync, etc)
+            // First copy file to a folder that can be exposed in an intent
+            String destPath = getFilesDir() + "/backup";
+            App.copyFile(srcPath, destPath);
 
-        switch (requestCode) {
-            case REQUEST_STD_FOLDER:
-                SharedPreferences.Editor pEdit = prefs.edit();
-                pEdit.putString("STD_FOLDER", path);
-                pEdit.apply();
-                ((TextView) header.findViewById(R.id.button3)).setText(path.substring(path.lastIndexOf("/") + 1));
-                renderList();
-                break;
+            // Create intent to share file
+            Intent intentApp = new Intent(android.content.Intent.ACTION_SEND);
+            File f = new File(destPath);
+            intentApp.setType("application/x-sqlite3");
+            intentApp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            Uri uri = FileProvider.getUriForFile(getApplicationContext(), "com.dpcsoftware.fileprovider", f, destName);
+            intentApp.putExtra(Intent.EXTRA_STREAM, uri);
+            intentApp.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(intentApp, r.getString(R.string.exportdata_c12)));
         }
-    }
+        else if (choice == ExportDataChoiceDialog.Choice.SAVE) { // save file in Downloads folder
+            try {
+                boolean backupSuccess = false;
 
-    private void backupDb() {
-        try {
-            if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                App.Toast(this, R.string.exportdata_c2);
-                return;
-            }
+                if (App.isAndroidQOrAbove()) {
+                    // Use MediaStore Downloads
+                    ContentResolver contentResolver = getContentResolver();
+                    Uri baseUri = MediaStore.Downloads.getContentUri("external");
 
-            File destDir = new File(prefs.getString("STD_FOLDER", stdAppFolder));
-            if (!destDir.exists()) {
-                boolean tryDir = destDir.mkdirs();
-                if (!tryDir)
-                    throw new IOException();
-            }
+                    // If we have to override old backups, look for an existing file in MediaStore
+                    boolean updateFile = false;
+                    int fileID = 0;
+                    if (prefs.getBoolean("BACKUP_OVERRIDE_OLD", false)) {
+                        String[] columns = new String[] {MediaStore.MediaColumns._ID};
+                        String where = MediaStore.MediaColumns.DISPLAY_NAME + " = ?";
+                        String args[] = new String[] {destName};
+                        Cursor c = contentResolver.query(
+                                baseUri,
+                                columns,
+                                where,
+                                args,
+                                null);
+                        if (c.getCount() > 0) {
+                            c.moveToFirst();
+                            updateFile = true;
+                            fileID = c.getInt(c.getColumnIndexOrThrow(MediaStore.MediaColumns._ID));
+                        }
+                        c.close();
+                    }
 
-            String destName;
-            if (prefs.getBoolean("BACKUP_OVERRIDE_OLD", false))
-                destName = r.getString(R.string.app_name) + ".backup";
-            else
-                destName = r.getString(R.string.app_name) + "_" + App.dateToUser("yyyy-MM-dd_HH-mm", new Date()) + ".backup";
+                    // Get file URI
+                    Uri uri;
+                    if (updateFile) {
+                        uri = ContentUris.withAppendedId(baseUri, fileID);
+                    }
+                    else {
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, destName);
+                        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "application/x-sqlite3");
 
+                        uri = contentResolver.insert(baseUri, contentValues);
+                    }
 
-            boolean tryCopy = App.copyFile(getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath(), destDir.getAbsolutePath() + "/" + destName);
+                    // Copy file content
+                    OutputStream outStream = contentResolver.openOutputStream(uri);
+                    FileInputStream inStream = new FileInputStream(srcPath);
+                    backupSuccess = App.copyStream(inStream, outStream);
+                }
+                else {
+                    // Copy file to downloads folder directly
+                    if (!checkStoragePermission()) {
+                        permissionLauncherBackup.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        return;
+                    }
 
-            if (tryCopy) {
-                SharedPreferences.Editor pEdit = prefs.edit();
-                pEdit.putLong("BACKUP_TIME", (new Date().getTime()));
-                pEdit.apply();
-                App.Toast(this, R.string.exportdata_c8);
-                renderList();
-            } else {
+                    if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                        App.Toast(this, R.string.exportdata_c2);
+                        return;
+                    }
+
+                    File destDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                    if (!destDir.exists()) {
+                        boolean tryDir = destDir.mkdirs();
+                        if (!tryDir)
+                            throw new IOException();
+                    }
+
+                    backupSuccess = App.copyFile(srcPath, destDir.getAbsolutePath() + "/" + destName);
+                }
+
+                if (backupSuccess) {
+                    SharedPreferences.Editor pEdit = prefs.edit();
+                    pEdit.putLong("BACKUP_TIME", (new Date().getTime()));
+                    pEdit.apply();
+                    App.Toast(this, R.string.exportdata_c8);
+                }
+                else {
+                    App.Toast(this, R.string.exportdata_c7);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 App.Toast(this, R.string.exportdata_c7);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            App.Toast(this, R.string.exportdata_c7);
         }
     }
 
-    private void restoreDb(File source) {
-        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            App.Toast(this, R.string.exportdata_c2);
+    private void restoreDb(InputStream input) {
+        // Copy stream to tmp file
+        String tmpPath = getFilesDir() + "/restore_backup";
+        try {
+            OutputStream output = new FileOutputStream(tmpPath);
+            if (!App.copyStream(input, output)) {
+                throw new IOException();
+            }
+        }
+        catch (IOException e) {
+            App.Toast(this, R.string.exportdata_c10);
             return;
         }
 
-        SQLiteDatabase new_db = SQLiteDatabase.openDatabase(source.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
+        // Open file to check database content and upgrade if necessary
+        SQLiteDatabase new_db = SQLiteDatabase.openDatabase(tmpPath, null, SQLiteDatabase.OPEN_READWRITE);
         try {
             Cursor c = new_db.rawQuery("SELECT " + Db.Table5.VALUE +
                     " FROM " + Db.Table5.TABLE_NAME +
@@ -312,10 +367,13 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         }
         new_db.close();
 
+        // Overwrite current database file
         try {
-            boolean tryCopy = App.copyFile(source.getAbsolutePath(), getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath());
+            boolean tryCopy = App.copyFile(tmpPath, getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath());
 
             if (tryCopy) {
+                File tmpFile = new File(tmpPath);
+                tmpFile.delete();
                 App.Toast(this, R.string.exportdata_c9);
                 app.setFlag(1);
                 app.setFlag(2);
@@ -331,152 +389,104 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private void renderList() {
-        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            App.Toast(this, R.string.exportdata_c2);
-            return;
-        }
-
-        List<File> fList;
-
-        File dir = new File(prefs.getString("STD_FOLDER", stdAppFolder));
-        if (!dir.exists()) {
-            boolean tryDir = dir.mkdirs();
-            if (!tryDir) {
-                App.Toast(this, R.string.exportdata_c2);
-                return;
-            }
-        }
-
-        fList = Arrays.asList(dir.listFiles(this));
-        Collections.sort(fList, filecomparator);
-
-        FileListAdapter adapter = new FileListAdapter(fList);
-        lv.setAdapter(adapter);
-    }
-
-    //FileFilter
-    public boolean accept(File f) {
-        String fName = f.getName();
-        return (!f.isDirectory() && (fName.endsWith(".backup") || fName.endsWith(".ods")));
-    }
-
-    private class FileListAdapter extends ArrayAdapter<File> implements OnClickListener {
-        private int clickedIndex;
-
-        public FileListAdapter(List<File> fItems) {
-            super(getApplicationContext(), R.layout.exportdata_listitem, fItems);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            File item = getItem(position);
-            View v;
-            if (convertView == null) {
-                v = getLayoutInflater().inflate(R.layout.exportdata_listitem, parent, false);
-                v.findViewById(R.id.imageButton1).setOnClickListener(this);
-                v.findViewById(R.id.imageButton2).setOnClickListener(this);
-                v.findViewById(R.id.imageButton3).setOnClickListener(this);
-                v.findViewById(R.id.imageButton4).setOnClickListener(this);
-            } else
-                v = convertView;
-
-            v.findViewById(R.id.imageButton1).setTag(position);
-            v.findViewById(R.id.imageButton2).setTag(position);
-            v.findViewById(R.id.imageButton3).setTag(position);
-            v.findViewById(R.id.imageButton4).setTag(position);
-
-            if (item.getName().endsWith(".backup"))
-                v.findViewById(R.id.imageButton3).setVisibility(View.VISIBLE);
-            else
-                v.findViewById(R.id.imageButton3).setVisibility(View.GONE);
-
-            if (item.getName().endsWith(".ods"))
-                v.findViewById(R.id.imageButton4).setVisibility(View.VISIBLE);
-            else
-                v.findViewById(R.id.imageButton4).setVisibility(View.GONE);
-
-            ((TextView) v.findViewById(R.id.textView1)).setText(item.getName());
-
-            return v;
-        }
-
-        @Override
-        public void onClick(View v) {
-            clickedIndex = (Integer) v.getTag();
-            switch (v.getId()) {
-                case R.id.imageButton1:
-                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ExportData.this);
-                    dialogBuilder.setMessage(R.string.exportdata_c11);
-                    dialogBuilder.setPositiveButton(R.string.exportdata_c5, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            getItem(clickedIndex).delete();
-                            renderList();
-                        }
-                    });
-                    dialogBuilder.setNegativeButton(R.string.exportdata_c6, null);
-                    dialogBuilder.create().show();
-                    break;
-                case R.id.imageButton2:
-                    Intent intentApp = new Intent(android.content.Intent.ACTION_SEND);
-                    File f = getItem(clickedIndex);
-                    if (f.getName().endsWith(".backup"))
-                        intentApp.setType("application/x-sqlite3");
-                    else if (f.getName().endsWith(".ods"))
-                        intentApp.setType("application/vnd.oasis.opendocument.spreadsheet");
-                    intentApp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                    Uri uri = FileProvider.getUriForFile(getApplicationContext(), "com.dpcsoftware.fileprovider", f);
-                    intentApp.putExtra(Intent.EXTRA_STREAM, uri);
-                    intentApp.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    startActivity(Intent.createChooser(intentApp, r.getString(R.string.exportdata_c12)));
-                    break;
-                case R.id.imageButton3:
-                    AlertDialog.Builder dgBuilder = new AlertDialog.Builder(ExportData.this);
-                    dgBuilder.setMessage(R.string.exportdata_c3);
-                    dgBuilder.setTitle(R.string.exportdata_c4);
-                    dgBuilder.setPositiveButton(R.string.exportdata_c5, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            restoreDb(getItem(clickedIndex));
-                        }
-                    });
-                    dgBuilder.setNegativeButton(R.string.exportdata_c6, null);
-                    dgBuilder.create().show();
-                    break;
-                case R.id.imageButton4:
-                    Intent intentApp2 = new Intent(android.content.Intent.ACTION_VIEW);
-                    intentApp2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                    Uri uri2 = FileProvider.getUriForFile(getApplicationContext(), "com.dpcsoftware.fileprovider", getItem(clickedIndex));
-                    intentApp2.setDataAndType(uri2, "application/vnd.oasis.opendocument.spreadsheet");
-                    intentApp2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    startActivity(Intent.createChooser(intentApp2, r.getString(R.string.exportdata_c12)));
-            }
-        }
-    }
-
-    private void exportODS() {
+    private void exportFile(ExportDataChoiceDialog.Choice choice) {
+        // Check date interval
         if (sprTo.before(sprFrom)) {
             App.Toast(this, R.string.exportdata_c19);
             return;
         }
 
+        // Check format
+        boolean isODS = radioGroupFormat.getCheckedRadioButtonId() == R.id.radioODS;
+
+        // Define exported file name
+        String destName = r.getString(R.string.app_name) + "_" + App.dateToUser("yyyy-MM-dd_HH-mm", new Date());
+        destName += isODS ? ".ods" : ".csv";
+
         try {
-            if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                App.Toast(this, R.string.exportdata_c2);
-                return;
+            if (choice == ExportDataChoiceDialog.Choice.SHARE) { // share file directly with other app
+                // Generate spreadsheet
+                String destPath = getFilesDir() + "/exported_file";
+                FileOutputStream outStream = new FileOutputStream(destPath);
+
+                if (isODS) {
+                    generateODS(outStream);
+                } else {
+                    generateCSV(outStream);
+                }
+
+                // Create intent to share file
+                Intent intentApp = new Intent(android.content.Intent.ACTION_SEND);
+                File f = new File(destPath);
+                intentApp.setType(isODS ? "application/vnd.oasis.opendocument.spreadsheet" : "text/csv");
+                intentApp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                Uri uri = FileProvider.getUriForFile(getApplicationContext(), "com.dpcsoftware.fileprovider", f, destName);
+                intentApp.putExtra(Intent.EXTRA_STREAM, uri);
+                intentApp.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(Intent.createChooser(intentApp, r.getString(R.string.exportdata_c12)));
+            } else { // save file in Downloads folder
+                if (App.isAndroidQOrAbove()) {
+                    // Use MediaStore Downloads
+                    ContentResolver contentResolver = getContentResolver();
+                    Uri baseUri = MediaStore.Downloads.getContentUri("external");
+
+                    // Get file URI
+                    Uri uri;
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, destName);
+                    contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "text/csv");
+                    uri = contentResolver.insert(baseUri, contentValues);
+
+                    // Generate file
+                    OutputStream outStream = contentResolver.openOutputStream(uri);
+                    if (isODS) {
+                        generateODS(outStream);
+                    }
+                    else {
+                        generateCSV(outStream);
+                    }
+                }
+                else {
+                    // Generate file in downloads folder directly
+                    if (!checkStoragePermission()) {
+                        permissionLauncherExport.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        return;
+                    }
+
+                    if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                        App.Toast(this, R.string.exportdata_c2);
+                        return;
+                    }
+
+                    File destDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                    if (!destDir.exists()) {
+                        boolean tryDir = destDir.mkdirs();
+                        if (!tryDir)
+                            throw new IOException();
+                    }
+
+                    String destPath = destDir + "/" + destName;
+                    OutputStream outStream = new FileOutputStream(destPath);
+                    if (isODS) {
+                        generateODS(outStream);
+                    }
+                    else {
+                        generateCSV(outStream);
+                    }
+                }
+
+                App.Toast(this, R.string.exportdata_c22);
             }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            App.Toast(this, R.string.exportdata_c18);
+        }
+    }
 
-            File destDir = new File(prefs.getString("STD_FOLDER", stdAppFolder));
-            if (!destDir.exists()) {
-                boolean tryDir = destDir.mkdirs();
-                if (!tryDir)
-                    throw new IOException();
-            }
-
-            String destName = r.getString(R.string.exportdata_c17) + "_" + r.getString(R.string.app_name) + "_" + App.dateToUser("yyyy-MM-dd_HH-mm", new Date()) + ".ods";
-
-            FileOutputStream destFile = new FileOutputStream(destDir.getAbsolutePath() + "/" + destName);
-            ZipOutputStream ods = new ZipOutputStream(new BufferedOutputStream(destFile));
+    private void generateODS(OutputStream output) {
+        try {
+            ZipOutputStream ods = new ZipOutputStream(new BufferedOutputStream(output));
 
             //mimetype
             ods.putNextEntry(new ZipEntry("mimetype"));
@@ -689,17 +699,15 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
             ods.closeEntry();
 
             ods.close();
-
-            renderList();
-
-            App.Toast(this, R.string.exportdata_c20);
+            output.flush();
+            output.close();
         } catch (Exception e) {
             e.printStackTrace();
             App.Toast(this, R.string.exportdata_c18);
         }
     }
 
-    private boolean writeString(ZipOutputStream o, String sText) {
+    private boolean writeString(OutputStream o, String sText) {
         try {
             byte[] bText = sText.getBytes();
             o.write(bText, 0, bText.length);
@@ -708,5 +716,73 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
             return false;
         }
         return true;
+    }
+
+    private void generateCSV(OutputStream output) {
+        try {
+            // Write header
+            csvWriteLine(output, new String[]{
+                    r.getString(R.string.exportdata_c13),
+                    r.getString(R.string.exportdata_c21),
+                    r.getString(R.string.exportdata_c14),
+                    r.getString(R.string.exportdata_c15),
+                    r.getString(R.string.exportdata_c16)
+            });
+
+            // Query data
+            SQLiteDatabase db = DatabaseHelper.quickDb(this, 0);
+            Cursor cData = db.rawQuery(
+                "SELECT " +
+                    Db.Table1.T_DATE + "," +
+                    Db.Table3.T_GROUP_NAME + "," +
+                    Db.Table2.T_CATEGORY_NAME + "," +
+                    Db.Table1.T_AMOUNT + "," +
+                    Db.Table1.T_DETAILS +
+                    " FROM " + Db.Table1.TABLE_NAME +
+                    " LEFT JOIN " + Db.Table2.TABLE_NAME + " ON " + Db.Table1.T_ID_CATEGORY + " = " + Db.Table2.T_ID +
+                    " LEFT JOIN " + Db.Table3.TABLE_NAME + " ON " + Db.Table1.T_ID_GROUP + " = " + Db.Table3.T_ID +
+                    " WHERE " + Db.Table1.T_DATE + " >= ? " +
+                    " AND " + Db.Table1.T_DATE + " <= ? " +
+                    " ORDER BY " + Db.Table1.T_DATE + " ASC",
+                new String[]{
+                    App.dateToDb("yyyy-MM-dd", sprFrom.getTime()),
+                    App.dateToDb("yyyy-MM-dd", sprTo.getTime())
+                });
+
+            // Write data to file
+            cData.moveToFirst();
+            for (int i = 0; i < cData.getCount(); ++i) {
+                csvWriteLine(output, new String[] {
+                        cData.getString(0),
+                        cData.getString(1),
+                        cData.getString(2),
+                        app.printMoney(cData.getFloat(3), false),
+                        cData.getString(4)
+                });
+                cData.moveToNext();
+            }
+            cData.close();
+            db.close();
+
+            output.flush();
+            output.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            App.Toast(this, R.string.exportdata_c18);
+        }
+    }
+
+    private void csvWriteLine(OutputStream output, String[] values) {
+        int count = 0;
+        for (String val : values) {
+            val = val.replace("\"", "\"\""); // escape double-quotes
+            writeString(output, "\"" + val + "\"");
+            ++count;
+            if (count != values.length) {
+                writeString(output,",");
+            }
+        }
+        writeString(output,"\r\n");
     }
 }

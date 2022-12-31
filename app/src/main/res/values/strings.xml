@@ -119,7 +119,7 @@
     <string name="exportdata_c5">Yes</string>
     <string name="exportdata_c6">No</string>
     <string name="exportdata_c7">Error while doing backup</string>
-    <string name="exportdata_c8">Backup successful!</string>
+    <string name="exportdata_c8">Backup saved in Downloads folder</string>
     <string name="exportdata_c9">Backup restored!</string>
     <string name="exportdata_c10">Error while restoring backup</string>
     <string name="exportdata_c11">Are you sure you want to delete this file?</string>
@@ -129,12 +129,12 @@
     <string name="exportdata_c15">Amount</string>
     <string name="exportdata_c16">Details</string>
     <string name="exportdata_c17">Spreadsheet</string>
-    <string name="exportdata_c18">Error while exporting to spreadsheet</string>
+    <string name="exportdata_c18">Error while exporting data</string>
 
     <string name="exportdata_l2">Backup data now</string>
-    <string name="exportdata_l3">Files</string>
-    <string name="exportdata_l4">Folder:</string>
-    <string name="exportdata_l5">Export to a ODS spreadsheet</string>
+    <string name="exportdata_l3">Format</string>
+    <string name="exportdata_l4">ODS (Spreadsheet)</string>
+    <string name="exportdata_l5">Export</string>
     
     <string name="exportdata_l_img1">Open File</string>
     <string name="exportdata_l_img2">Restore Backup</string>
@@ -286,8 +286,8 @@
     <string name="budget_c9">Budget item deleted!</string>
     <string name="exportdata_l6">Data Backup</string>
     <string name="exportdata_l7">Backups are a copy of the application\'s database. They are saved into the phone\'s memory and are specially useful for restoring your data in another phone, but you have to transfer the file between the devices on your own (through e-mail for example).</string>
-    <string name="exportdata_l8">Export to a Spreadsheet</string>
-    <string name="exportdata_l9">Select the time interval to export your expenses to a ODS spreadsheet:</string>
+    <string name="exportdata_l8">Export to File</string>
+    <string name="exportdata_l9">Select the time interval and file format to export your expenses:</string>
     <string name="exportdata_l10">From</string>
     <string name="exportdata_l11">To</string>
     <string name="exportdata_c19">Date interval is invalid</string>
@@ -304,4 +304,12 @@
 
 
     <string name="groupstats_c1">Group Balance</string>
+    <string name="exportdata_l12" translatable="false">CSV</string>
+    <string name="exportdata_l1">Restore Backup</string>
+    <string name="exportdata_choicedialog_l1">Share</string>
+    <string name="exportdata_choicedialog_l2">Save</string>
+    <string name="exportdata_choicedialog_l3">Cancel</string>
+    <string name="exportdata_choicedialog_c1">Pick an option</string>
+    <string name="exportdata_c21">Group</string>
+    <string name="exportdata_c22">File created in Downloads folder</string>
 </resources>
