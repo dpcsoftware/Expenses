@@ -20,12 +20,13 @@ android {
 }
 
 dependencies {
-    api 'androidx.core:core:1.9.0'
-    api 'androidx.appcompat:appcompat:1.5.1'
-    api 'androidx.annotation:annotation:1.5.0'
-    api 'androidx.fragment:fragment:1.5.5'
-    api 'androidx.cursoradapter:cursoradapter:1.0.0'
-    api 'androidx.drawerlayout:drawerlayout:1.1.1'
-    api 'androidx.constraintlayout:constraintlayout:2.1.4'
-    api 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.core:core:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.annotation:annotation:1.5.0'
+    implementation 'androidx.fragment:fragment:1.5.5'
+    implementation 'androidx.cursoradapter:cursoradapter:1.0.0'
+    implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.preference:preference:1.1.0' // Using 1.2.0 gives duplicate class error in androidx.lifecycle
+    implementation 'com.google.android.material:material:1.7.0'
 }
