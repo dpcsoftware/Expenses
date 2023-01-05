@@ -54,14 +54,16 @@ public class Widget1 extends AppWidgetProvider {
             Intent intent = new Intent(context, AddEx.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
             intent.putExtra("SET_GROUP_ID", groupId);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget1);
             views.setOnClickPendingIntent(R.id.imageButton1, pendingIntent);
 
             Intent intent2 = new Intent(context, ExpensesList.class);
             intent2.putExtra("SET_GROUP_ID", groupId);
-            PendingIntent pendingIntent2 = PendingIntent.getActivity(context, appWidgetId, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent2 = PendingIntent.getActivity(context, appWidgetId, intent2,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
             views.setOnClickPendingIntent(R.id.LinearLayout1, pendingIntent2);
 

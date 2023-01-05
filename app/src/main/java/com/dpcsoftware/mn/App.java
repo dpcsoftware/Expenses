@@ -143,7 +143,9 @@ public class App extends Application {
                     updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
                     updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, wIds);
                     try {
-                        PendingIntent.getBroadcast(this, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT).send();
+                        PendingIntent.getBroadcast(this, 0, updateIntent,
+                                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE)
+                                .send();
                     } catch (PendingIntent.CanceledException e) {
                         e.printStackTrace();
                     }
@@ -188,7 +190,8 @@ public class App extends Application {
                         while (!c.isAfterLast()) {
                             if (c.getFloat(3) > c.getFloat(1)) {
                                 if (!notified && c.getInt(2) == 0) {
-                                    PendingIntent pi = PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_ONE_SHOT);
+                                    PendingIntent pi = PendingIntent.getActivity(this, 0, it,
+                                            PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
                                     NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this, BUDGET_NOTIFICATIONS_CHANNEL_ID)
                                             .setContentTitle(rs.getString(R.string.app_name))
                                             .setContentText(rs.getString(R.string.app_c1))

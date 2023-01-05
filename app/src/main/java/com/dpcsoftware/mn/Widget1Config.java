@@ -98,7 +98,9 @@ public class Widget1Config extends AppCompatActivity {
                 updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
                 updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{wId});
                 try {
-                    PendingIntent.getBroadcast(this, 0, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT).send();
+                    PendingIntent.getBroadcast(this, 0, updateIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE)
+                            .send();
                 } catch (PendingIntent.CanceledException e) {
                     e.printStackTrace();
                 }
