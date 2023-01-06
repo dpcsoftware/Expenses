@@ -312,10 +312,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
         creating = false;
 
         //Verify auto backup
-        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (prefs.getBoolean("BACKUP_AUTO", false) &&
-                permission == PackageManager.PERMISSION_GRANTED &&
-                Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+        if (prefs.getBoolean("BACKUP_AUTO", false)) {
             int days;
             if (prefs.getString("BACKUP_AUTO_INT", "M").equals("M"))
                 days = 30;
@@ -325,29 +322,10 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
             if ((new Date()).getTime() > (prefs.getLong("BACKUP_TIME", 0) + days * 1000 * 60 * 60 * 24)) {
                 //Backup procedure
                 try {
-                    String stdAppFolder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + rs.getString(R.string.app_name);
-                    File destDir = new File(prefs.getString("STD_FOLDER", stdAppFolder));
-                    if (!destDir.exists()) {
-                        boolean tryDir = destDir.mkdirs();
-                        if (!tryDir)
-                            throw new IOException();
-                    }
-
-                    String destName;
-                    if (prefs.getBoolean("BACKUP_OVERRIDE_OLD", false))
-                        destName = rs.getString(R.string.app_name) + ".backup";
-                    else
-                        destName = rs.getString(R.string.app_name) + "_" + App.dateToUser("yyyy-MM-dd_H-m", new Date()) + ".backup";
-
-                    boolean tryCopy = App.copyFile(getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath(), destDir.getAbsolutePath() + "/" + destName);
-
-                    if (tryCopy) {
-                        SharedPreferences.Editor pEdit = prefs.edit();
-                        pEdit.putLong("BACKUP_TIME", (new Date().getTime()));
-                        pEdit.apply();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    BackupManager mng = new BackupManager(this);
+                    mng.backupToStorage();
+                } catch (BackupManager.NoStoragePermissionException e) {
+                    App.Log("Auto backup is configured, but storage permission is not granted");
                 }
             }
         }

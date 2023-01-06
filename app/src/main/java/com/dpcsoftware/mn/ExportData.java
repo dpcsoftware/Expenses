@@ -71,6 +71,7 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
     private ActivityResultLauncher<String> restoreLauncher;
     private ActivityResultLauncher<String> permissionLauncherBackup;
     private ActivityResultLauncher<String> permissionLauncherExport;
+    private BackupManager backupManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         r = getResources();
         app = (App) getApplication();
+        backupManager = new BackupManager(this);
 
         setContentView(R.layout.exportdata);
 
@@ -229,162 +231,38 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
     }
 
     private void backupDb(ExportDataChoiceDialog.Choice choice) {
-        String srcPath = getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath();
-        String destName;
-        if (prefs.getBoolean("BACKUP_OVERRIDE_OLD", false))
-            destName = r.getString(R.string.app_name) + ".backup";
-        else
-            destName = r.getString(R.string.app_name) + "_" + App.dateToUser("yyyy-MM-dd_HH-mm", new Date()) + ".backup";
-
         if (choice == ExportDataChoiceDialog.Choice.SHARE) { // Share file to another app (e-mail, file sync, etc)
-            // First copy file to a folder that can be exposed in an intent
-            String destPath = getFilesDir() + "/backup";
-            App.copyFile(srcPath, destPath);
-
-            // Create intent to share file
-            Intent intentApp = new Intent(android.content.Intent.ACTION_SEND);
-            File f = new File(destPath);
-            intentApp.setType("application/x-sqlite3");
-            intentApp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-            Uri uri = FileProvider.getUriForFile(getApplicationContext(), "com.dpcsoftware.fileprovider", f, destName);
-            intentApp.putExtra(Intent.EXTRA_STREAM, uri);
-            intentApp.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(intentApp, r.getString(R.string.exportdata_c12)));
+            backupManager.backupToShare();
         }
         else if (choice == ExportDataChoiceDialog.Choice.SAVE) { // save file in Downloads folder
+            boolean success = false;
             try {
-                boolean backupSuccess = false;
+                success = backupManager.backupToStorage();
+            }
+            catch (BackupManager.NoStoragePermissionException e) {
+                permissionLauncherBackup.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
 
-                if (App.isAndroidQOrAbove()) {
-                    // Use MediaStore Downloads
-                    ContentResolver contentResolver = getContentResolver();
-                    Uri baseUri = MediaStore.Downloads.getContentUri("external");
-
-                    // If we have to override old backups, look for an existing file in MediaStore
-                    boolean updateFile = false;
-                    int fileID = 0;
-                    if (prefs.getBoolean("BACKUP_OVERRIDE_OLD", false)) {
-                        String[] columns = new String[] {MediaStore.MediaColumns._ID};
-                        String where = MediaStore.MediaColumns.DISPLAY_NAME + " = ?";
-                        String args[] = new String[] {destName};
-                        Cursor c = contentResolver.query(
-                                baseUri,
-                                columns,
-                                where,
-                                args,
-                                null);
-                        if (c.getCount() > 0) {
-                            c.moveToFirst();
-                            updateFile = true;
-                            fileID = c.getInt(c.getColumnIndexOrThrow(MediaStore.MediaColumns._ID));
-                        }
-                        c.close();
-                    }
-
-                    // Get file URI
-                    Uri uri;
-                    if (updateFile) {
-                        uri = ContentUris.withAppendedId(baseUri, fileID);
-                    }
-                    else {
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, destName);
-                        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "application/x-sqlite3");
-
-                        uri = contentResolver.insert(baseUri, contentValues);
-                    }
-
-                    // Copy file content
-                    OutputStream outStream = contentResolver.openOutputStream(uri);
-                    FileInputStream inStream = new FileInputStream(srcPath);
-                    backupSuccess = App.copyStream(inStream, outStream);
-                }
-                else {
-                    // Copy file to downloads folder directly
-                    if (!checkStoragePermission()) {
-                        permissionLauncherBackup.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                        return;
-                    }
-
-                    if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                        App.Toast(this, R.string.exportdata_c2);
-                        return;
-                    }
-
-                    File destDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                    if (!destDir.exists()) {
-                        boolean tryDir = destDir.mkdirs();
-                        if (!tryDir)
-                            throw new IOException();
-                    }
-
-                    backupSuccess = App.copyFile(srcPath, destDir.getAbsolutePath() + "/" + destName);
-                }
-
-                if (backupSuccess) {
-                    SharedPreferences.Editor pEdit = prefs.edit();
-                    pEdit.putLong("BACKUP_TIME", (new Date().getTime()));
-                    pEdit.apply();
-                    App.Toast(this, R.string.exportdata_c8);
-                }
-                else {
-                    App.Toast(this, R.string.exportdata_c7);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (success) {
+                App.Toast(this, R.string.exportdata_c8);
+            }
+            else {
                 App.Toast(this, R.string.exportdata_c7);
             }
         }
     }
 
     private void restoreDb(InputStream input) {
-        // Copy stream to tmp file
-        String tmpPath = getFilesDir() + "/restore_backup";
-        try {
-            OutputStream output = new FileOutputStream(tmpPath);
-            if (!App.copyStream(input, output)) {
-                throw new IOException();
-            }
+        boolean success = backupManager.restoreBackup(input);
+        if (success) {
+            App.Toast(this, R.string.exportdata_c9);
+            app.setFlag(1);
+            app.setFlag(2);
+            app.setFlag(3);
+            app.setFlag(4);
+            app.setFlag(5);
         }
-        catch (IOException e) {
-            App.Toast(this, R.string.exportdata_c10);
-            return;
-        }
-
-        // Open file to check database content and upgrade if necessary
-        SQLiteDatabase new_db = SQLiteDatabase.openDatabase(tmpPath, null, SQLiteDatabase.OPEN_READWRITE);
-        try {
-            Cursor c = new_db.rawQuery("SELECT " + Db.Table5.VALUE +
-                    " FROM " + Db.Table5.TABLE_NAME +
-                    " WHERE " + Db.Table5.TAG + " = 'db_version'", null);
-            if (c.getCount() > 0) {
-                c.moveToFirst();
-                DatabaseHelper.upgradeDb(new_db, c.getInt(0), DatabaseHelper.DATABASE_VERSION);
-            }
-            c.close();
-        } catch (Exception e) {
-            DatabaseHelper.upgradeDb(new_db, 1, DatabaseHelper.DATABASE_VERSION);
-        }
-        new_db.close();
-
-        // Overwrite current database file
-        try {
-            boolean tryCopy = App.copyFile(tmpPath, getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath());
-
-            if (tryCopy) {
-                File tmpFile = new File(tmpPath);
-                tmpFile.delete();
-                App.Toast(this, R.string.exportdata_c9);
-                app.setFlag(1);
-                app.setFlag(2);
-                app.setFlag(3);
-                app.setFlag(4);
-                app.setFlag(5);
-            } else
-                App.Toast(this, R.string.exportdata_c10);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        else {
             App.Toast(this, R.string.exportdata_c10);
         }
     }
