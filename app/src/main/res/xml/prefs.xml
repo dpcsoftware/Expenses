@@ -39,7 +39,7 @@
         <CheckBoxPreference android:key="budgetAlert"
             android:title="@string/prefs_14"
             android:summary="@string/prefs_15"
-            android:defaultValue="true" />
+            android:defaultValue="false" />
 
     </PreferenceCategory>
     
