@@ -36,7 +36,8 @@
         android:visibility="gone"
         android:textColor="@android:color/white"
         android:imeOptions="actionSearch"
-        android:background="@null"/>
+        android:background="@null"
+		android:hint="@string/menu_spinner_l1"/>
 
 </RelativeLayout>
 

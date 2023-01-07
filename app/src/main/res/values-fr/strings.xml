@@ -283,4 +283,8 @@
     <string name="exportdata_choicedialog_c1">Choisissez une option</string>
     <string name="exportdata_c21">Groupe</string>
     <string name="exportdata_c22">Fichier placée dans le dossier des Téléchargements</string>
+    <string name="menu_main_13">Logo</string>
+    <string name="editgroups_l1">Nom</string>
+    <string name="editcategoryactivity_l2">Nom</string>
+    <string name="menu_spinner_l1">Tapez pour rechercher</string>
 </resources>

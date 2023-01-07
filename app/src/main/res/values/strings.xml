@@ -312,4 +312,8 @@
     <string name="exportdata_choicedialog_c1">Pick an option</string>
     <string name="exportdata_c21">Group</string>
     <string name="exportdata_c22">File created in Downloads folder</string>
+    <string name="menu_main_13">Logo</string>
+    <string name="editgroups_l1">Name</string>
+    <string name="editcategoryactivity_l2">Name</string>
+    <string name="menu_spinner_l1">Type to search</string>
 </resources>

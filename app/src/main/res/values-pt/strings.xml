@@ -284,5 +284,9 @@
     <string name="exportdata_choicedialog_c1">Escolha uma opção</string>
     <string name="exportdata_c21">Grupo</string>
     <string name="exportdata_c22">Arquivo criado na pasta Downloads</string>
+    <string name="menu_main_13">Logo</string>
+    <string name="editgroups_l1">Nome</string>
+    <string name="editcategoryactivity_l2">Nome</string>
+    <string name="menu_spinner_l1">Digite para pesquisar</string>
 
 </resources>
