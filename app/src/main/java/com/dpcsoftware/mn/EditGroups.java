@@ -149,7 +149,7 @@ public class EditGroups extends AppCompatActivity {
                     args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
                     Cursor c = getCursor();
                     c.moveToPosition((Integer) v.getTag());
-                    args2.putString("CURRENT_NAME", c.getString(c.getColumnIndex(Db.Table3.GROUP_NAME)));
+                    args2.putString("CURRENT_NAME", c.getString(c.getColumnIndexOrThrow(Db.Table3.GROUP_NAME)));
                     args2.putInt("MODE", AddEditDialog.EDIT);
                     AddEditDialog edtDg = new AddEditDialog();
                     edtDg.setArguments(args2);

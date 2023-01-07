@@ -145,12 +145,12 @@ public class AddEx extends AppCompatActivity {
             editModeId = options.getLong("EM_ID");
             Cursor c2 = db.query(Db.Table1.TABLE_NAME, new String[]{Db.Table1.AMOUNT, Db.Table1.DATE, Db.Table1.DETAILS, Db.Table1.ID_CATEGORY}, Db.Table1._ID + " = " + editModeId, null, null, null, null);
             c2.moveToFirst();
-            edtValue.setText(c2.getString(c2.getColumnIndex(Db.Table1.AMOUNT)));
+            edtValue.setText(c2.getString(c2.getColumnIndexOrThrow(Db.Table1.AMOUNT)));
             edtValue.setSelection(edtValue.length());
-            String[] date = c2.getString(c2.getColumnIndex(Db.Table1.DATE)).split("-");
+            String[] date = c2.getString(c2.getColumnIndexOrThrow(Db.Table1.DATE)).split("-");
             expDate.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
-            cSpinner.setSelection(cAdapter.getPositionById(c2.getLong(c2.getColumnIndex(Db.Table1.ID_CATEGORY))));
-            ((EditText) findViewById(R.id.editText2)).setText(c2.getString(c2.getColumnIndex(Db.Table1.DETAILS)));
+            cSpinner.setSelection(cAdapter.getPositionById(c2.getLong(c2.getColumnIndexOrThrow(Db.Table1.ID_CATEGORY))));
+            ((EditText) findViewById(R.id.editText2)).setText(c2.getString(c2.getColumnIndexOrThrow(Db.Table1.DETAILS)));
         }
         db.close();
 
@@ -283,8 +283,8 @@ public class AddEx extends AppCompatActivity {
         public void bindView(View view, Context context, Cursor cursor) {
             TextView itemText = (TextView) view.findViewById(R.id.textView1);
             ImageView itemSquare = (ImageView) view.findViewById(R.id.imageView1);
-            itemText.setText(cursor.getString(cursor.getColumnIndex(Db.Table2.CATEGORY_NAME)));
-            itemSquare.getDrawable().setColorFilter(cursor.getInt(cursor.getColumnIndex(Db.Table2.CATEGORY_COLOR)), App.colorFilterMode);
+            itemText.setText(cursor.getString(cursor.getColumnIndexOrThrow(Db.Table2.CATEGORY_NAME)));
+            itemSquare.getDrawable().setColorFilter(cursor.getInt(cursor.getColumnIndexOrThrow(Db.Table2.CATEGORY_COLOR)), App.colorFilterMode);
         }
 
         public int getPositionById(long id) {
@@ -292,7 +292,7 @@ public class AddEx extends AppCompatActivity {
             cursor.moveToFirst();
             int i;
             for (i = 0; i < cursor.getCount(); i++) {
-                if (cursor.getLong(cursor.getColumnIndex(Db.Table2._ID)) == id)
+                if (cursor.getLong(cursor.getColumnIndexOrThrow(Db.Table2._ID)) == id)
                     break;
                 cursor.moveToNext();
             }

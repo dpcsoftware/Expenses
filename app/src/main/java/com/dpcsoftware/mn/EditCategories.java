@@ -159,8 +159,8 @@ public class EditCategories extends AppCompatActivity {
                     args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
                     Cursor c = getCursor();
                     c.moveToPosition((Integer) v.getTag());
-                    args2.putString("CURRENT_NAME", c.getString(c.getColumnIndex(Db.Table2.CATEGORY_NAME)));
-                    args2.putInt("CURRENT_COLOR", c.getInt(c.getColumnIndex(Db.Table2.CATEGORY_COLOR)));
+                    args2.putString("CURRENT_NAME", c.getString(c.getColumnIndexOrThrow(Db.Table2.CATEGORY_NAME)));
+                    args2.putInt("CURRENT_COLOR", c.getInt(c.getColumnIndexOrThrow(Db.Table2.CATEGORY_COLOR)));
                     Intent it = new Intent(EditCategories.this, EditCategoryActivity.class);
                     it.putExtras(args2);
                     startActivity(it);
