@@ -65,7 +65,7 @@ public class Widget1 extends AppWidgetProvider {
             PendingIntent pendingIntent2 = PendingIntent.getActivity(context, appWidgetId, intent2,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-            views.setOnClickPendingIntent(R.id.LinearLayout1, pendingIntent2);
+            views.setOnClickPendingIntent(R.id.RelativeLayout1, pendingIntent2);
 
 
             DatabaseHelper dbHelper = new DatabaseHelper(context);

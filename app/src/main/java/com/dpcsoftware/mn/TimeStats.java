@@ -29,6 +29,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
@@ -257,6 +258,7 @@ public class TimeStats extends AppCompatActivity {
         private int gridStepMoney, skipLabelNum;
         private float horizontalStep;
         private boolean cumulative;
+        private float fontSizePx;
 
         //private GestureDetector touchDetector;
 
@@ -290,7 +292,9 @@ public class TimeStats extends AppCompatActivity {
 
             paintTextV = new Paint(paintModel);
             paintTextV.setColor(Color.BLACK);
-            paintTextV.setTextSize(20);
+            float fontSizeSp = 12;
+            fontSizePx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, fontSizeSp, getContext().getResources().getDisplayMetrics());
+            paintTextV.setTextSize(fontSizePx);
             paintTextV.setTextAlign(Paint.Align.LEFT);
 
             paintTextH = new Paint(paintTextV);
@@ -394,7 +398,7 @@ public class TimeStats extends AppCompatActivity {
         @Override
         public void onSizeChanged(int w, int h, int oldw, int oldh) {
             top = getPaddingTop() + 20;
-            bottom = h - getPaddingBottom() - 30;
+            bottom = h - getPaddingBottom() - fontSizePx*1.5f;
             right = w - getPaddingRight() - 20;
 
             calculateMaxMin();
@@ -429,7 +433,7 @@ public class TimeStats extends AppCompatActivity {
                 if (i != end)
                     canvas.drawLine(points[2 * i], points[2 * i + 1], points[2 * i + 2], points[2 * i + 3], paintLinePoints);
                 xText = left + i * horizontalStep;
-                yText = bottom + 25;
+                yText = bottom + fontSizePx*1.5f;
                 if (i % skipLabelNum == 0)
                     canvas.drawText(labels[i], xText, yText, paintTextH);
             }
