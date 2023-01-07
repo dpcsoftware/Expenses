@@ -193,13 +193,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/radioODS"
-                android:text="@string/exportdata_l4"></RadioButton>
+                android:text="@string/exportdata_l4"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/radioCSV"
-                android:text="@string/exportdata_l12"></RadioButton>
+                android:text="@string/exportdata_l12"/>
         </RadioGroup>
     </LinearLayout>
 
