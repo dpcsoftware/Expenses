@@ -47,6 +47,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
 import android.widget.Spinner;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -195,7 +196,7 @@ public class App extends Application {
                                             .setContentTitle(rs.getString(R.string.app_name))
                                             .setContentText(rs.getString(R.string.app_c1))
                                             .setSmallIcon(R.drawable.money_white)
-                                            .setLargeIcon(drawableToBitmap(rs.getDrawable(R.drawable.logo)))
+                                            .setLargeIcon(drawableToBitmap(ContextCompat.getDrawable(getApplicationContext(), R.drawable.logo)))
                                             .setContentIntent(pi)
                                             .setAutoCancel(true);
                                     notifManager.notify(1, notifBuilder.build());
