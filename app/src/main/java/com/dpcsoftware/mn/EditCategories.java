@@ -180,7 +180,7 @@ public class EditCategories extends AppCompatActivity {
 
             Bundle args = getArguments();
 
-            LayoutInflater li = LayoutInflater.from(act);
+            LayoutInflater li = act.getLayoutInflater();
             layout = li.inflate(R.layout.editgroupseditcategories_deldialog, null);
 
             deleteId = args.getLong("DELETE_ID");

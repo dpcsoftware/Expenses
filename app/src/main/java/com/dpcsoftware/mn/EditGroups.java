@@ -170,7 +170,7 @@ public class EditGroups extends AppCompatActivity {
 
             Bundle args = getArguments();
 
-            LayoutInflater li = LayoutInflater.from(act);
+            LayoutInflater li = act.getLayoutInflater();
             layout = li.inflate(R.layout.editgroupseditcategories_deldialog, null);
 
             deleteId = args.getLong("DELETE_ID");
@@ -268,7 +268,7 @@ public class EditGroups extends AppCompatActivity {
 
             int titleResource;
 
-            LayoutInflater li = LayoutInflater.from(act);
+            LayoutInflater li = act.getLayoutInflater();
             layout = li.inflate(R.layout.editgroups_editdialog, null);
 
             if (mode == ADD) {

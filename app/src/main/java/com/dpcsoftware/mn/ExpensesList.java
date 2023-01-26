@@ -545,7 +545,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
         public Dialog onCreateDialog(Bundle savedInstance) {
             FragmentActivity act = getActivity();
 
-            LayoutInflater li = LayoutInflater.from(act);
+            LayoutInflater li = act.getLayoutInflater();
             View layout = li.inflate(R.layout.expenseslist_changesdialog, null);
 
             return new AlertDialog.Builder(act)

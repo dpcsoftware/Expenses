@@ -310,7 +310,7 @@ public class AddEx extends AppCompatActivity {
             act = (AddEx) getActivity();
             app = (App) act.getApplication();
 
-            LayoutInflater li = LayoutInflater.from(getActivity());
+            LayoutInflater li = getActivity().getLayoutInflater();
             View v = li.inflate(R.layout.addex_calculator, null);
 
             expression = (EditText) v.findViewById(R.id.editText1);

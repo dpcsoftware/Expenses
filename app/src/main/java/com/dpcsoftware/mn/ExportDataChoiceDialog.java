@@ -27,7 +27,7 @@ public class ExportDataChoiceDialog extends DialogFragment implements View.OnCli
 
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstance) {
-        LayoutInflater li = LayoutInflater.from(requireContext());
+        LayoutInflater li = getActivity().getLayoutInflater();
         layout = li.inflate(R.layout.exportdata_choicedialog, null);
 
         layout.findViewById(R.id.buttonShare).setOnClickListener(this);

@@ -393,7 +393,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
             act = (Budget) getActivity();
             app = (App) act.getApplication();
 
-            LayoutInflater li = LayoutInflater.from(act);
+            LayoutInflater li = act.getLayoutInflater();
             View v = li.inflate(R.layout.budget_dialog, null);
 
             edtValue = (EditText) v.findViewById(R.id.editText1);
