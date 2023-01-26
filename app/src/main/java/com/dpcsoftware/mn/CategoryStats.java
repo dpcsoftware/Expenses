@@ -50,6 +50,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class CategoryStats extends AppCompatActivity {
@@ -299,7 +300,10 @@ public class CategoryStats extends AppCompatActivity {
         public void bindView(View view, Context context, Cursor cursor) {
             ((TextView) view.findViewById(R.id.textView1)).setText(cursor.getString(1));
             ((ImageView) view.findViewById(R.id.imageView1)).getDrawable().setColorFilter(cursor.getInt(2), PorterDuff.Mode.MULTIPLY);
-            ((TextView) view.findViewById(R.id.textView2)).setText(app.printMoney(cursor.getFloat(3)) + " (" + String.format("%.1f", cursor.getFloat(3) * 100 / total) + "%)");
+            ((TextView) view.findViewById(R.id.textView2)).setText(
+                    app.printMoney(cursor.getFloat(3)) + " (" +
+                    String.format(Locale.getDefault(), "%.1f", cursor.getFloat(3) * 100 / total) + "%)"
+            );
         }
 
         public void changeCursor(Cursor c, float ttl) {

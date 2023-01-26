@@ -56,6 +56,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class Budget extends AppCompatActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener, RadioGroup.OnCheckedChangeListener, AdapterView.OnItemLongClickListener {
@@ -242,7 +243,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
 
         float rate = totalSpent / totalBudget;
 
-        ((TextView) header.findViewById(R.id.textViewPercentage)).setText(String.format("%.1f", (totalSpent / totalBudget) * 100) + "%");
+        ((TextView) header.findViewById(R.id.textViewPercentage)).setText(String.format(Locale.getDefault(), "%.1f", (totalSpent / totalBudget) * 100) + "%");
         ProgressBar pb = (ProgressBar) header.findViewById(R.id.progressBar1);
         pb.setProgress(Math.round(rate * pb.getMax()));
         GradientDrawable gd = (GradientDrawable) ((ScaleDrawable) ((LayerDrawable) pb.getProgressDrawable()).findDrawableByLayerId(android.R.id.progress)).getDrawable();
@@ -354,7 +355,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
             float budget = cursor.getFloat(1);
             float rate = spent / budget;
 
-            ((TextView) view.findViewById(R.id.textViewPercentage)).setText(String.format("%.1f", rate * 100) + "%");
+            ((TextView) view.findViewById(R.id.textViewPercentage)).setText(String.format(Locale.getDefault(), "%.1f", rate * 100) + "%");
             ProgressBar pb = (ProgressBar) view.findViewById(R.id.progressBar1);
             pb.setProgress((int) Math.floor(rate * pb.getMax()));
             GradientDrawable gd = (GradientDrawable) ((ScaleDrawable) ((LayerDrawable) pb.getProgressDrawable()).findDrawableByLayerId(android.R.id.progress)).getDrawable();
