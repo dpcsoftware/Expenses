@@ -141,13 +141,11 @@ public class EditCategoryActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item1:
-                if (((EditText) findViewById(R.id.editText1)).getText().toString().equals(""))
-                    App.Toast(this, R.string.editcategoryactivity_c5);
-                else
-                    saveCategory();
-                break;
+        if (item.getItemId() == R.id.item1) {
+            if (((EditText) findViewById(R.id.editText1)).getText().toString().equals(""))
+                App.Toast(this, R.string.editcategoryactivity_c5);
+            else
+                saveCategory();
         }
         return true;
     }

@@ -75,14 +75,12 @@ public class EditCategories extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item1:
-                Bundle params = new Bundle();
-                params.putInt("MODE", EditCategoryActivity.ADD);
-                Intent it = new Intent(EditCategories.this, EditCategoryActivity.class);
-                it.putExtras(params);
-                startActivity(it);
-                break;
+        if (item.getItemId() == R.id.item1) {
+            Bundle params = new Bundle();
+            params.putInt("MODE", EditCategoryActivity.ADD);
+            Intent it = new Intent(EditCategories.this, EditCategoryActivity.class);
+            it.putExtras(params);
+            startActivity(it);
         }
         return true;
     }
@@ -138,33 +136,32 @@ public class EditCategories extends AppCompatActivity {
         }
 
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.imageButtonDelete:
-                    if (getCursor().getCount() == 1) {
-                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(EditCategories.this);
-                        dialogBuilder.setTitle(R.string.editcategories_c2);
-                        dialogBuilder.setMessage(R.string.editcategories_c3);
-                        dialogBuilder.create().show();
-                    } else {
-                        Bundle args = new Bundle();
-                        args.putLong("DELETE_ID", getItemId((Integer) v.getTag()));
-                        DeleteDialog delDg = new DeleteDialog();
-                        delDg.setArguments(args);
-                        delDg.show(getSupportFragmentManager(), null);
-                    }
-                    break;
-                case R.id.imageButtonEdit:
-                    Bundle args2 = new Bundle();
-                    args2.putInt("MODE", EditCategoryActivity.EDIT);
-                    args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
-                    Cursor c = getCursor();
-                    c.moveToPosition((Integer) v.getTag());
-                    args2.putString("CURRENT_NAME", c.getString(c.getColumnIndexOrThrow(Db.Table2.CATEGORY_NAME)));
-                    args2.putInt("CURRENT_COLOR", c.getInt(c.getColumnIndexOrThrow(Db.Table2.CATEGORY_COLOR)));
-                    Intent it = new Intent(EditCategories.this, EditCategoryActivity.class);
-                    it.putExtras(args2);
-                    startActivity(it);
-                    return;
+            int id = v.getId();
+            if (id == R.id.imageButtonDelete) {
+                if (getCursor().getCount() == 1) {
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(EditCategories.this);
+                    dialogBuilder.setTitle(R.string.editcategories_c2);
+                    dialogBuilder.setMessage(R.string.editcategories_c3);
+                    dialogBuilder.create().show();
+                } else {
+                    Bundle args = new Bundle();
+                    args.putLong("DELETE_ID", getItemId((Integer) v.getTag()));
+                    DeleteDialog delDg = new DeleteDialog();
+                    delDg.setArguments(args);
+                    delDg.show(getSupportFragmentManager(), null);
+                }
+            }
+            else if (id == R.id.imageButtonEdit) {
+                Bundle args2 = new Bundle();
+                args2.putInt("MODE", EditCategoryActivity.EDIT);
+                args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
+                Cursor c = getCursor();
+                c.moveToPosition((Integer) v.getTag());
+                args2.putString("CURRENT_NAME", c.getString(c.getColumnIndexOrThrow(Db.Table2.CATEGORY_NAME)));
+                args2.putInt("CURRENT_COLOR", c.getInt(c.getColumnIndexOrThrow(Db.Table2.CATEGORY_COLOR)));
+                Intent it = new Intent(EditCategories.this, EditCategoryActivity.class);
+                it.putExtras(args2);
+                startActivity(it);
             }
         }
 

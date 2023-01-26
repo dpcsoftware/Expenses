@@ -116,14 +116,12 @@ public class FolderPicker extends AppCompatActivity implements FileFilter {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item1:
-                Intent result = new Intent();
-                result.putExtra("PATH", currentDir.getAbsolutePath());
-                setResult(-1, result);
-                App.Toast(this, R.string.folderpicker_c3);
-                FolderPicker.this.finish();
-                break;
+        if (item.getItemId() == R.id.item1) {
+            Intent result = new Intent();
+            result.putExtra("PATH", currentDir.getAbsolutePath());
+            setResult(-1, result);
+            App.Toast(this, R.string.folderpicker_c3);
+            FolderPicker.this.finish();
         }
         return true;
     }

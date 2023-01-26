@@ -75,14 +75,12 @@ public class EditGroups extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item1:
-                Bundle args = new Bundle();
-                args.putInt("MODE", AddEditDialog.ADD);
-                AddEditDialog addDg = new AddEditDialog();
-                addDg.setArguments(args);
-                addDg.show(getSupportFragmentManager(), null);
-                break;
+        if (item.getItemId() == R.id.item1) {
+            Bundle args = new Bundle();
+            args.putInt("MODE", AddEditDialog.ADD);
+            AddEditDialog addDg = new AddEditDialog();
+            addDg.setArguments(args);
+            addDg.show(getSupportFragmentManager(), null);
         }
         return true;
     }
@@ -129,32 +127,31 @@ public class EditGroups extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.imageButtonDelete:
-                    if (getCursor().getCount() == 1) {
-                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(EditGroups.this);
-                        dialogBuilder.setTitle(R.string.editgroups_c2);
-                        dialogBuilder.setMessage(R.string.editgroups_c3);
-                        dialogBuilder.create().show();
-                    } else {
-                        Bundle args = new Bundle();
-                        args.putLong("DELETE_ID", getItemId((Integer) v.getTag()));
-                        DeleteDialog delDg = new DeleteDialog();
-                        delDg.setArguments(args);
-                        delDg.show(getSupportFragmentManager(), null);
-                    }
-                    break;
-                case R.id.imageButtonEdit:
-                    Bundle args2 = new Bundle();
-                    args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
-                    Cursor c = getCursor();
-                    c.moveToPosition((Integer) v.getTag());
-                    args2.putString("CURRENT_NAME", c.getString(c.getColumnIndexOrThrow(Db.Table3.GROUP_NAME)));
-                    args2.putInt("MODE", AddEditDialog.EDIT);
-                    AddEditDialog edtDg = new AddEditDialog();
-                    edtDg.setArguments(args2);
-                    edtDg.show(getSupportFragmentManager(), null);
-                    break;
+            int id = v.getId();
+            if (id == R.id.imageButtonDelete) {
+                if (getCursor().getCount() == 1) {
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(EditGroups.this);
+                    dialogBuilder.setTitle(R.string.editgroups_c2);
+                    dialogBuilder.setMessage(R.string.editgroups_c3);
+                    dialogBuilder.create().show();
+                } else {
+                    Bundle args = new Bundle();
+                    args.putLong("DELETE_ID", getItemId((Integer) v.getTag()));
+                    DeleteDialog delDg = new DeleteDialog();
+                    delDg.setArguments(args);
+                    delDg.show(getSupportFragmentManager(), null);
+                }
+            }
+            else if (id == R.id.imageButtonEdit) {
+                Bundle args2 = new Bundle();
+                args2.putLong("EDIT_ID", getItemId((Integer) v.getTag()));
+                Cursor c = getCursor();
+                c.moveToPosition((Integer) v.getTag());
+                args2.putString("CURRENT_NAME", c.getString(c.getColumnIndexOrThrow(Db.Table3.GROUP_NAME)));
+                args2.putInt("MODE", AddEditDialog.EDIT);
+                AddEditDialog edtDg = new AddEditDialog();
+                edtDg.setArguments(args2);
+                edtDg.show(getSupportFragmentManager(), null);
             }
         }
 

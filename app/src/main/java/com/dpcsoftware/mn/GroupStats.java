@@ -45,13 +45,12 @@ public class GroupStats extends AppCompatActivity {
     private boolean isByMonth = true;
     private View.OnClickListener monthButtonCListener = new View.OnClickListener() {
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.imageButton1:
-                    date.add(Calendar.MONTH, -1);
-                    break;
-                case R.id.imageButton2:
-                    date.add(Calendar.MONTH, 1);
-                    break;
+            int id = v.getId();
+            if (id == R.id.imageButton1) {
+                date.add(Calendar.MONTH, -1);
+            }
+            else if (id == R.id.imageButton2) {
+                date.add(Calendar.MONTH, 1);
             }
             renderGraph();
         }

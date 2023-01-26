@@ -138,14 +138,12 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item1:
-                Bundle args = new Bundle();
-                args.putInt("MODE", BudgetDialog.ADD);
-                BudgetDialog addDg = new BudgetDialog();
-                addDg.setArguments(args);
-                addDg.show(getSupportFragmentManager(), null);
-                break;
+        if (item.getItemId() == R.id.item1) {
+            Bundle args = new Bundle();
+            args.putInt("MODE", BudgetDialog.ADD);
+            BudgetDialog addDg = new BudgetDialog();
+            addDg.setArguments(args);
+            addDg.show(getSupportFragmentManager(), null);
         }
 
         return true;
@@ -273,14 +271,14 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.item1:
-                    deleteItem();
-                    renderList();
-                    mode.finish();
-                    return true;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.item1) {
+                deleteItem();
+                renderList();
+                mode.finish();
+                return true;
+            }
+            else {
+                return false;
             }
         }
 

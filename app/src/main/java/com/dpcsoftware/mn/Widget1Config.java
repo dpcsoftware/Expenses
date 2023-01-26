@@ -81,33 +81,31 @@ public class Widget1Config extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item1:
-                //Save Widget Preferences
-                SharedPreferences.Editor pEditor = wPrefs.edit();
-                int idSelected = ((RadioGroup) findViewById(R.id.radioGroup1)).getCheckedRadioButtonId();
-                boolean byMonth = false;
-                if (idSelected == R.id.radio0)
-                    byMonth = true;
-                pEditor.putBoolean(wId + "_BYMONTH", byMonth);
-                pEditor.putLong(wId + "_GROUPID", sp.getSelectedItemId());
-                pEditor.apply();
+        if (item.getItemId() == R.id.item1) {
+            //Save Widget Preferences
+            SharedPreferences.Editor pEditor = wPrefs.edit();
+            int idSelected = ((RadioGroup) findViewById(R.id.radioGroup1)).getCheckedRadioButtonId();
+            boolean byMonth = false;
+            if (idSelected == R.id.radio0)
+                byMonth = true;
+            pEditor.putBoolean(wId + "_BYMONTH", byMonth);
+            pEditor.putLong(wId + "_GROUPID", sp.getSelectedItemId());
+            pEditor.apply();
 
-                //Update widget
-                Intent updateIntent = new Intent(this, Widget1.class);
-                updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-                updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{wId});
-                try {
-                    PendingIntent.getBroadcast(this, 0, updateIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE)
-                            .send();
-                } catch (PendingIntent.CanceledException e) {
-                    e.printStackTrace();
-                }
+            //Update widget
+            Intent updateIntent = new Intent(this, Widget1.class);
+            updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            updateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{wId});
+            try {
+                PendingIntent.getBroadcast(this, 0, updateIntent,
+                                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE)
+                        .send();
+            } catch (PendingIntent.CanceledException e) {
+                e.printStackTrace();
+            }
 
-                setResult(RESULT_OK, resultIntent);
-                finish();
-                break;
+            setResult(RESULT_OK, resultIntent);
+            finish();
         }
         return true;
     }

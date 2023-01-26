@@ -64,13 +64,11 @@ public class TimeStats extends AppCompatActivity {
     private View.OnClickListener changePageListener = new View.OnClickListener() {
         public void onClick(View v) {
             int n = 0;
-            switch (v.getId()) {
-                case R.id.imageButton1:
-                    n = -1;
-                    break;
-                case R.id.imageButton2:
-                    n = 1;
-            }
+            int id = v.getId();
+            if (id == R.id.imageButton1)
+                n = -1;
+            else if (id == R.id.imageButton2)
+                n = 1;
 
             if (mPeriod == Period.YEAR)
                 referenceDate.add(Calendar.YEAR, n);

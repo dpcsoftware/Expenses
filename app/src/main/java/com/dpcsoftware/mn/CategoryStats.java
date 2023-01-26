@@ -67,14 +67,11 @@ public class CategoryStats extends AppCompatActivity {
         public void onClick(View v) {
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
-            switch (v.getId()) {
-                case R.id.imageButton1:
-                    cal.add(Calendar.MONTH, -1);
-                    break;
-                case R.id.imageButton2:
-                    cal.add(Calendar.MONTH, 1);
-                    break;
-            }
+            int id = v.getId();
+            if (id == R.id.imageButton1)
+                cal.add(Calendar.MONTH, -1);
+            else if (id == R.id.imageButton2)
+                cal.add(Calendar.MONTH, 1);
             date = cal.getTime();
             renderGraph();
         }

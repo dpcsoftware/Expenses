@@ -183,10 +183,8 @@ public class AddEx extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item1:
-                saveExpense();
-                break;
+        if (item.getItemId() == R.id.item1) {
+            saveExpense();
         }
 
         return true;
@@ -347,29 +345,23 @@ public class AddEx extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.button1:
-                    expression.append("+");
-                    break;
-                case R.id.button2:
-                    expression.append("-");
-                    break;
-                case R.id.button3:
-                    expression.append("*");
-                    break;
-                case R.id.button4:
-                    expression.append("/");
-                    break;
-                case R.id.button5:
-                    calcError = false;
-                    float result = calc(expression.getText().toString());
-                    if (!calcError) {
-                        expression.setText(String.format(Locale.US, "%.2f", result));
-                        expression.setSelection(expression.length());
-                    }
-                    break;
+            int id = v.getId();
+            if (id == R.id.button1)
+                expression.append("+");
+            else if (id == R.id.button2)
+                expression.append("-");
+            else if (id == R.id.button3)
+                expression.append("*");
+            else if (id == R.id.button4)
+                expression.append("/");
+            else if (id == R.id.button5) {
+                calcError = false;
+                float result = calc(expression.getText().toString());
+                if (!calcError) {
+                    expression.setText(String.format(Locale.US, "%.2f", result));
+                    expression.setSelection(expression.length());
+                }
             }
-
         }
 
         @Override

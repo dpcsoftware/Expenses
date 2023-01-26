@@ -42,22 +42,21 @@ public class ExportDataChoiceDialog extends DialogFragment implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.buttonShare:
-                if (listener != null) {
-                    listener.onChosen(Choice.SHARE);
-                }
-                dismiss();
-                break;
-            case R.id.buttonSave:
-                if (listener != null) {
-                    listener.onChosen(Choice.SAVE);
-                }
-                dismiss();
-                break;
-            case R.id.buttonCancel:
-                dismiss();
-                break;
+        int id = v.getId();
+        if (id == R.id.buttonShare) {
+            if (listener != null) {
+                listener.onChosen(Choice.SHARE);
+            }
+            dismiss();
+        }
+        else if (id == R.id.buttonSave) {
+            if (listener != null) {
+                listener.onChosen(Choice.SAVE);
+            }
+            dismiss();
+        }
+        else if (id == R.id.buttonCancel){
+            dismiss();
         }
     }
 }

@@ -219,71 +219,68 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         EditText et = sMenu.getEditText();
-        switch (item.getItemId()) {
-            case R.id.item1:
-                if (!searchMode) {
-                    sMenu.getSpinner().setVisibility(View.GONE);
-                    et.setVisibility(View.VISIBLE);
-                    et.requestFocus();
-                    imm.showSoftInput(et, 0);
-                    item.setIcon(R.drawable.x_white);
-                    ((TextView) listView.getEmptyView().findViewById(R.id.textView1)).setText(R.string.expenseslist_c5);
-                    item.setTitle(R.string.menu_expenseslist_2);
-                } else {
-                    sMenu.getSpinner().setVisibility(View.VISIBLE);
-                    et.setVisibility(View.GONE);
-                    et.setText("");
-                    imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
-                    item.setIcon(R.drawable.search_white);
-                    ((TextView) listView.getEmptyView().findViewById(R.id.textView1)).setText(R.string.expenseslist_c2);
-                    item.setTitle(R.string.menu_expenseslist_1);
-                    renderList();
-                }
-                searchMode = !searchMode;
-                break;
+        if (item.getItemId() == R.id.item1) {
+            if (!searchMode) {
+                sMenu.getSpinner().setVisibility(View.GONE);
+                et.setVisibility(View.VISIBLE);
+                et.requestFocus();
+                imm.showSoftInput(et, 0);
+                item.setIcon(R.drawable.x_white);
+                ((TextView) listView.getEmptyView().findViewById(R.id.textView1)).setText(R.string.expenseslist_c5);
+                item.setTitle(R.string.menu_expenseslist_2);
+            } else {
+                sMenu.getSpinner().setVisibility(View.VISIBLE);
+                et.setVisibility(View.GONE);
+                et.setText("");
+                imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+                item.setIcon(R.drawable.search_white);
+                ((TextView) listView.getEmptyView().findViewById(R.id.textView1)).setText(R.string.expenseslist_c2);
+                item.setTitle(R.string.menu_expenseslist_1);
+                renderList();
+            }
+            searchMode = !searchMode;
         }
 
         return true;
     }
 
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_item_edit_groups:
-                Intent intent2 = new Intent(this, EditGroups.class);
-                startActivity(intent2);
-                break;
-            case R.id.menu_item_edit_categories:
-                Intent intent3 = new Intent(this, EditCategories.class);
-                startActivity(intent3);
-                break;
-            case R.id.menu_item_stats_category:
-                Intent intent4 = new Intent(this, CategoryStats.class);
-                startActivity(intent4);
-                break;
-            case R.id.menu_item_stats_time:
-                Intent intent5 = new Intent(this, TimeStats.class);
-                startActivity(intent5);
-                break;
-            case R.id.menu_item_prefs:
-                Intent intent6 = new Intent(this, EditPreferences.class);
-                startActivity(intent6);
-                break;
-            case R.id.menu_item_export_data:
-                Intent intent8 = new Intent(this, ExportData.class);
-                startActivity(intent8);
-                break;
-            case R.id.menu_item_about:
-                Intent intent9 = new Intent(this, About.class);
-                startActivity(intent9);
-                break;
-            case R.id.menu_item_budget:
-                Intent intent10 = new Intent(this, Budget.class);
-                startActivity(intent10);
-                break;
-            case R.id.menu_item_stats_group:
-                Intent intent11 = new Intent(this, GroupStats.class);
-                startActivity(intent11);
-                break;
+        int id = item.getItemId();
+        if (id == R.id.menu_item_edit_groups) {
+            Intent intent2 = new Intent(this, EditGroups.class);
+            startActivity(intent2);
+        }
+        else if (id == R.id.menu_item_edit_categories) {
+            Intent intent3 = new Intent(this, EditCategories.class);
+            startActivity(intent3);
+        }
+        else if (id == R.id.menu_item_stats_category) {
+            Intent intent4 = new Intent(this, CategoryStats.class);
+            startActivity(intent4);
+        }
+        else if (id == R.id.menu_item_stats_time) {
+            Intent intent5 = new Intent(this, TimeStats.class);
+            startActivity(intent5);
+        }
+        else if (id == R.id.menu_item_prefs) {
+            Intent intent6 = new Intent(this, EditPreferences.class);
+            startActivity(intent6);
+        }
+        else if (id == R.id.menu_item_export_data) {
+            Intent intent8 = new Intent(this, ExportData.class);
+            startActivity(intent8);
+        }
+        else if (id == R.id.menu_item_about) {
+            Intent intent9 = new Intent(this, About.class);
+            startActivity(intent9);
+        }
+        else if (id == R.id.menu_item_budget) {
+            Intent intent10 = new Intent(this, Budget.class);
+            startActivity(intent10);
+        }
+        else if (id == R.id.menu_item_stats_group) {
+            Intent intent11 = new Intent(this, GroupStats.class);
+            startActivity(intent11);
         }
         drawerLayout.closeDrawers();
         return true;
@@ -453,14 +450,14 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
 
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.item1:
-                    deleteExs(selectedIds);
-                    renderList();
-                    mode.finish();
-                    return true;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.item1) {
+                deleteExs(selectedIds);
+                renderList();
+                mode.finish();
+                return true;
+            }
+            else {
+                return false;
             }
         }
 

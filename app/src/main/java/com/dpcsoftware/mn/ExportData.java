@@ -179,40 +179,39 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         ExportDataChoiceDialog chDg;
-        switch (v.getId()) {
-            case R.id.button1:
-                chDg = new ExportDataChoiceDialog();
-                chDg.setOnChosenListener(choice -> {
-                    backupDb(choice);
-                });
-                chDg.show(getSupportFragmentManager(), null);
-                break;
-            case R.id.button2:
-                chDg = new ExportDataChoiceDialog();
-                chDg.setOnChosenListener(choice -> {
-                    exportFile(choice);
-                });
-                chDg.show(getSupportFragmentManager(), null);
-                break;
-            case R.id.buttonRestore:
-                restoreLauncher.launch("*/*");
-                break;
-            case R.id.imageButton1:
-                sprFrom.add(Calendar.DAY_OF_MONTH, -1);
-                updateDateText(1);
-                break;
-            case R.id.imageButton2:
-                sprFrom.add(Calendar.DAY_OF_MONTH, 1);
-                updateDateText(1);
-                break;
-            case R.id.imageButton3:
-                sprTo.add(Calendar.DAY_OF_MONTH, -1);
-                updateDateText(2);
-                break;
-            case R.id.imageButton4:
-                sprTo.add(Calendar.DAY_OF_MONTH, 1);
-                updateDateText(2);
-                break;
+        int id = v.getId();
+        if (id == R.id.button1) {
+            chDg = new ExportDataChoiceDialog();
+            chDg.setOnChosenListener(choice -> {
+                backupDb(choice);
+            });
+            chDg.show(getSupportFragmentManager(), null);
+        }
+        else if (id == R.id.button2) {
+            chDg = new ExportDataChoiceDialog();
+            chDg.setOnChosenListener(choice -> {
+                exportFile(choice);
+            });
+            chDg.show(getSupportFragmentManager(), null);
+        }
+        else if (id == R.id.buttonRestore) {
+            restoreLauncher.launch("*/*");
+        }
+        else if (id == R.id.imageButton1) {
+            sprFrom.add(Calendar.DAY_OF_MONTH, -1);
+            updateDateText(1);
+        }
+        else if (id == R.id.imageButton2) {
+            sprFrom.add(Calendar.DAY_OF_MONTH, 1);
+            updateDateText(1);
+        }
+        else if (id == R.id.imageButton3) {
+            sprTo.add(Calendar.DAY_OF_MONTH, -1);
+            updateDateText(2);
+        }
+        else if (id == R.id.imageButton4) {
+            sprTo.add(Calendar.DAY_OF_MONTH, 1);
+            updateDateText(2);
         }
     }
 
