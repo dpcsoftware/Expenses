@@ -184,7 +184,7 @@ public class CategoryStats extends AppCompatActivity {
 
         int days = 1;
         if (!isByMonth) {
-            SimpleDateFormat dateF = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dateF = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             dateF.setTimeZone(TimeZone.getDefault());
 
             Cursor cTemp = db.rawQuery("SELECT " +
