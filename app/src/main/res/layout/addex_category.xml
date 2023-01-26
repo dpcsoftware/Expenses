@@ -17,6 +17,7 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
@@ -28,9 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/imageView1"
-        android:drawableRight="@drawable/arrow_drop_down_grey"
         android:gravity="center_vertical"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:drawableRightCompat="@drawable/arrow_drop_down_grey" />
 
     <ImageView
         android:id="@+id/imageView1"
