@@ -189,6 +189,7 @@ public class TimeStats extends AppCompatActivity {
                 c.moveToNext();
             }
         }
+        c.close();
 
         //Generate chart labels
         Calendar iDate = Calendar.getInstance();

@@ -150,6 +150,7 @@ public class AddEx extends AppCompatActivity {
             expDate.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[2]));
             cSpinner.setSelection(cAdapter.getPositionById(c2.getLong(c2.getColumnIndexOrThrow(Db.Table1.ID_CATEGORY))));
             ((EditText) findViewById(R.id.editText2)).setText(c2.getString(c2.getColumnIndexOrThrow(Db.Table1.DETAILS)));
+            c2.close();
         }
         db.close();
 
