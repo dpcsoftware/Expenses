@@ -103,6 +103,7 @@ public class HSVColorPicker extends LinearLayout {
         private Paint p, pCursorBorder;
         private Path clipPath;
         private float radius;
+        private float[] hsv;
 
         public static final int HUE = 1;
         public static final int SAT = 2;
@@ -139,6 +140,8 @@ public class HSVColorPicker extends LinearLayout {
 
             clipPath = new Path();
             radius = dpToPx(10);
+
+            hsv = new float[3];
         }
 
         @Override
@@ -191,19 +194,28 @@ public class HSVColorPicker extends LinearLayout {
             canvas.clipPath(clipPath);
             if (type == HUE) {
                 for (i = left; i < right; i += 5) {
-                    p.setColor(Color.HSVToColor(new float[]{(i - left) / range * 360, 0.9f, 0.9f}));
+                    hsv[0] = (i - left) / range * 360;
+                    hsv[1] = 0.9f;
+                    hsv[2] = 0.9f;
+                    p.setColor(Color.HSVToColor(hsv));
                     canvas.drawLine(i, top, i, bottom, p);
                 }
                 cursorPos = hue / 360.0f * range + left;
             } else if (type == SAT) {
                 for (i = left; i < right; i += 5) {
-                    p.setColor(Color.HSVToColor(new float[]{hue, (i - left) / range, val}));
+                    hsv[0] = hue;
+                    hsv[1] = (i - left) / range;
+                    hsv[2] = val;
+                    p.setColor(Color.HSVToColor(hsv));
                     canvas.drawLine(i, top, i, bottom, p);
                 }
                 cursorPos = sat * range + left;
             } else {
                 for (i = left; i < right; i += 5) {
-                    p.setColor(Color.HSVToColor(new float[]{hue, sat, (i - left) / range}));
+                    hsv[0] = hue;
+                    hsv[1] = sat;
+                    hsv[2] = (i - left) / range;
+                    p.setColor(Color.HSVToColor(hsv));
                     canvas.drawLine(i, top, i, bottom, p);
                 }
                 cursorPos = val * range + left;
