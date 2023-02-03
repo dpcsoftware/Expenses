@@ -52,7 +52,6 @@
         <activity android:name="EditPreferences" />
         <activity android:name="About" />
         <activity android:name="ExportData" />
-        <activity android:name="FolderPicker" />
         <activity android:name="Budget" />
         <activity android:name="EditCategoryActivity" />
         <activity android:name=".GroupStats" />

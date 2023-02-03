@@ -242,19 +242,7 @@
     <string name="prefs_13">Budget</string>
     <string name="prefs_14">Budget Notifications</string>
     <string name="prefs_15">Chose whether to receive notifications when a budget item is surpassed</string>
-    
-    
-    
-    <string name="folderpicker_c1">Storage error</string>
-    <string name="folderpicker_c2">This is the root directory</string>
-    <string name="folderpicker_c3">Selected!</string>
-    <string name="folderpicker_c4">Root Directory</string>
-    <string name="folderpicker_c5">.. Parent Folder</string>
-    
-    <string name="folderpicker_l_img1">Folder</string>
-    
-    
-    
+
     <string name="widget1config_l1">Pick a Group</string>
     <string name="widget1config_l2">Value Type</string>
     <string name="widget1config_l3">By Month</string>

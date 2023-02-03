@@ -204,18 +204,6 @@
     </string-array>
     <string name="prefs_12">Sélectionnez la fréquence de création de sauvegardes</string>
     
-    
-        
-    <string name="folderpicker_c1">Erreur du dispositif de stockage</string>
-    <string name="folderpicker_c2">Répertoire racine</string>
-    <string name="folderpicker_c3">Répertoire sélectionné!</string>
-    <string name="folderpicker_c4">Répertoire Racine</string>
-    <string name="folderpicker_c5">.. Répertoire Au-Dessus</string>
-    
-    <string name="folderpicker_l_img1">Dossier</string>
-    
-    
-    
     <string name="widget1config_l1">Sélectionnez un Groupe</string>
     <string name="widget1config_l2">Type de Valeur</string>
     <string name="widget1config_l3">Mensuelle</string>
