@@ -104,6 +104,7 @@ public class HSVColorPicker extends LinearLayout {
         private Path clipPath;
         private float radius;
         private float[] hsv;
+        private RectF rectBar;
 
         public static final int HUE = 1;
         public static final int SAT = 2;
@@ -142,6 +143,7 @@ public class HSVColorPicker extends LinearLayout {
             radius = dpToPx(10);
 
             hsv = new float[3];
+            rectBar = new RectF();
         }
 
         @Override
@@ -226,9 +228,11 @@ public class HSVColorPicker extends LinearLayout {
             pCursorBorder.setColor(Color.GRAY);
             canvas.drawPath(clipPath, pCursorBorder);
             p.setColor(Color.WHITE);
-            canvas.drawRoundRect(new RectF(cursorPos - cursorWidth / 2, 0, cursorPos + cursorWidth / 2, height), cursorWidth / 2, cursorWidth / 2, p);
+            rectBar.set(cursorPos - cursorWidth / 2, 0, cursorPos + cursorWidth / 2, height);
+            canvas.drawRoundRect(rectBar, cursorWidth / 2, cursorWidth / 2, p);
             pCursorBorder.setColor(Color.BLACK);
-            canvas.drawRoundRect(new RectF(cursorPos - cursorWidth / 2, cursorBorderWidth / 2, cursorPos + cursorWidth / 2, height - cursorBorderWidth / 2), cursorWidth / 2, cursorWidth / 2, pCursorBorder);
+            rectBar.set(cursorPos - cursorWidth / 2, cursorBorderWidth / 2, cursorPos + cursorWidth / 2, height - cursorBorderWidth / 2);
+            canvas.drawRoundRect(rectBar, cursorWidth / 2, cursorWidth / 2, pCursorBorder);
         }
     }
 }
