@@ -30,7 +30,6 @@
     <string name="gp_3">Cancelar</string>
     <string name="gp_4">Editar</string>
     <string name="gp_5">Excluir</string>
-    <string name="gp_6">Compartilhar</string>
     <string name="gp_7">Anterior</string>
     <string name="gp_8">Próximo</string>
     <string name="gp_9">Selecionar</string>
@@ -124,17 +123,10 @@
     <string name="editcategories_c4">Excluir categoria e todas as transações associadas</string>
     <string name="editcategories_c5">Excluir categoria e mover transações para a categoria:</string>
     <string name="editcategories_c6">Excluir Categoria</string>
-    <string name="editcategories_c7">Adicionar Categoria</string>
-    <string name="editcategories_c8">Editar Categoria</string>
-    <string name="editcategories_c9">Editado!</string>
-    <string name="editcategories_c10">Adicionado!</string>
-    <string name="editcategories_c11">Erro ao acessar Banco de Dados</string>
     <string name="editcategories_c12">Excluído!</string>
     <string name="editcategories_c13">Erro ao excluir</string>
-    <string name="editcategories_c14">Digite um nome para a categoria</string>
-    
-    
-    
+
+
     <string name="editgroups_c1">Editar Grupos</string>
     <string name="editgroups_c2">Atenção!</string>
     <string name="editgroups_c3">Ao menos um grupo deve existir</string>
@@ -213,15 +205,11 @@
     <string name="addex_l_img3">Próximo Dia</string>
     <string name="addex_l_img4">Dia Anterior</string>
     <string name="budget_c1">Nenhum item foi definido para este grupo</string>
-    <string name="budget_c2">Total</string>
     <string name="budget_c3">Adicionar Item</string>
     <string name="budget_c4">Editar Item</string>
     <string name="budget_c5">Valor inválido</string>
     <string name="budget_c6">Salvo!</string>
     <string name="budget_c7">Salvo!</string>
-    <string name="budget_l1">Mensal</string>
-    <string name="budget_l2">Total</string>
-    <string name="budget_l5">Excluir Item</string>
     <string name="budget_l_img1">Próximo Mês</string>
     <string name="budget_l_img2">Mês Anterior</string>
     <string name="expenseslist_c3">Abrir Menu</string>
@@ -248,7 +236,6 @@
     <string name="exportdata_l7">Backups são uma cópia do banco de dados do aplicativo. Eles são salvos na memória do telefone e são especialmente úteis para recuperar seus dados em um outro telefone, porém você deve transferir o arquivo entre os aparelhos por conta própria (por e-mail por exemplo).</string>
     <string name="exportdata_l8">Exportar para Arquivo</string>
     <string name="exportdata_l9">Selecione o intervalo de tempo e o formato do arquivo para exportar suas despesas:</string>
-    <string name="exportdata_c20">Planilha criada!</string>
     <string name="exportdata_c19">Intervalo de tempo inválido</string>
     <string name="widget1config_c1">Configurações do Widget</string>
     <string name="editcategoryactivity_c1">Editar Categoria</string>

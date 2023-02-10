@@ -49,7 +49,6 @@
     <string name="gp_3">Cancel</string>
     <string name="gp_4">Edit</string>
     <string name="gp_5">Delete</string>
-    <string name="gp_6">Share</string>
     <string name="gp_7">Previous</string>
     <string name="gp_8">Next</string>
     <string name="gp_9">Select</string>
@@ -147,17 +146,10 @@
     <string name="editcategories_c4">Delete this category and all expenses associated with it</string>
     <string name="editcategories_c5">Delete this category and change its expenses to the following category:</string>
     <string name="editcategories_c6">Delete Category</string>
-    <string name="editcategories_c7">Add Category</string>
-    <string name="editcategories_c8">Edit Category</string>
-    <string name="editcategories_c9">Done!</string>
-    <string name="editcategories_c10">Done!</string>
-    <string name="editcategories_c11">Error while accessing database</string>
     <string name="editcategories_c12">Done!</string>
     <string name="editcategories_c13">Error while deleting</string>
-    <string name="editcategories_c14">Type a name for the category</string>
-    
-    
-    
+
+
     <string name="editgroups_c1">Edit Groups</string>
     <string name="editgroups_c2">Warning!</string>
     <string name="editgroups_c3">There must be at least one group</string>
@@ -254,16 +246,12 @@
     
     
     <string name="budget_c1">No budget items were defined for this group</string>
-    <string name="budget_c2">Total</string>
     <string name="budget_c3">Add Item</string>
     <string name="budget_c4">Edit Item</string>
     <string name="budget_c5">Invalid value</string>
     <string name="budget_c6">Done!</string>
     <string name="budget_c7">Done!</string>
-    
-    <string name="budget_l1">By Month</string>
-    <string name="budget_l2">Total</string>
-    <string name="budget_l5">Delete Item</string>
+
     <string name="budget_l_img1">Next Month</string>
     <string name="budget_l_img2">Previous Month</string>
     <string name="gp_13">Category</string>
@@ -279,7 +267,6 @@
     <string name="exportdata_l10">From</string>
     <string name="exportdata_l11">To</string>
     <string name="exportdata_c19">Date interval is invalid</string>
-    <string name="exportdata_c20">Spreadsheet created!</string>
     <string name="widget1config_c1">Widget Configurations</string>
     <string name="editcategoryactivity_c1">Edit Category</string>
     <string name="editcategoryactivity_l1">Pick a color:</string>

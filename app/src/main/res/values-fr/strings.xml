@@ -30,7 +30,6 @@
     <string name="gp_3">Annuler</string>
     <string name="gp_4">Éditer</string>
     <string name="gp_5">Supprimer</string>
-    <string name="gp_6">Partager</string>
     <string name="gp_7">Précédant</string>
     <string name="gp_8">Suivant</string>
     <string name="gp_9">Sélectionner</string>
@@ -123,17 +122,10 @@
     <string name="editcategories_c4">Supprimer catégorie et toutes les dépenses associées</string>
     <string name="editcategories_c5">Supprimer catégorie et transférer ses dépenses vers la catégorie suivante:</string>
     <string name="editcategories_c6">Supprimer Catégorie</string>
-    <string name="editcategories_c7">Ajouter une catégorie</string>
-    <string name="editcategories_c8">Options de catégorie</string>
-    <string name="editcategories_c9">Bien enregistré!</string>
-    <string name="editcategories_c10">Catégorie ajoutée!</string>
-    <string name="editcategories_c11">Erreur lors de l\'accès à la base de données</string>
     <string name="editcategories_c12">Bien supprimé!</string>
     <string name="editcategories_c13">Erreur lors de la suppression</string>
-    <string name="editcategories_c14">Tapez un nom pour la catégorie</string>
-    
-    
-    
+
+
     <string name="editgroups_c1">Gestion des Groupes</string>
     <string name="editgroups_c2">Attention!</string>
     <string name="editgroups_c3">Il doit y avoir au moins un groupe</string>
@@ -213,15 +205,11 @@
     <string name="addex_l_img3">Jour Suivant</string>
     <string name="addex_l_img4">Jour Précédent</string>
     <string name="budget_c1">Aucun élément a été ajouté dans ce groupe</string>
-    <string name="budget_c2">Total</string>
     <string name="budget_c3">Ajouter un élément</string>
     <string name="budget_c4">Editer un élément</string>
     <string name="budget_c5">Montant incorrect</string>
     <string name="budget_c6">Bien Enregistré!</string>
     <string name="budget_c7">Bien Enregistré!</string>
-    <string name="budget_l1">Par Mois</string>
-    <string name="budget_l2">Total</string>
-    <string name="budget_l5">Supprimer cet élément</string>
     <string name="budget_l_img1">Mois Prochain</string>
     <string name="budget_l_img2">Mois Précédent</string>
     <string name="expenseslist_c3">Ouvrir le Menu</string>
@@ -247,7 +235,6 @@
     <string name="exportdata_l7">Les sauvegardes sont une copie de la base de données de l\'application. Elles sont enregistrés dans la memoire du téléphone et sont specialement utiles pour récuperer vos données dans un autre téléphone, mais vous devez vous même transférer le fichier entre les appareils (par e-mail par exemple).</string>
     <string name="exportdata_l8">Exporter vers un fichier</string>
     <string name="exportdata_l9">Choisissez l\'intervalle de temps et le format du fichier pour exporter vos dépenses:</string>
-    <string name="exportdata_c20">Le classeur a été crée!</string>
     <string name="exportdata_c19">L\'intervalle de temps n\'est pas valide</string>
     <string name="widget1config_c1">Paramètres du Widget</string>
     <string name="editcategoryactivity_c1">Editer Catégorie</string>
