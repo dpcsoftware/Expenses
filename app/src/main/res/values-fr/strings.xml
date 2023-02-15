@@ -97,25 +97,19 @@
     <string name="exportdata_c8">Sauvegarde placée dans le dossier des Téléchargements</string>
     <string name="exportdata_c9">Sauvegarde récupérée!</string>
     <string name="exportdata_c10">Erreur pendant la récupération de la sauvegarde</string>
-    <string name="exportdata_c11">Vous êtes sûr de la suppression du fichier?</string>
     <string name="exportdata_c12">Choisissez l\'application</string>
     <string name="exportdata_c13">Date</string>
     <string name="exportdata_c14">Catégorie</string>
     <string name="exportdata_c15">Montant</string>
     <string name="exportdata_c16">Détails</string>
-    <string name="exportdata_c17">Classeur</string>
     <string name="exportdata_c18">Erreur pendant l\'exportation de données</string>
 
     <string name="exportdata_l2">Faire une sauvegarde</string>
     <string name="exportdata_l3">Format</string>
     <string name="exportdata_l4">ODS (Feiulle de Calcul)</string>
     <string name="exportdata_l5">Exporter</string>
-    
-    <string name="exportdata_l_img1">Ouvrir Fichier</string>
-    <string name="exportdata_l_img2">Récupérer Sauvegarde</string>
-    
-    
-    
+
+
     <string name="editcategories_c1">Gestion des Catégories</string>
     <string name="editcategories_c2">Attention!</string>
     <string name="editcategories_c3">Il doit y avoir au moins une catégorie</string>

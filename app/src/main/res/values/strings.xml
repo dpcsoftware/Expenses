@@ -121,25 +121,19 @@
     <string name="exportdata_c8">Backup saved in Downloads folder</string>
     <string name="exportdata_c9">Backup restored!</string>
     <string name="exportdata_c10">Error while restoring backup</string>
-    <string name="exportdata_c11">Are you sure you want to delete this file?</string>
     <string name="exportdata_c12">Choose the application</string>
     <string name="exportdata_c13">Date</string>
     <string name="exportdata_c14">Category</string>
     <string name="exportdata_c15">Amount</string>
     <string name="exportdata_c16">Details</string>
-    <string name="exportdata_c17">Spreadsheet</string>
     <string name="exportdata_c18">Error while exporting data</string>
 
     <string name="exportdata_l2">Backup data now</string>
     <string name="exportdata_l3">Format</string>
     <string name="exportdata_l4">ODS (Spreadsheet)</string>
     <string name="exportdata_l5">Export</string>
-    
-    <string name="exportdata_l_img1">Open File</string>
-    <string name="exportdata_l_img2">Restore Backup</string>
-  
-    
-    
+
+
     <string name="editcategories_c1">Edit Categories</string>
     <string name="editcategories_c2">Warning!</string>
     <string name="editcategories_c3">There must be at least one category</string>

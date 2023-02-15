@@ -97,26 +97,19 @@
     <string name="exportdata_c8">Backup salvo na pasta Downloads</string>
     <string name="exportdata_c9">Backup recuperado!</string>
     <string name="exportdata_c10">Erro ao recuperar backup</string>
-    <string name="exportdata_c11">Tem certeza que deseja excluir o arquivo?</string>
     <string name="exportdata_c12">Escolha o aplicativo</string>
     <string name="exportdata_c13">Data</string>
     <string name="exportdata_c14">Categoria</string>
     <string name="exportdata_c15">Valor</string>
     <string name="exportdata_c16">Detalhes</string>
-    <string name="exportdata_c17">Planilha</string>
     <string name="exportdata_c18">Erro durante exportação de dados</string>
 
     <string name="exportdata_l2">Fazer backup agora</string>
     <string name="exportdata_l3">Formato</string>
     <string name="exportdata_l4">ODS (Planilha)</string>
     <string name="exportdata_l5">Exportar</string>
-    
-    <string name="exportdata_l_img1">Abrir Arquivo</string>
-    <string name="exportdata_l_img2">Recuperar Backup</string>
 
-    
-    
-    
+
     <string name="editcategories_c1">Editar Categorias</string>
     <string name="editcategories_c2">Atenção!</string>
     <string name="editcategories_c3">Ao menos uma categoria deve existir</string>
