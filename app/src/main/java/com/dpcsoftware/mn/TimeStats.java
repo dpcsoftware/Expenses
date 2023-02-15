@@ -442,27 +442,5 @@ public class TimeStats extends AppCompatActivity {
                 canvas.drawLine(left, targetPointY, right, targetPointY, paintTargetVal);
             }
         }
-		
-		/*@Override
-		public boolean onTouchEvent(@NonNull MotionEvent event) {
-		   boolean result = touchDetector.onTouchEvent(event);
-		   if (!result) {
-		       if (event.getAction() == MotionEvent.ACTION_UP) {
-		    	   //int index = (int)Math.round((event.getX()-left)/(right-left));
-		    	   //App.Toast(context, app.printMoney(values[index]));
-		       }
-		       else if(event.getAction() == MotionEvent.ACTION_MOVE) {
-
-		       }
-		   }
-		   return result;
-		}
-		
-		private class TouchListener extends GestureDetector.SimpleOnGestureListener {
-			@Override
-			public boolean onDown(MotionEvent e) {
-				return true;
-			}
-		}*/
     }
 }
