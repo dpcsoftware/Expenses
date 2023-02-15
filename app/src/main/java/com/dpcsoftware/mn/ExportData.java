@@ -23,6 +23,7 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -42,6 +43,7 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
@@ -144,13 +146,26 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         restoreLauncher = registerForActivityResult(
                 new ActivityResultContracts.GetContent(),
                 uri -> {
-                    try {
-                        InputStream stream = getContentResolver().openInputStream(uri);
-                        restoreDb(stream);
+                    if (uri == null) {
+                        return;
                     }
-                    catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+
+                    AlertDialog.Builder dgBuilder = new AlertDialog.Builder(ExportData.this);
+                    dgBuilder.setMessage(R.string.exportdata_c3);
+                    dgBuilder.setTitle(R.string.exportdata_c4);
+                    dgBuilder.setPositiveButton(R.string.exportdata_c5, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                InputStream stream = getContentResolver().openInputStream(uri);
+                                restoreDb(stream);
+                            }
+                            catch (FileNotFoundException e) {
+                                App.Toast(getApplicationContext(), R.string.exportdata_c10);
+                            }
+                        }
+                    });
+                    dgBuilder.setNegativeButton(R.string.exportdata_c6, null);
+                    dgBuilder.create().show();
                 }
         );
 
