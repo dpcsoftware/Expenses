@@ -185,7 +185,7 @@ public class TimeStats extends AppCompatActivity {
             c.moveToFirst();
             while (!c.isAfterLast()) {
                 timeUnit = c.getString(1);
-                values[Integer.valueOf(timeUnit.substring(timeUnit.length() - 2)) - 1] = c.getFloat(0);
+                values[Integer.parseInt(timeUnit.substring(timeUnit.length() - 2)) - 1] = c.getFloat(0);
                 c.moveToNext();
             }
         }

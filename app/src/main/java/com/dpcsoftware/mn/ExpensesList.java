@@ -97,7 +97,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
         app = (App) getApplication();
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        selectedIds = new ArrayList<Long>();
+        selectedIds = new ArrayList<>();
 
         mActionModeCallback = new RExActionModeCallback();
 

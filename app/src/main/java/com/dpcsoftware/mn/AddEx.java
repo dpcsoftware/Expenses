@@ -378,7 +378,7 @@ public class AddEx extends AppCompatActivity {
             try {
                 //Tokenização e Validação
                 int nOperators = 0, flagPar = 0, nNum = 0, i = 0;
-                ArrayDeque<String> tokens = new ArrayDeque<String>();
+                ArrayDeque<String> tokens = new ArrayDeque<>();
 
                 while (i < s.length()) {
                     char c = s.charAt(i);
@@ -421,8 +421,8 @@ public class AddEx extends AppCompatActivity {
 
 
                 //Conversão para notação pós-fixa
-                Stack<String> st = new Stack<String>();
-                ArrayDeque<String> postFixed = new ArrayDeque<String>();
+                Stack<String> st = new Stack<>();
+                ArrayDeque<String> postFixed = new ArrayDeque<>();
 
                 while (!tokens.isEmpty()) {
                     String token = tokens.getFirst();
@@ -452,7 +452,7 @@ public class AddEx extends AppCompatActivity {
                 App.Log(postFixed.toString());
 
                 //Cálculo da expressão
-                Stack<Float> stcalc = new Stack<Float>();
+                Stack<Float> stcalc = new Stack<>();
                 while (!postFixed.isEmpty()) {
                     char c = postFixed.getFirst().charAt(0);
 
