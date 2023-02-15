@@ -137,7 +137,7 @@ public class App extends Application {
                 //Update widgets if anyone is being used
                 AppWidgetManager wManager = AppWidgetManager.getInstance(this);
                 ComponentName cWidgetProvider = new ComponentName(this, Widget1.class);
-                int wIds[] = wManager.getAppWidgetIds(cWidgetProvider);
+                int[] wIds = wManager.getAppWidgetIds(cWidgetProvider);
                 if (wIds.length != 0) {
                     Intent updateIntent = new Intent(this, Widget1.class);
                     updateIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);

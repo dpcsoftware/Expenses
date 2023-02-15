@@ -55,7 +55,7 @@ public class HSVColorPicker extends LinearLayout {
     }
 
     public void setColor(int color) {
-        float hsv[] = new float[3];
+        float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
         hue = hsv[0];
         sat = hsv[1];

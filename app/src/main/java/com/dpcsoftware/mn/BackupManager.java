@@ -76,7 +76,7 @@ public class BackupManager {
             if (prefs.getBoolean("BACKUP_OVERRIDE_OLD", false)) {
                 String[] columns = new String[] {MediaStore.MediaColumns._ID};
                 String where = MediaStore.MediaColumns.DISPLAY_NAME + " = ?";
-                String args[] = new String[] {destName};
+                String[] args = new String[] {destName};
                 Cursor c = contentResolver.query(
                         baseUri,
                         columns,

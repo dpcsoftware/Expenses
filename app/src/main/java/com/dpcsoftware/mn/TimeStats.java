@@ -250,9 +250,14 @@ public class TimeStats extends AppCompatActivity {
     private class TimeChart extends View {
         private Paint paintAxe, paintScale, paintPoints, paintUnderPoints, paintLinePoints, paintTextV, paintTextH, paintTargetVal;
         private float left, right, top, bottom;
-        private float values[], targetValue, points[], targetPointY, max, min;
+        private float[] values;
+        private float targetValue;
+        private float[] points;
+        private float targetPointY;
+        private float max;
+        private float min;
         private Path pathUnder;
-        private String labels[];
+        private String[] labels;
         private float gridStep;
         private int gridStepMoney, skipLabelNum;
         private float horizontalStep;
