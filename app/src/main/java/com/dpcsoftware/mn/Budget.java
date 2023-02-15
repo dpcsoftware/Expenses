@@ -178,7 +178,8 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         if (!pickMode) {
             pickMode = true;
-            selectItem(view, id);
+            selectedId = id;
+            selectItem(view);
             actMode = startSupportActionMode(actModeCallback);
         }
         return true;
@@ -291,16 +292,12 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         }
     }
 
-    private void selectItem(View v, long id) {
+    private void selectItem(View v) {
         v.setBackgroundColor(getResources().getColor(R.color.gray));
-        if (id >= 0)
-            selectedId = id;
     }
 
-    private void unselectItem(View v, long id) {
+    private void unselectItem(View v) {
         v.setBackgroundResource(R.drawable.statelist_normal);
-        if (id >= 0)
-            selectedId = -1;
     }
 
     private void clearSelections() {
@@ -314,7 +311,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
             else
                 start = 0;
             for (i = start; i < max; i++)
-                unselectItem(lv.getChildAt(i), -1);
+                unselectItem(lv.getChildAt(i));
             selectedId = -1;
         }
     }
@@ -367,9 +364,9 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
 
             long id = cursor.getLong(0);
             if (id == selectedId)
-                selectItem(view, -1);
+                selectItem(view);
             else
-                unselectItem(view, -1);
+                unselectItem(view);
         }
     }
 

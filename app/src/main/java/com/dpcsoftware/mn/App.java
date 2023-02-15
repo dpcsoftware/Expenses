@@ -88,10 +88,6 @@ public class App extends Application {
     private Resources rs;
     private SharedPreferences prefs;
 
-    public static void Toast(Context context, String msg) {
-        android.widget.Toast.makeText(context, msg, android.widget.Toast.LENGTH_SHORT).show();
-    }
-
     public static void Toast(Context context, int resourceId) {
         android.widget.Toast.makeText(context, context.getResources().getString(resourceId), android.widget.Toast.LENGTH_SHORT).show();
     }
@@ -355,12 +351,6 @@ public class App extends Application {
         SimpleDateFormat dateDbFormater = new SimpleDateFormat(pattern, Locale.US);
         dateDbFormater.setTimeZone(TimeZone.getDefault());
         return dateDbFormater;
-    }
-
-    public static String dateToDb(String pattern, int year, int month, int day) {
-        Calendar cal = Calendar.getInstance();
-        cal.set(year, month, day);
-        return getDateDbFormater(pattern).format(cal.getTime());
     }
 
     public static String dateToDb(String pattern, Date date) {

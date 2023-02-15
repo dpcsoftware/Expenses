@@ -597,15 +597,9 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private boolean writeString(OutputStream o, String sText) {
-        try {
-            byte[] bText = sText.getBytes();
-            o.write(bText, 0, bText.length);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+    private void writeString(OutputStream o, String sText) throws IOException {
+        byte[] bText = sText.getBytes();
+        o.write(bText, 0, bText.length);
     }
 
     private void generateCSV(OutputStream output) {
@@ -663,7 +657,7 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private void csvWriteLine(OutputStream output, String[] values) {
+    private void csvWriteLine(OutputStream output, String[] values) throws IOException {
         int count = 0;
         for (String val : values) {
             val = val.replace("\"", "\"\""); // escape double-quotes

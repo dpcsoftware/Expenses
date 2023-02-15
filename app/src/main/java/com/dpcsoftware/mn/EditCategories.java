@@ -54,7 +54,6 @@ public class EditCategories extends AppCompatActivity {
     private App app;
     private ListView lv;
     private CategoriesAdapter adapter;
-    private boolean comingFromAddEx = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

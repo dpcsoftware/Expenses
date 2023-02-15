@@ -85,9 +85,7 @@ public class Widget1Config extends AppCompatActivity {
             //Save Widget Preferences
             SharedPreferences.Editor pEditor = wPrefs.edit();
             int idSelected = ((RadioGroup) findViewById(R.id.radioGroup1)).getCheckedRadioButtonId();
-            boolean byMonth = false;
-            if (idSelected == R.id.radio0)
-                byMonth = true;
+            boolean byMonth = (idSelected == R.id.radio0);
             pEditor.putBoolean(wId + "_BYMONTH", byMonth);
             pEditor.putLong(wId + "_GROUPID", sp.getSelectedItemId());
             pEditor.apply();
