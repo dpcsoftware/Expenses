@@ -153,7 +153,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
                 super.onDrawerOpened(drawerView);
             }
         };
-        drawerLayout.setDrawerListener(drawerToggle);
+        drawerLayout.addDrawerListener(drawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
