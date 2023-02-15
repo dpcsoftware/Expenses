@@ -10,7 +10,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 public class ExportDataChoiceDialog extends DialogFragment implements View.OnClickListener {
-    private View layout;
     private OnChosenListener listener = null;
 
     public enum Choice {
@@ -28,7 +27,7 @@ public class ExportDataChoiceDialog extends DialogFragment implements View.OnCli
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstance) {
         LayoutInflater li = getActivity().getLayoutInflater();
-        layout = li.inflate(R.layout.exportdata_choicedialog, null);
+        View layout = li.inflate(R.layout.exportdata_choicedialog, null);
 
         layout.findViewById(R.id.buttonShare).setOnClickListener(this);
         layout.findViewById(R.id.buttonSave).setOnClickListener(this);

@@ -99,7 +99,7 @@ public class HSVColorPicker extends LinearLayout {
     private class BarView extends View {
         private float left, right, top, bottom, height, range;
         private float cursorWidth, cursorBorderWidth, cursorPos;
-        private float lastX = 0, i;
+        private float lastX = 0;
         private Paint p, pCursorBorder;
         private Path clipPath;
         private float radius;
@@ -195,7 +195,7 @@ public class HSVColorPicker extends LinearLayout {
             canvas.save();
             canvas.clipPath(clipPath);
             if (type == HUE) {
-                for (i = left; i < right; i += 5) {
+                for (float i = left; i < right; i += 5) {
                     hsv[0] = (i - left) / range * 360;
                     hsv[1] = 0.9f;
                     hsv[2] = 0.9f;
@@ -204,7 +204,7 @@ public class HSVColorPicker extends LinearLayout {
                 }
                 cursorPos = hue / 360.0f * range + left;
             } else if (type == SAT) {
-                for (i = left; i < right; i += 5) {
+                for (float i = left; i < right; i += 5) {
                     hsv[0] = hue;
                     hsv[1] = (i - left) / range;
                     hsv[2] = val;
@@ -213,7 +213,7 @@ public class HSVColorPicker extends LinearLayout {
                 }
                 cursorPos = sat * range + left;
             } else {
-                for (i = left; i < right; i += 5) {
+                for (float i = left; i < right; i += 5) {
                     hsv[0] = hue;
                     hsv[1] = sat;
                     hsv[2] = (i - left) / range;

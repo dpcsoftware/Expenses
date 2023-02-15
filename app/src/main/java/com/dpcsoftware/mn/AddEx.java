@@ -301,15 +301,12 @@ public class AddEx extends AppCompatActivity {
     public static class CalculatorDialog extends DialogFragment implements View.OnClickListener, DialogInterface.OnClickListener {
         private EditText expression;
         private boolean calcError = false;
-        private Bundle params;
         private AddEx act;
-        private App app;
 
         @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            params = getArguments();
+            Bundle params = getArguments();
             act = (AddEx) getActivity();
-            app = (App) act.getApplication();
 
             LayoutInflater li = getActivity().getLayoutInflater();
             View v = li.inflate(R.layout.addex_calculator, null);

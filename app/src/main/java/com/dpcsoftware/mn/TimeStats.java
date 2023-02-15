@@ -248,12 +248,12 @@ public class TimeStats extends AppCompatActivity {
     }
 
     private class TimeChart extends View {
-        private Paint paintModel, paintAxe, paintScale, paintPoints, paintUnderPoints, paintLinePoints, paintTextV, paintTextH, paintTargetVal;
+        private Paint paintAxe, paintScale, paintPoints, paintUnderPoints, paintLinePoints, paintTextV, paintTextH, paintTargetVal;
         private float left, right, top, bottom;
         private float values[], targetValue, points[], targetPointY, max, min;
         private Path pathUnder;
         private String labels[];
-        private float numberOfIntervals, gridStep;
+        private float gridStep;
         private int gridStepMoney, skipLabelNum;
         private float horizontalStep;
         private boolean cumulative;
@@ -264,7 +264,7 @@ public class TimeStats extends AppCompatActivity {
         public TimeChart(Context ct, float[] val, String[] lbs, float targetVal, boolean cumul) {
             super(ct);
 
-            paintModel = new Paint(Paint.ANTI_ALIAS_FLAG);
+            Paint paintModel = new Paint(Paint.ANTI_ALIAS_FLAG);
             paintModel.setStyle(Paint.Style.FILL);
 
             paintAxe = new Paint(paintModel);
@@ -353,7 +353,7 @@ public class TimeStats extends AppCompatActivity {
                 max += 10;
 
             gridStepMoney = 1;
-            numberOfIntervals = (bottom - top) / 40;
+            float numberOfIntervals = (bottom - top) / 40;
             while (gridStepMoney * numberOfIntervals < (max - min)) {
                 gridStepMoney *= 10;
             }

@@ -232,7 +232,7 @@ public class CategoryStats extends AppCompatActivity {
         private Paint[] paintColors;
         private float[] heights, percentages;
         private int[] colors;
-        private float left, right, top, chartHeight, total;
+        private float left, right, top;
 
         public BarChart(Context ctx, float[] dt, int[] clrs) {
             super(ctx);
@@ -244,7 +244,7 @@ public class CategoryStats extends AppCompatActivity {
             paintColors = new Paint[dt.length];
             colors = clrs;
 
-            total = 0;
+            float total = 0;
             int i;
             for (float value : dt)
                 total += value;
@@ -259,7 +259,7 @@ public class CategoryStats extends AppCompatActivity {
             left = getPaddingLeft();
             right = w - getPaddingRight();
             top = getPaddingTop();
-            chartHeight = h - getPaddingTop() - getPaddingBottom();
+            float chartHeight = h - getPaddingTop() - getPaddingBottom();
 
             int i;
             for (i = 0; i < paintColors.length; i++) {

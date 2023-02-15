@@ -378,7 +378,6 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
 
         private long editId;
         private int mode;
-        private Bundle params;
         private EditText edtValue;
         private Budget act;
         private App app;
@@ -387,7 +386,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         public Dialog onCreateDialog(Bundle savedInstance) {
             int titleResource;
 
-            params = getArguments();
+            Bundle params = getArguments();
             mode = params.getInt("MODE", ADD);
 
             act = (Budget) getActivity();

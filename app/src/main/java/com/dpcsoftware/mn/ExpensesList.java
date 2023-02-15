@@ -84,7 +84,6 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
     private View footer, header;
     private long filterId;
     private Date filterDate;
-    private Resources rs;
     private SharedPreferences prefs;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
@@ -96,7 +95,6 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
         setContentView(R.layout.expenseslist);
 
         app = (App) getApplication();
-        rs = getResources();
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         selectedIds = new ArrayList<Long>();
