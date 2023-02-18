@@ -173,7 +173,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
@@ -542,6 +542,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
 
     public static class ChangesDialog extends DialogFragment implements DialogInterface.OnClickListener {
 
+        @NonNull
         public Dialog onCreateDialog(Bundle savedInstance) {
             FragmentActivity act = getActivity();
 
