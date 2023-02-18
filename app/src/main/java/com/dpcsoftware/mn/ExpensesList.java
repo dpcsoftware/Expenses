@@ -344,15 +344,18 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
         if (searchMode) {
             String[] words = sMenu.getEditText().getText().toString().split(" ");
             if (words.length > 0) {
-                queryModifier3 = " AND (";
+                ArrayList<String> searchClauses = new ArrayList<>();
                 for (String w : words) {
-                    String wEscaped = DatabaseUtils.sqlEscapeString('%' + w + '%');
-                    queryModifier3 += Db.Table1.T_DETAILS + " LIKE " + wEscaped + " OR ";
-                    queryModifier3 += Db.Table1.T_AMOUNT + " LIKE " + wEscaped + " OR ";
-                    queryModifier3 += Db.Table2.CATEGORY_NAME + " LIKE " + wEscaped + " OR ";
+                    if (!w.isEmpty()) {
+                        String wEscaped = DatabaseUtils.sqlEscapeString('%' + w + '%');
+                        searchClauses.add(Db.Table1.T_DETAILS + " LIKE " + wEscaped);
+                        searchClauses.add(Db.Table1.T_AMOUNT + " LIKE " + wEscaped);
+                        searchClauses.add(Db.Table2.CATEGORY_NAME + " LIKE " + wEscaped);
+                    }
                 }
-                queryModifier3 = queryModifier3.substring(0, queryModifier3.length() - 3);
-                queryModifier3 += ")";
+                if (searchClauses.size() > 0) {
+                    queryModifier3 = " AND (" + String.join(" OR ", searchClauses) + ")";
+                }
             }
         }
 
