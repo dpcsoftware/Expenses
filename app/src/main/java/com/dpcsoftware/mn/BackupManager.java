@@ -32,7 +32,7 @@ public class BackupManager {
     private Context context;
     private SharedPreferences prefs;
 
-    public class NoStoragePermissionException extends Exception {
+    public static class NoStoragePermissionException extends Exception {
     }
 
     public BackupManager(Context ctx) {

@@ -247,7 +247,7 @@ public class TimeStats extends AppCompatActivity {
         }
     }
 
-    private class TimeChart extends View {
+    private static class TimeChart extends View {
         private Paint paintAxe, paintScale, paintPoints, paintUnderPoints, paintLinePoints, paintTextV, paintTextH, paintTargetVal;
         private float left, right, top, bottom;
         private float[] values;

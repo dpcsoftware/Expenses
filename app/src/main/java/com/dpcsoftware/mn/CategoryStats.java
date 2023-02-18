@@ -228,7 +228,7 @@ public class CategoryStats extends AppCompatActivity {
         }
     }
 
-    private class BarChart extends View {
+    private static class BarChart extends View {
         private Paint[] paintColors;
         private float[] heights, percentages;
         private int[] colors;

@@ -262,7 +262,7 @@ public class AddEx extends AppCompatActivity {
         }
     }
 
-    private class CategoryAdapter extends CursorAdapter {
+    private static class CategoryAdapter extends CursorAdapter {
         private LayoutInflater mInflater;
 
         public CategoryAdapter(Context context, Cursor c) {
