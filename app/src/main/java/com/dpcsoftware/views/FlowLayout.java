@@ -24,8 +24,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 public class FlowLayout extends ViewGroup {
     public FlowLayout(Context context) {
         super(context);
