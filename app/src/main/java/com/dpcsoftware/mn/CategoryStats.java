@@ -263,7 +263,7 @@ public class CategoryStats extends AppCompatActivity {
 
             int i;
             for (i = 0; i < paintColors.length; i++) {
-                paintColors[i].setShader(new LinearGradient(-w / 2, 0, w - getPaddingRight(), 0, Color.BLACK, colors[i], Shader.TileMode.REPEAT));
+                paintColors[i].setShader(new LinearGradient(-w / 2.0f, 0, w - getPaddingRight(), 0, Color.BLACK, colors[i], Shader.TileMode.REPEAT));
                 heights[i] = percentages[i] * chartHeight;
             }
         }

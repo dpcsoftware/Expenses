@@ -307,7 +307,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
             else
                 days = 7;
 
-            if ((new Date()).getTime() > (prefs.getLong("BACKUP_TIME", 0) + days * 1000 * 60 * 60 * 24)) {
+            if ((new Date()).getTime() > (prefs.getLong("BACKUP_TIME", 0) + (long) days * 1000 * 60 * 60 * 24)) {
                 //Backup procedure
                 try {
                     BackupManager mng = new BackupManager(this);
