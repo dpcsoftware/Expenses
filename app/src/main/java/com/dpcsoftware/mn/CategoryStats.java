@@ -47,6 +47,7 @@ import android.widget.TextView;
 import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -199,12 +200,13 @@ public class CategoryStats extends AppCompatActivity {
                 cTemp.moveToLast();
                 Date date1 = dateF.parse(cTemp.getString(0));
 
-                days = (int) Math.ceil((date2.getTime() - date1.getTime()) / (1000.0 * 24 * 60 * 60)) + 1;
-
-                cTemp.close();
-            } catch (Exception e) {
+                if (date1 != null && date2 != null) {
+                    days = (int) Math.ceil((date2.getTime() - date1.getTime()) / (1000.0 * 24 * 60 * 60)) + 1;
+                }
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
+            cTemp.close();
         } else {
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);

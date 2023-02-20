@@ -64,7 +64,7 @@ public class EditCategories extends AppCompatActivity {
 
         renderCategories();
 
-        getSupportActionBar().setTitle(R.string.editcategories_c1);
+        App.requireNonNull(getSupportActionBar()).setTitle(R.string.editcategories_c1);
     }
 
     @Override
@@ -174,14 +174,13 @@ public class EditCategories extends AppCompatActivity {
 
         @NonNull
         public Dialog onCreateDialog(Bundle savedInstance) {
-            act = (EditCategories) getActivity();
+            act = (EditCategories) requireActivity();
             app = (App) act.getApplication();
-
-            Bundle args = getArguments();
 
             LayoutInflater li = act.getLayoutInflater();
             layout = li.inflate(R.layout.editgroupseditcategories_deldialog, null);
 
+            Bundle args = requireArguments();
             deleteId = args.getLong("DELETE_ID");
 
             ((RadioButton) layout.findViewById(R.id.radio0)).setText(R.string.editcategories_c4);

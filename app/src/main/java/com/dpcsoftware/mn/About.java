@@ -20,6 +20,7 @@
 package com.dpcsoftware.mn;
 
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class About extends AppCompatActivity {
@@ -28,7 +29,7 @@ public class About extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about);
-        getSupportActionBar().setTitle(R.string.about_c1);
+        App.requireNonNull(getSupportActionBar()).setTitle(R.string.about_c1);
     }
 
 }

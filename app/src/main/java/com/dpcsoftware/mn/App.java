@@ -58,6 +58,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Currency;
@@ -257,7 +258,7 @@ public class App extends Application {
                 mAdapter = new SimpleCursorAdapter(activity, R.layout.menu_spinner_item, mCursor, new String[]{Db.Table3.GROUP_NAME}, new int[]{android.R.id.text1}, 0);
                 mAdapter.setDropDownViewResource(R.layout.menu_spinner_dd_item);
 
-                ActionBar abar = activity.getSupportActionBar();
+                ActionBar abar = App.requireNonNull(activity.getSupportActionBar());
                 View menuView;
                 if (!searchBar)
                     menuView = activity.getLayoutInflater().inflate(R.layout.menu_spinner, null);
@@ -365,8 +366,14 @@ public class App extends Application {
             localFormater = new SimpleDateFormat(pattern, Locale.getDefault());
 
         try {
-            return localFormater.format(getDateDbFormater("yyyy-MM-dd").parse(date));
-        } catch (Exception e) {
+            Date dt = getDateDbFormater("yyyy-MM-dd").parse(date);
+            if (dt == null) {
+                return null;
+            }
+            else {
+                return localFormater.format(dt);
+            }
+        } catch (ParseException e) {
             return null;
         }
     }
@@ -430,5 +437,13 @@ public class App extends Application {
 
     public static boolean isAndroidQOrAbove() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+    }
+
+    // Use Objects.requireNonNull when min API >= 19
+    public static <T> T requireNonNull(T obj) {
+        if (obj == null) {
+            throw new NullPointerException();
+        }
+        return obj;
     }
 }

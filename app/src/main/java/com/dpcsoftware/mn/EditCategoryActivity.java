@@ -131,7 +131,7 @@ public class EditCategoryActivity extends AppCompatActivity {
             text.setText(args.getString("CURRENT_NAME"));
         }
 
-        getSupportActionBar().setTitle(titleResource);
+        App.requireNonNull(getSupportActionBar()).setTitle(titleResource);
     }
 
     @Override

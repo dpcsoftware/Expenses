@@ -188,7 +188,7 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
             );
         }
 
-        getSupportActionBar().setTitle(R.string.exportdata_c1);
+        App.requireNonNull(getSupportActionBar()).setTitle(R.string.exportdata_c1);
     }
 
     @Override

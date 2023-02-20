@@ -384,9 +384,9 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
             int titleResource;
 
             Bundle params = getArguments();
-            mode = params.getInt("MODE", ADD);
+            mode = params != null ? params.getInt("MODE", ADD) : ADD;
 
-            act = (Budget) getActivity();
+            act = (Budget) requireActivity();
             app = (App) act.getApplication();
 
             LayoutInflater li = act.getLayoutInflater();
@@ -461,7 +461,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
 
         private void saveItem() {
             float amount;
-            Spinner sp = (Spinner) getDialog().findViewById(R.id.spinner1);
+            Spinner sp = requireDialog().findViewById(R.id.spinner1);
 
             try {
                 amount = Float.parseFloat(edtValue.getText().toString());

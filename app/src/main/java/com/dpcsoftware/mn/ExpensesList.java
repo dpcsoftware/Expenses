@@ -49,6 +49,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -153,8 +154,9 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
             }
         };
         drawerLayout.addDrawerListener(drawerToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        ActionBar bar = App.requireNonNull(getSupportActionBar());
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setHomeButtonEnabled(true);
 
         if (app.showChangesDialog) {
             ChangesDialog cdg = new ChangesDialog();
@@ -544,7 +546,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
 
         @NonNull
         public Dialog onCreateDialog(Bundle savedInstance) {
-            FragmentActivity act = getActivity();
+            FragmentActivity act = requireActivity();
 
             LayoutInflater li = act.getLayoutInflater();
             View layout = li.inflate(R.layout.expenseslist_changesdialog, null);

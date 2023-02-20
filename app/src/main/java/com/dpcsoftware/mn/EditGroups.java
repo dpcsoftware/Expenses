@@ -64,7 +64,7 @@ public class EditGroups extends AppCompatActivity {
 
         renderGroups();
 
-        getSupportActionBar().setTitle(R.string.editgroups_c1);
+        App.requireNonNull(getSupportActionBar()).setTitle(R.string.editgroups_c1);
     }
 
     @Override
@@ -165,14 +165,13 @@ public class EditGroups extends AppCompatActivity {
 
         @NonNull
         public Dialog onCreateDialog(Bundle savedInstance) {
-            act = (EditGroups) getActivity();
+            act = (EditGroups) requireActivity();
             app = (App) act.getApplication();
-
-            Bundle args = getArguments();
 
             LayoutInflater li = act.getLayoutInflater();
             layout = li.inflate(R.layout.editgroupseditcategories_deldialog, null);
 
+            Bundle args = requireArguments();
             deleteId = args.getLong("DELETE_ID");
 
             Spinner sp = (Spinner) layout.findViewById(R.id.spinner1);
@@ -260,11 +259,11 @@ public class EditGroups extends AppCompatActivity {
 
         @NonNull
         public Dialog onCreateDialog(Bundle savedInstance) {
-            act = (EditGroups) getActivity();
+            act = (EditGroups) requireActivity();
             app = (App) act.getApplication();
 
             Bundle args = getArguments();
-            mode = args.getInt("MODE", ADD);
+            mode = args != null ? args.getInt("MODE", ADD) : ADD;
 
             int titleResource;
 

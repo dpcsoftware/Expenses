@@ -31,7 +31,6 @@ import android.view.MenuItem;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import androidx.cursoradapter.widget.SimpleCursorAdapter;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Widget1Config extends AppCompatActivity {
@@ -61,8 +60,7 @@ public class Widget1Config extends AppCompatActivity {
         resultIntent = new Intent();
         resultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, wId);
 
-        ActionBar abar = getSupportActionBar();
-        abar.setTitle(R.string.widget1config_c1);
+        App.requireNonNull(getSupportActionBar()).setTitle(R.string.widget1config_c1);
 
         SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_READ);
         Cursor c = db.rawQuery("SELECT " + Db.Table3._ID + "," + Db.Table3.GROUP_NAME +

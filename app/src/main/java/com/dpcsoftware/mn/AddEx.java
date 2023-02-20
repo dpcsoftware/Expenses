@@ -48,6 +48,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.dpcsoftware.mn.App.SpinnerMenu;
 
@@ -301,22 +302,24 @@ public class AddEx extends AppCompatActivity {
     public static class CalculatorDialog extends DialogFragment implements View.OnClickListener, DialogInterface.OnClickListener {
         private EditText expression;
         private boolean calcError = false;
-        private AddEx act;
+        private FragmentActivity act;
 
         @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Bundle params = getArguments();
-            act = (AddEx) getActivity();
+            act = requireActivity();
 
-            LayoutInflater li = getActivity().getLayoutInflater();
+            LayoutInflater li = act.getLayoutInflater();
             View v = li.inflate(R.layout.addex_calculator, null);
 
             expression = (EditText) v.findViewById(R.id.editText1);
 
-            String value = params.getString("NUMBER");
-            if (value != null) {
-                expression.setText(value);
-                expression.setSelection(expression.length());
+            Bundle params = getArguments();
+            if (params != null) {
+                String value = params.getString("NUMBER");
+                if (value != null) {
+                    expression.setText(value);
+                    expression.setSelection(expression.length());
+                }
             }
 
             v.findViewById(R.id.button1).setOnClickListener(this);
