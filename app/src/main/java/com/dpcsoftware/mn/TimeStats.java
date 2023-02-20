@@ -199,7 +199,7 @@ public class TimeStats extends AppCompatActivity {
         if (mPeriod == Period.YEAR) {
             iDate.set(Calendar.MONTH, 0);
             while (i < numberOfItems) {
-                labels[i] = App.dateToUser("MMMMM", iDate.getTime());
+                labels[i] = App.dateToUser("M", iDate.getTime());
                 i++;
                 iDate.add(Calendar.MONTH, 1);
             }
