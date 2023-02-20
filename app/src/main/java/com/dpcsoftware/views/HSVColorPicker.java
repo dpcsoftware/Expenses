@@ -25,6 +25,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -74,6 +75,11 @@ public class HSVColorPicker extends LinearLayout {
     }
 
     private void init() {
+        // Disable hardware acceleration on API versions < 18, otherwise clipPath won't work.
+        if (Build.VERSION.SDK_INT < 18) {
+            this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
         screenDensity = ctx.getResources().getDisplayMetrics().density;
         setOrientation(LinearLayout.VERTICAL);
         hue = 200;
