@@ -100,18 +100,15 @@ public class EditCategoryActivity extends AppCompatActivity {
         }
 
         EditText text = (EditText) findViewById(R.id.editText1);
-        text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    if (((EditText) findViewById(R.id.editText1)).getText().toString().equals(""))
-                        App.Toast(EditCategoryActivity.this, R.string.editcategoryactivity_c5);
-                    else
-                        saveCategory();
-                    return true;
-                }
-                return false;
+        text.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (((EditText) findViewById(R.id.editText1)).getText().toString().equals(""))
+                    App.Toast(EditCategoryActivity.this, R.string.editcategoryactivity_c5);
+                else
+                    saveCategory();
+                return true;
             }
+            return false;
         });
 
         Bundle args = getIntent().getExtras();

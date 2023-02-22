@@ -77,11 +77,7 @@ public class App extends Application {
     public boolean addExUpdateCategories = false;
     public boolean editCategoriesUpdateList = false;
     public long addExUpdateCategoryId;
-    public OnSharedPreferenceChangeListener prefsListener = new OnSharedPreferenceChangeListener() {
-        public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-            mnUpdateList = true;
-        }
-    };
+    public OnSharedPreferenceChangeListener prefsListener = (prefs, key) -> mnUpdateList = true;
     public boolean showChangesDialog;
     public int appVersion;
 

@@ -90,54 +90,44 @@ public class AddEx extends AppCompatActivity {
         cSpinner = ((Spinner) findViewById(R.id.spinner1));
         loadCategoryList();
 
-        findViewById(R.id.imageButton1).setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Bundle args = new Bundle();
-                String value = ((EditText) findViewById(R.id.editText1)).getText().toString();
-                args.putString("NUMBER", value);
-                CalculatorDialog calcDialog = new CalculatorDialog();
-                calcDialog.setArguments(args);
-                calcDialog.show(getSupportFragmentManager(), null);
-            }
+        findViewById(R.id.imageButton1).setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            String value = ((EditText) findViewById(R.id.editText1)).getText().toString();
+            args.putString("NUMBER", value);
+            CalculatorDialog calcDialog = new CalculatorDialog();
+            calcDialog.setArguments(args);
+            calcDialog.show(getSupportFragmentManager(), null);
         });
 
-        findViewById(R.id.imageButton2).setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent openAct = new Intent(AddEx.this, EditCategoryActivity.class);
-                Bundle args = new Bundle();
-                args.putBoolean("FROM_ADDEX", true);
-                openAct.putExtras(args);
-                startActivity(openAct);
-            }
+        findViewById(R.id.imageButton2).setOnClickListener(v -> {
+            Intent openAct = new Intent(AddEx.this, EditCategoryActivity.class);
+            Bundle args = new Bundle();
+            args.putBoolean("FROM_ADDEX", true);
+            openAct.putExtras(args);
+            startActivity(openAct);
         });
 
-        findViewById(R.id.dateView).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog.OnDateSetListener dListener = new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        expDate.set(year, monthOfYear, dayOfMonth);
-                        ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser("E", expDate.getTime()) + ", " + App.dateToUser(null, expDate.getTime()));
-                    }
-                };
-                DatePickerDialog dialog = new DatePickerDialog(AddEx.this, dListener, expDate.get(Calendar.YEAR), expDate.get(Calendar.MONTH), expDate.get(Calendar.DAY_OF_MONTH));
-                dialog.show();
-            }
+        findViewById(R.id.dateView).setOnClickListener(v -> {
+            DatePickerDialog.OnDateSetListener dListener = new DatePickerDialog.OnDateSetListener() {
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    expDate.set(year, monthOfYear, dayOfMonth);
+                    ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser("E", expDate.getTime()) + ", " + App.dateToUser(null, expDate.getTime()));
+                }
+            };
+            DatePickerDialog dialog = new DatePickerDialog(AddEx.this, dListener, expDate.get(Calendar.YEAR), expDate.get(Calendar.MONTH), expDate.get(Calendar.DAY_OF_MONTH));
+            dialog.show();
         });
 
         findViewById(R.id.imageButton3).setOnClickListener(upDownDateListener);
         findViewById(R.id.imageButton4).setOnClickListener(upDownDateListener);
 
         EditText edtValue = ((EditText) findViewById(R.id.editText1));
-        edtValue.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    saveExpense();
-                    return true;
-                }
-                return false;
+        edtValue.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                saveExpense();
+                return true;
             }
+            return false;
         });
 
         SQLiteDatabase db = DatabaseHelper.quickDb(this, 0);

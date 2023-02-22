@@ -56,11 +56,6 @@ public class TimeStats extends AppCompatActivity {
     private Calendar referenceDate;
     private Period mPeriod;
     private boolean cumulative, showBudget;
-    private Runnable menuCallback = new Runnable() {
-        public void run() {
-            renderGraph();
-        }
-    };
     private View.OnClickListener changePageListener = new View.OnClickListener() {
         public void onClick(View v) {
             int n = 0;
@@ -99,41 +94,33 @@ public class TimeStats extends AppCompatActivity {
         showBudget = prefs.getBoolean("TIMESTATS_SHOWBUDGET", false);
         ((CheckBox) findViewById(R.id.checkBoxBudget)).setChecked(showBudget);
 
-        ((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                SharedPreferences.Editor pEditor = prefs.edit();
-                if (checkedId == R.id.radio1) {
-                    mPeriod = Period.YEAR;
-                    pEditor.putInt("TIMESTATS_PERIOD", 0);
-                } else {
-                    mPeriod = Period.MONTH;
-                    pEditor.putInt("TIMESTATS_PERIOD", 1);
-                }
-                pEditor.apply();
-                renderGraph();
+        ((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener((group, checkedId) -> {
+            SharedPreferences.Editor pEditor = prefs.edit();
+            if (checkedId == R.id.radio1) {
+                mPeriod = Period.YEAR;
+                pEditor.putInt("TIMESTATS_PERIOD", 0);
+            } else {
+                mPeriod = Period.MONTH;
+                pEditor.putInt("TIMESTATS_PERIOD", 1);
             }
+            pEditor.apply();
+            renderGraph();
         });
 
-        ((CheckBox) findViewById(R.id.checkBoxCumulative)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cumulative = isChecked;
-                SharedPreferences.Editor pEditor = prefs.edit();
-                pEditor.putBoolean("TIMESTATS_CUMULATIVE", cumulative);
-                pEditor.apply();
-                renderGraph();
-            }
+        ((CheckBox) findViewById(R.id.checkBoxCumulative)).setOnCheckedChangeListener((buttonView, isChecked) -> {
+            cumulative = isChecked;
+            SharedPreferences.Editor pEditor = prefs.edit();
+            pEditor.putBoolean("TIMESTATS_CUMULATIVE", cumulative);
+            pEditor.apply();
+            renderGraph();
         });
 
-        ((CheckBox) findViewById(R.id.checkBoxBudget)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                showBudget = isChecked;
-                SharedPreferences.Editor pEditor = prefs.edit();
-                pEditor.putBoolean("TIMESTATS_SHOWBUDGET", showBudget);
-                pEditor.apply();
-                renderGraph();
-            }
+        ((CheckBox) findViewById(R.id.checkBoxBudget)).setOnCheckedChangeListener((buttonView, isChecked) -> {
+            showBudget = isChecked;
+            SharedPreferences.Editor pEditor = prefs.edit();
+            pEditor.putBoolean("TIMESTATS_SHOWBUDGET", showBudget);
+            pEditor.apply();
+            renderGraph();
         });
 
         findViewById(R.id.imageButton1).setOnClickListener(changePageListener);
@@ -144,7 +131,7 @@ public class TimeStats extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        app.new SpinnerMenu(this, menuCallback);
+        app.new SpinnerMenu(this, this::renderGraph);
 
         return true;
     }

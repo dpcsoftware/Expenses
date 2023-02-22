@@ -58,11 +58,6 @@ public class CategoryStats extends AppCompatActivity {
     private App app;
     private CategoryStatsAdapter adapter;
     private View footer, footer2;
-    private Runnable menuCallback = new Runnable() {
-        public void run() {
-            renderGraph();
-        }
-    };
     private Date date;
     private boolean isByMonth = true;
     private OnClickListener monthButtonCListener = new OnClickListener() {
@@ -103,39 +98,35 @@ public class CategoryStats extends AppCompatActivity {
         ((TextView) emptyView.findViewById(R.id.textView1)).setText(R.string.categorystats_c3);
         lv.setEmptyView(emptyView);
 
-        lv.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position != adapter.getCount() && position != (adapter.getCount() + 1)) {
-                    Intent it = new Intent(CategoryStats.this, ExpensesList.class);
-                    it.putExtra("FILTER_ID", id);
-                    if (isByMonth)
-                        it.putExtra("FILTER_DATE", date);
-                    startActivity(it);
-                }
+        lv.setOnItemClickListener((parent, view, position, id) -> {
+            if (position != adapter.getCount() && position != (adapter.getCount() + 1)) {
+                Intent it = new Intent(CategoryStats.this, ExpensesList.class);
+                it.putExtra("FILTER_ID", id);
+                if (isByMonth)
+                    it.putExtra("FILTER_DATE", date);
+                startActivity(it);
             }
         });
 
         findViewById(R.id.imageButton1).setOnClickListener(monthButtonCListener);
         findViewById(R.id.imageButton2).setOnClickListener(monthButtonCListener);
 
-        ((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                LinearLayout monthPicker = (LinearLayout) findViewById(R.id.LinearLayoutMonthPicker);
-                if (checkedId == R.id.radio0) {
-                    isByMonth = true;
-                    monthPicker.setVisibility(View.VISIBLE);
-                } else {
-                    isByMonth = false;
-                    monthPicker.setVisibility(View.GONE);
-                }
-                renderGraph();
+        ((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener((group, checkedId) -> {
+            LinearLayout monthPicker = (LinearLayout) findViewById(R.id.LinearLayoutMonthPicker);
+            if (checkedId == R.id.radio0) {
+                isByMonth = true;
+                monthPicker.setVisibility(View.VISIBLE);
+            } else {
+                isByMonth = false;
+                monthPicker.setVisibility(View.GONE);
             }
+            renderGraph();
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        app.new SpinnerMenu(this, menuCallback);
+        app.new SpinnerMenu(this, this::renderGraph);
 
         return true;
     }

@@ -114,32 +114,22 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         updateDateText(1);
         updateDateText(2);
 
-        findViewById(R.id.dateView1).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog.OnDateSetListener dListener = new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        sprFrom.set(year, monthOfYear, dayOfMonth);
-                        updateDateText(1);
-                    }
-                };
-                DatePickerDialog dialog = new DatePickerDialog(ExportData.this, dListener, sprFrom.get(Calendar.YEAR), sprFrom.get(Calendar.MONTH), sprFrom.get(Calendar.DAY_OF_MONTH));
-                dialog.show();
-            }
+        findViewById(R.id.dateView1).setOnClickListener(v -> {
+            DatePickerDialog.OnDateSetListener dListener = (view, year, monthOfYear, dayOfMonth) -> {
+                sprFrom.set(year, monthOfYear, dayOfMonth);
+                updateDateText(1);
+            };
+            DatePickerDialog dialog = new DatePickerDialog(ExportData.this, dListener, sprFrom.get(Calendar.YEAR), sprFrom.get(Calendar.MONTH), sprFrom.get(Calendar.DAY_OF_MONTH));
+            dialog.show();
         });
 
-        findViewById(R.id.dateView2).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog.OnDateSetListener dListener = new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        sprTo.set(year, monthOfYear, dayOfMonth);
-                        updateDateText(2);
-                    }
-                };
-                DatePickerDialog dialog = new DatePickerDialog(ExportData.this, dListener, sprTo.get(Calendar.YEAR), sprTo.get(Calendar.MONTH), sprTo.get(Calendar.DAY_OF_MONTH));
-                dialog.show();
-            }
+        findViewById(R.id.dateView2).setOnClickListener(v -> {
+            DatePickerDialog.OnDateSetListener dListener = (view, year, monthOfYear, dayOfMonth) -> {
+                sprTo.set(year, monthOfYear, dayOfMonth);
+                updateDateText(2);
+            };
+            DatePickerDialog dialog = new DatePickerDialog(ExportData.this, dListener, sprTo.get(Calendar.YEAR), sprTo.get(Calendar.MONTH), sprTo.get(Calendar.DAY_OF_MONTH));
+            dialog.show();
         });
 
         // Create launcher to pick backup file to restore
@@ -153,15 +143,13 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
                     AlertDialog.Builder dgBuilder = new AlertDialog.Builder(ExportData.this);
                     dgBuilder.setMessage(R.string.exportdata_c3);
                     dgBuilder.setTitle(R.string.exportdata_c4);
-                    dgBuilder.setPositiveButton(R.string.exportdata_c5, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            try {
-                                InputStream stream = getContentResolver().openInputStream(uri);
-                                restoreDb(stream);
-                            }
-                            catch (FileNotFoundException e) {
-                                App.Toast(getApplicationContext(), R.string.exportdata_c10);
-                            }
+                    dgBuilder.setPositiveButton(R.string.exportdata_c5, (dialog, which) -> {
+                        try {
+                            InputStream stream = getContentResolver().openInputStream(uri);
+                            restoreDb(stream);
+                        }
+                        catch (FileNotFoundException e) {
+                            App.Toast(getApplicationContext(), R.string.exportdata_c10);
                         }
                     });
                     dgBuilder.setNegativeButton(R.string.exportdata_c6, null);

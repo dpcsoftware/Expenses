@@ -113,20 +113,16 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
         listView.setEmptyView(emptyView);
 
         footer = LayoutInflater.from(this).inflate(R.layout.expenseslist_footer, null);
-        footer.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                numberOfItems += NUMBER_OF_ITEMS;
-                renderList();
-            }
+        footer.setOnClickListener(v -> {
+            numberOfItems += NUMBER_OF_ITEMS;
+            renderList();
         });
         listView.addFooterView(footer);
 
-        findViewById(R.id.addExpenseButton).setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(ExpensesList.this, AddEx.class);
-                intent.putExtra("EDIT_MODE", false);
-                startActivity(intent);
-            }
+        findViewById(R.id.addExpenseButton).setOnClickListener(v -> {
+            Intent intent = new Intent(ExpensesList.this, AddEx.class);
+            intent.putExtra("EDIT_MODE", false);
+            startActivity(intent);
         });
 
         Bundle bd = getIntent().getExtras();
@@ -199,17 +195,14 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
                 sMenu.setSelectedById(newGroupId);
         }
 
-        sMenu.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    renderList();
-                    return true;
-                }
-                return false;
+        sMenu.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                renderList();
+                return true;
             }
+            return false;
         });
 
         return true;

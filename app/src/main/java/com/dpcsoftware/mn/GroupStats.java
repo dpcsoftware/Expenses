@@ -79,18 +79,16 @@ public class GroupStats extends AppCompatActivity {
         findViewById(R.id.imageButton1).setOnClickListener(monthButtonCListener);
         findViewById(R.id.imageButton2).setOnClickListener(monthButtonCListener);
 
-        ((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                LinearLayout monthPicker = (LinearLayout) findViewById(R.id.LinearLayoutMonthPicker);
-                if (checkedId == R.id.radio0) {
-                    isByMonth = true;
-                    monthPicker.setVisibility(View.VISIBLE);
-                } else {
-                    isByMonth = false;
-                    monthPicker.setVisibility(View.GONE);
-                }
-                renderGraph();
+        ((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener((group, checkedId) -> {
+            LinearLayout monthPicker = (LinearLayout) findViewById(R.id.LinearLayoutMonthPicker);
+            if (checkedId == R.id.radio0) {
+                isByMonth = true;
+                monthPicker.setVisibility(View.VISIBLE);
+            } else {
+                isByMonth = false;
+                monthPicker.setVisibility(View.GONE);
             }
+            renderGraph();
         });
 
         renderGraph();
