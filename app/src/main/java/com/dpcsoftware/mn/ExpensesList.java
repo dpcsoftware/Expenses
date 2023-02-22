@@ -61,6 +61,8 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class ExpensesList extends AppCompatActivity implements OnItemClickListener, OnItemLongClickListener, NavigationView.OnNavigationItemSelectedListener {
     private static final int NUMBER_OF_ITEMS = 40;
@@ -87,6 +89,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
     private SharedPreferences prefs;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
+    private DiacriticInsensitiveSearcher searcher;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -157,6 +160,8 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
         ActionBar bar = App.requireNonNull(getSupportActionBar());
         bar.setDisplayHomeAsUpEnabled(true);
         bar.setHomeButtonEnabled(true);
+
+        searcher = new DiacriticInsensitiveSearcher();
 
         if (app.showChangesDialog) {
             ChangesDialog cdg = new ChangesDialog();
@@ -349,10 +354,12 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
                 ArrayList<String> searchClauses = new ArrayList<>();
                 for (String w : words) {
                     if (!w.isEmpty()) {
-                        String wEscaped = DatabaseUtils.sqlEscapeString('%' + w + '%');
-                        searchClauses.add(Db.Table1.T_DETAILS + " LIKE " + wEscaped);
-                        searchClauses.add(Db.Table1.T_AMOUNT + " LIKE " + wEscaped);
-                        searchClauses.add(Db.Table2.CATEGORY_NAME + " LIKE " + wEscaped);
+                        String wordGlob = searcher.getGlob(w);
+                        searchClauses.add("lower(" + Db.Table1.T_DETAILS + ") GLOB " + wordGlob);
+                        searchClauses.add("lower(" + Db.Table2.CATEGORY_NAME + ") GLOB " + wordGlob);
+                        if (isNumeric(w)) {
+                            searchClauses.add(Db.Table1.T_AMOUNT + " LIKE '%" + w + "%'");
+                        }
                     }
                 }
                 if (searchClauses.size() > 0) {
@@ -540,6 +547,51 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
         app.setFlag(1);
 
         db.close();
+    }
+
+    private boolean isNumeric(String s) {
+        try {
+            Double.parseDouble(s);
+        }
+        catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private static class DiacriticInsensitiveSearcher {
+        private static class ReplacementRule {
+            public Pattern pattern;
+            public String replacement;
+
+            public ReplacementRule(String regex, String rep) {
+                pattern = Pattern.compile(regex);
+                replacement = rep;
+            }
+        }
+        private final ArrayList<ReplacementRule> rules;
+
+        public DiacriticInsensitiveSearcher() {
+            // Populate rules compiling patterns
+            rules = new ArrayList<>();
+            rules.add(new ReplacementRule("[\\[\\]]", "[$0]"));
+            rules.add(new ReplacementRule("\\*", "[*]"));
+            rules.add(new ReplacementRule("\\?", "[?]"));
+            rules.add(new ReplacementRule("[aáàâã]", "[aáàâã]"));
+            rules.add(new ReplacementRule("[eéèê]", "[eéèê]"));
+            rules.add(new ReplacementRule("[iíî]", "[iíî]"));
+            rules.add(new ReplacementRule("[oóôõ]", "[oóôõ]"));
+            rules.add(new ReplacementRule("[uúùûü]", "[uúùûü]"));
+            rules.add(new ReplacementRule("[cç]", "[cç]"));
+        }
+
+        public String getGlob(String term) {
+            String result = term.toLowerCase(Locale.ROOT);
+            for (ReplacementRule rule: rules) {
+                result = rule.pattern.matcher(result).replaceAll(rule.replacement);
+            }
+            return DatabaseUtils.sqlEscapeString('*' + result + '*');
+        }
     }
 
     public static class ChangesDialog extends DialogFragment implements DialogInterface.OnClickListener {
