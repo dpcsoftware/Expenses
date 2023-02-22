@@ -219,7 +219,7 @@ public class TimeStats extends AppCompatActivity {
         c2.close();
         db.close();
 
-        FrameLayout graphLayout = ((FrameLayout) findViewById(R.id.FrameLayoutTimeChart));
+        FrameLayout graphLayout = findViewById(R.id.FrameLayoutTimeChart);
         if (chart == null) {
             chart = new TimeChart(this, values, labels, budgetTotal, cumulative);
             graphLayout.addView(chart);

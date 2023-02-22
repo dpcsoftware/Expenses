@@ -80,11 +80,11 @@ public class EditCategoryActivity extends AppCompatActivity {
         app = (App) getApplication();
 
         setContentView(R.layout.editcategoryactivity);
-        picker = ((HSVColorPicker) findViewById(R.id.hsvColorPicker));
+        picker = findViewById(R.id.hsvColorPicker);
         picker.setOnColorChangeListener(hsvColorListener);
-        target = (ImageView) findViewById(R.id.imageView1);
+        target = findViewById(R.id.imageView1);
 
-        colorList = (ViewGroup) findViewById(R.id.colorList);
+        colorList = findViewById(R.id.colorList);
         int i, margin = app.dpToPx(4);
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ViewGroup.MarginLayoutParams mParams = new ViewGroup.MarginLayoutParams(lp);
@@ -98,7 +98,7 @@ public class EditCategoryActivity extends AppCompatActivity {
             colorList.addView(item);
         }
 
-        EditText text = (EditText) findViewById(R.id.editText1);
+        EditText text = findViewById(R.id.editText1);
         text.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (((EditText) findViewById(R.id.editText1)).getText().toString().equals(""))

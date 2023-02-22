@@ -80,7 +80,7 @@ public class CategoryStats extends AppCompatActivity {
 
         setContentView(R.layout.categorystats);
 
-        ListView lv = ((ListView) findViewById(R.id.listView1));
+        ListView lv = findViewById(R.id.listView1);
         LayoutInflater inflater = LayoutInflater.from(this);
         footer = inflater.inflate(R.layout.categorystats_listitem, null);
         footer.findViewById(R.id.imageView1).setVisibility(View.GONE);
@@ -110,7 +110,7 @@ public class CategoryStats extends AppCompatActivity {
         findViewById(R.id.imageButton2).setOnClickListener(monthButtonCListener);
 
         ((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener((group, checkedId) -> {
-            LinearLayout monthPicker = (LinearLayout) findViewById(R.id.LinearLayoutMonthPicker);
+            LinearLayout monthPicker = findViewById(R.id.LinearLayoutMonthPicker);
             if (checkedId == R.id.radio0) {
                 isByMonth = true;
                 monthPicker.setVisibility(View.VISIBLE);
@@ -165,11 +165,11 @@ public class CategoryStats extends AppCompatActivity {
 
         BarChart v = new BarChart(this, values, colors);
         v.setPadding(10, 10, 10, 10);
-        FrameLayout graphLayout = ((FrameLayout) findViewById(R.id.FrameLayout1));
+        FrameLayout graphLayout = findViewById(R.id.FrameLayout1);
         if (graphLayout.getChildCount() == 1) graphLayout.removeViewAt(0);
         graphLayout.addView(v);
 
-        ListView lv = ((ListView) findViewById(R.id.listView1));
+        ListView lv = findViewById(R.id.listView1);
         ((TextView) footer.findViewById(R.id.textView2)).setText(app.printMoney(total));
 
         int days = 1;

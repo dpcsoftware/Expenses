@@ -59,7 +59,7 @@ public class EditCategories extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listview);
-        lv = (ListView) findViewById(R.id.listView1);
+        lv = findViewById(R.id.listView1);
         app = (App) getApplication();
 
         renderCategories();
@@ -126,10 +126,10 @@ public class EditCategories extends AppCompatActivity {
         public void bindView(View view, Context context, Cursor cursor) {
             ((ImageView) view.findViewById(R.id.imageViewCategory)).getDrawable().setColorFilter(cursor.getInt(2), App.colorFilterMode);
             ((TextView) view.findViewById(R.id.textViewCategory)).setText(cursor.getString(1));
-            ImageButton btEdit = (ImageButton) view.findViewById(R.id.imageButtonEdit);
+            ImageButton btEdit = view.findViewById(R.id.imageButtonEdit);
             btEdit.setOnClickListener(this);
             btEdit.setTag(cursor.getPosition());
-            ImageButton btDelete = (ImageButton) view.findViewById(R.id.imageButtonDelete);
+            ImageButton btDelete = view.findViewById(R.id.imageButtonDelete);
             btDelete.setOnClickListener(this);
             btDelete.setTag(cursor.getPosition());
         }
@@ -186,7 +186,7 @@ public class EditCategories extends AppCompatActivity {
             ((RadioButton) layout.findViewById(R.id.radio0)).setText(R.string.editcategories_c4);
             ((RadioButton) layout.findViewById(R.id.radio1)).setText(R.string.editcategories_c5);
 
-            Spinner sp = (Spinner) layout.findViewById(R.id.spinner1);
+            Spinner sp = layout.findViewById(R.id.spinner1);
             SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_READ);
             Cursor c = db.rawQuery("SELECT "
                     + Db.Table2._ID + ","
@@ -225,7 +225,7 @@ public class EditCategories extends AppCompatActivity {
 
         private void deleteGroup() {
             SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_WRITE);
-            RadioGroup rg = (RadioGroup) layout.findViewById(R.id.radioGroup1);
+            RadioGroup rg = layout.findViewById(R.id.radioGroup1);
             int toastString;
 
             int result = db.delete(Db.Table2.TABLE_NAME, Db.Table2._ID + " = " + deleteId, null);

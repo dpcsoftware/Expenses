@@ -260,9 +260,9 @@ public class App extends Application {
                     menuView = activity.getLayoutInflater().inflate(R.layout.menu_spinner, null);
                 else {
                     menuView = activity.getLayoutInflater().inflate(R.layout.menu_spinner_search, null);
-                    searchEditText = (EditText) menuView.findViewById(R.id.searchEditText);
+                    searchEditText = menuView.findViewById(R.id.searchEditText);
                 }
-                gSpinner = (Spinner) menuView.findViewById(R.id.icsSpinner1);
+                gSpinner = menuView.findViewById(R.id.icsSpinner1);
                 gSpinner.setAdapter(mAdapter);
 
                 gSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {

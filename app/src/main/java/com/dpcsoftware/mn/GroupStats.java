@@ -68,10 +68,10 @@ public class GroupStats extends AppCompatActivity {
         }
         setContentView(R.layout.groupstats);
 
-        ListView lv = ((ListView) findViewById(R.id.listView1));
+        ListView lv = findViewById(R.id.listView1);
         LayoutInflater inflater = LayoutInflater.from(this);
         footer = inflater.inflate(R.layout.groupstats_listitem, null);
-        TextView footerText = (TextView) footer.findViewById(R.id.textView1);
+        TextView footerText = footer.findViewById(R.id.textView1);
         footerText.setText(R.string.gp_10);
         footerText.setTypeface(null, Typeface.BOLD);
         lv.addFooterView(footer);
@@ -80,7 +80,7 @@ public class GroupStats extends AppCompatActivity {
         findViewById(R.id.imageButton2).setOnClickListener(monthButtonCListener);
 
         ((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener((group, checkedId) -> {
-            LinearLayout monthPicker = (LinearLayout) findViewById(R.id.LinearLayoutMonthPicker);
+            LinearLayout monthPicker = findViewById(R.id.LinearLayoutMonthPicker);
             if (checkedId == R.id.radio0) {
                 isByMonth = true;
                 monthPicker.setVisibility(View.VISIBLE);
@@ -120,7 +120,7 @@ public class GroupStats extends AppCompatActivity {
             total += c.getFloat(2);
         }
 
-        ListView lv = ((ListView) findViewById(R.id.listView1));
+        ListView lv = findViewById(R.id.listView1);
         ((TextView) footer.findViewById(R.id.textView2)).setText(app.printMoney(total));
 
         ((TextView) findViewById(R.id.textViewMonth)).setText(App.dateToUser("MMMM / yyyy", date.getTime()));

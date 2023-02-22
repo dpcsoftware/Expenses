@@ -102,7 +102,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
 
         mActionModeCallback = new RExActionModeCallback();
 
-        listView = (ListView) findViewById(R.id.listView1);
+        listView = findViewById(R.id.listView1);
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
 
@@ -137,10 +137,10 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
         }
 
         // Set menu listener
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.expenseslist_c3, R.string.expenseslist_c4) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
@@ -418,7 +418,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
             ((ImageView) view.findViewById(R.id.imageView1)).getDrawable().setColorFilter(cursor.getInt(1), App.colorFilterMode);
             ((TextView) view.findViewById(R.id.textView2)).setText(app.printMoney(cursor.getFloat(2)));
             ((TextView) view.findViewById(R.id.textView3)).setText(App.dateToUser(null, cursor.getString(3)));
-            TextView tvObs = ((TextView) view.findViewById(R.id.textView4));
+            TextView tvObs = view.findViewById(R.id.textView4);
             String obs = cursor.getString(4);
             if (obs.isEmpty())
                 tvObs.setVisibility(View.GONE);
@@ -478,7 +478,7 @@ public class ExpensesList extends AppCompatActivity implements OnItemClickListen
 
     private void unselectItem(View v, long id) {
         if (id >= 0)
-            selectedIds.remove(selectedIds.indexOf(id));
+            selectedIds.remove(id);
 
         v.setBackgroundResource(R.drawable.statelist_normal);
         if (mActionMode != null && selectedIds.isEmpty())

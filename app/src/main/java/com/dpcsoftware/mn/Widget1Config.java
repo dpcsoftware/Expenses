@@ -68,7 +68,7 @@ public class Widget1Config extends AppCompatActivity {
 
         SimpleCursorAdapter sAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c, new String[]{Db.Table3.GROUP_NAME}, new int[]{android.R.id.text1}, 0);
         sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp = ((Spinner) findViewById(R.id.spinner1));
+        sp = findViewById(R.id.spinner1);
         sp.setAdapter(sAdapter);
     }
 

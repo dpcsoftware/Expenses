@@ -86,7 +86,7 @@ public class AddEx extends AppCompatActivity {
 
         expDate = Calendar.getInstance();
 
-        cSpinner = ((Spinner) findViewById(R.id.spinner1));
+        cSpinner = findViewById(R.id.spinner1);
         loadCategoryList();
 
         findViewById(R.id.imageButton1).setOnClickListener(v -> {
@@ -118,7 +118,7 @@ public class AddEx extends AppCompatActivity {
         findViewById(R.id.imageButton3).setOnClickListener(upDownDateListener);
         findViewById(R.id.imageButton4).setOnClickListener(upDownDateListener);
 
-        EditText edtValue = ((EditText) findViewById(R.id.editText1));
+        EditText edtValue = findViewById(R.id.editText1);
         edtValue.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 saveExpense();
@@ -182,7 +182,7 @@ public class AddEx extends AppCompatActivity {
     public void saveExpense() {
         String date = App.dateToDb("yyyy-MM-dd", expDate.getTime());
 
-        EditText edtValue = ((EditText) findViewById(R.id.editText1));
+        EditText edtValue = findViewById(R.id.editText1);
         float valor;
 
         try {
@@ -267,8 +267,8 @@ public class AddEx extends AppCompatActivity {
         }
 
         public void bindView(View view, Context context, Cursor cursor) {
-            TextView itemText = (TextView) view.findViewById(R.id.textView1);
-            ImageView itemSquare = (ImageView) view.findViewById(R.id.imageView1);
+            TextView itemText = view.findViewById(R.id.textView1);
+            ImageView itemSquare = view.findViewById(R.id.imageView1);
             itemText.setText(cursor.getString(cursor.getColumnIndexOrThrow(Db.Table2.CATEGORY_NAME)));
             itemSquare.getDrawable().setColorFilter(cursor.getInt(cursor.getColumnIndexOrThrow(Db.Table2.CATEGORY_COLOR)), App.colorFilterMode);
         }
@@ -298,7 +298,7 @@ public class AddEx extends AppCompatActivity {
             LayoutInflater li = act.getLayoutInflater();
             View v = li.inflate(R.layout.addex_calculator, null);
 
-            expression = (EditText) v.findViewById(R.id.editText1);
+            expression = v.findViewById(R.id.editText1);
 
             Bundle params = getArguments();
             if (params != null) {

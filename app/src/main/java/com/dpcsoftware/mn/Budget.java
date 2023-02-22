@@ -107,10 +107,10 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         findViewById(R.id.imageButton2).setOnClickListener(this);
         ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser("MMMM / y", date.getTime()));
 
-        rg = (RadioGroup) findViewById(R.id.radioGroup1);
+        rg = findViewById(R.id.radioGroup1);
         rg.setOnCheckedChangeListener(this);
 
-        lv = (ListView) findViewById(android.R.id.list);
+        lv = findViewById(android.R.id.list);
 
         ((TextView) findViewById(R.id.textView1)).setText(R.string.budget_c1);
         lv.setEmptyView(findViewById(R.id.empty));
@@ -245,7 +245,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
         float rate = totalSpent / totalBudget;
 
         ((TextView) header.findViewById(R.id.textViewPercentage)).setText(String.format(Locale.getDefault(), "%.1f", (totalSpent / totalBudget) * 100) + "%");
-        ProgressBar pb = (ProgressBar) header.findViewById(R.id.progressBar1);
+        ProgressBar pb = header.findViewById(R.id.progressBar1);
         pb.setProgress(Math.round(rate * pb.getMax()));
         GradientDrawable gd = (GradientDrawable) ((ScaleDrawable) ((LayerDrawable) pb.getProgressDrawable()).findDrawableByLayerId(android.R.id.progress)).getDrawable();
         if (pb.getProgress() == pb.getMax())
@@ -353,7 +353,7 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
             float rate = spent / budget;
 
             ((TextView) view.findViewById(R.id.textViewPercentage)).setText(String.format(Locale.getDefault(), "%.1f", rate * 100) + "%");
-            ProgressBar pb = (ProgressBar) view.findViewById(R.id.progressBar1);
+            ProgressBar pb = view.findViewById(R.id.progressBar1);
             pb.setProgress((int) Math.floor(rate * pb.getMax()));
             GradientDrawable gd = (GradientDrawable) ((ScaleDrawable) ((LayerDrawable) pb.getProgressDrawable()).findDrawableByLayerId(android.R.id.progress)).getDrawable();
             if (pb.getProgress() == pb.getMax())
@@ -392,9 +392,9 @@ public class Budget extends AppCompatActivity implements View.OnClickListener,
             LayoutInflater li = act.getLayoutInflater();
             View v = li.inflate(R.layout.budget_dialog, null);
 
-            edtValue = (EditText) v.findViewById(R.id.editText1);
+            edtValue = v.findViewById(R.id.editText1);
 
-            Spinner sp = (Spinner) v.findViewById(R.id.spinner1);
+            Spinner sp = v.findViewById(R.id.spinner1);
             SQLiteDatabase db = DatabaseHelper.quickDb(act, DatabaseHelper.MODE_READ);
 
             if (mode == ADD) {
