@@ -197,16 +197,12 @@ public class ExportData extends AppCompatActivity implements View.OnClickListene
         int id = v.getId();
         if (id == R.id.button1) {
             chDg = new ExportDataChoiceDialog();
-            chDg.setOnChosenListener(choice -> {
-                backupDb(choice);
-            });
+            chDg.setOnChosenListener(this::backupDb);
             chDg.show(getSupportFragmentManager(), null);
         }
         else if (id == R.id.button2) {
             chDg = new ExportDataChoiceDialog();
-            chDg.setOnChosenListener(choice -> {
-                exportFile(choice);
-            });
+            chDg.setOnChosenListener(this::exportFile);
             chDg.show(getSupportFragmentManager(), null);
         }
         else if (id == R.id.buttonRestore) {
