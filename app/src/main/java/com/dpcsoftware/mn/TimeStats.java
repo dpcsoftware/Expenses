@@ -33,7 +33,6 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;

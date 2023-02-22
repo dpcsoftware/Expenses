@@ -23,7 +23,6 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -36,8 +35,6 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.DatePicker;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
