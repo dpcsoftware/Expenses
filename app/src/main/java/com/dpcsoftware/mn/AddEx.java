@@ -107,11 +107,9 @@ public class AddEx extends AppCompatActivity {
         });
 
         findViewById(R.id.dateView).setOnClickListener(v -> {
-            DatePickerDialog.OnDateSetListener dListener = new DatePickerDialog.OnDateSetListener() {
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    expDate.set(year, monthOfYear, dayOfMonth);
-                    ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser("E", expDate.getTime()) + ", " + App.dateToUser(null, expDate.getTime()));
-                }
+            DatePickerDialog.OnDateSetListener dListener = (view, year, monthOfYear, dayOfMonth) -> {
+                expDate.set(year, monthOfYear, dayOfMonth);
+                ((TextView) findViewById(R.id.dateView)).setText(App.dateToUser("E", expDate.getTime()) + ", " + App.dateToUser(null, expDate.getTime()));
             };
             DatePickerDialog dialog = new DatePickerDialog(AddEx.this, dListener, expDate.get(Calendar.YEAR), expDate.get(Calendar.MONTH), expDate.get(Calendar.DAY_OF_MONTH));
             dialog.show();
