@@ -36,13 +36,16 @@
 
 
 
-    <string name="changes">-- Réparation de bug lorsqu\'on partageait ou ouvrait un fichier dans le menu \"Exporter des données\".</string>
+    <string name="changes">\u2022 L\'exportation de données et les sauvegardes sont sauvées dans le fichier des téléchargements
+\u2022 Les données peuvent être exportées dans le format CSV
+\u2022 Les accents sont ignorés lors de la recherche des dépenses
+\u2022 Correction de petites erreurs</string>
 
     
     
     <string name="about_c1">A propos de l\'application</string>
-    
-    <string name="about_l1">Version 1.3.3</string>
+    <string name="about_c2">Version %s</string>
+
     <string name="about_l3">Envoyez-nous votre opinion:</string>
     <string name="about_l4">Changements de la version</string>
     <string name="about_l6">Dépenses est un logiciel libre publié sous la license GNU GPL version 3</string>

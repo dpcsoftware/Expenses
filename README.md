@@ -3,7 +3,7 @@
 Expenses is a simple Android application to manage personal
 expenses.
 
-Version: 1.3.3
+Version: 1.4
 
 Developed by Daniel Pereira Coelho (dpcsoftware@gmail.com)
 
@@ -44,6 +44,14 @@ http://developer.android.com/sdk/index.html
 * Collaborate with the project on: http://github.com/dpcsoftware/Expenses
 
 # Changelog
+
+1.4:
+
+* Several code modifications to comply with newer Android versions
+* Data exports and backups are saved in Downloads folder
+* Data can be exported in CSV format
+* Accents are ignored when searching expenses
+* Minor bug fixes
 
 1.3.3:
 

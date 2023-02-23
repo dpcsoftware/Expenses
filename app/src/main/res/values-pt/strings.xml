@@ -36,13 +36,16 @@
 
 
 
-    <string name="changes">-- Corrigido erro ao compartilhar ou abrir arquivos no menu \"Exportar Dados\".</string>
+    <string name="changes">\u2022 Dados exportados e backups são salvos na pasta de Downloads
+\u2022 Dados podem ser exportados no formato CSV
+\u2022 Acentos são ignorados ao buscar despesas
+\u2022 Pequenas correções de erros</string>
 
 
         
     <string name="about_c1">Sobre o aplicativo</string>
-    
-    <string name="about_l1">Versão 1.3.3</string>
+    <string name="about_c2">Versão %s</string>
+
     <string name="about_l3">Envie seu feedback:</string>
     <string name="about_l4">Novidades desta versão</string>
     <string name="about_l6">Despesas é um software livre publicado sob a licença GNU GPL versão 3</string>
