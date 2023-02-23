@@ -50,3 +50,5 @@ assets/
 .idea/navEditor.xml
 .idea/assetWizardSettings.xml
 .idea/jarRepositories.xml
+.idea/vcs.xml
+.idea/deploymentTargetDropDown.xml
