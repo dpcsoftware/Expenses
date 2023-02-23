@@ -9,7 +9,7 @@ Developed by Daniel Pereira Coelho (dpcsoftware@gmail.com)
 
 # License
 
-Copyright 2013-2015 Daniel Pereira Coelho
+Copyright 2023 Daniel Pereira Coelho
    
 Expenses is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
