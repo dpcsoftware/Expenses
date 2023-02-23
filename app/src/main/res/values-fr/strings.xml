@@ -36,10 +36,7 @@
 
 
 
-    <string name="changes">\u2022 L\'exportation de données et les sauvegardes sont sauvées dans le fichier des téléchargements
-\u2022 Les données peuvent être exportées dans le format CSV
-\u2022 Les accents sont ignorés lors de la recherche des dépenses
-\u2022 Correction de petites erreurs</string>
+    <string name="changes">\u2022 L\'exportation de données et les sauvegardes sont sauvées dans le fichier des téléchargements\n\u2022 Les données peuvent être exportées dans le format CSV\n\u2022 Les accents sont ignorés lors de la recherche des dépenses\n\u2022 Correction de petites erreurs</string>
 
     
     

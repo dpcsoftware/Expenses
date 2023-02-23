@@ -36,10 +36,7 @@
 
 
 
-    <string name="changes">\u2022 Dados exportados e backups são salvos na pasta de Downloads
-\u2022 Dados podem ser exportados no formato CSV
-\u2022 Acentos são ignorados ao buscar despesas
-\u2022 Pequenas correções de erros</string>
+    <string name="changes">\u2022 Dados exportados e backups são salvos na pasta de Downloads\n\u2022 Dados podem ser exportados no formato CSV\n\u2022 Acentos são ignorados ao buscar despesas\n\u2022 Pequenas correções de erros</string>
 
 
         

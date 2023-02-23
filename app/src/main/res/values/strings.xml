@@ -58,10 +58,7 @@
 
 
 
-    <string name="changes">\u2022 Data exports and backups are saved in Downloads folder
-\u2022 Data can be exported in CSV format
-\u2022 Accents are ignored when searching expenses
-\u2022 Minor bug fixes</string>
+    <string name="changes">\u2022 Data exports and backups are saved in Downloads folder\n\u2022 Data can be exported in CSV format\n\u2022 Accents are ignored when searching expenses\n\u2022 Minor bug fixes</string>
 
 	
     <string name="about_c1">About the app</string>
