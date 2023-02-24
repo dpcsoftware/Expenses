@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-   Copyright 2013-2015 Daniel Pereira Coelho
+   Copyright 2023 Daniel Pereira Coelho
 
    This file is part of the Expenses Android Application.
 
@@ -29,15 +29,14 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/imageView1"
         android:paddingLeft="3dp"/>
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/imageView1"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/textView1"

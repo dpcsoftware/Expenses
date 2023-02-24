@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2013-2015 Daniel Pereira Coelho
+   Copyright 2023 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -36,7 +36,8 @@
         android:visibility="gone"
         android:textColor="@android:color/white"
         android:imeOptions="actionSearch"
-        android:background="@null"/>
+        android:background="@null"
+		android:hint="@string/menu_spinner_l1"/>
 
 </RelativeLayout>
 

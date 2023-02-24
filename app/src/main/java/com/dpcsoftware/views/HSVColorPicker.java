@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013-2015 Daniel Pereira Coelho
+ *   Copyright 2023 Daniel Pereira Coelho
  *
  *   This file is part of the Expenses Android Application.
  *
@@ -25,13 +25,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.graphics.Region;
-import android.support.v7.widget.LinearLayoutCompat;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 public class HSVColorPicker extends LinearLayout {
     private float hue, sat, val;
@@ -52,11 +52,11 @@ public class HSVColorPicker extends LinearLayout {
     }
 
     public int getColor() {
-        return Color.HSVToColor(new float[] {hue, sat, val});
+        return Color.HSVToColor(new float[]{hue, sat, val});
     }
 
     public void setColor(int color) {
-        float hsv[] = new float[3];
+        float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
         hue = hsv[0];
         sat = hsv[1];
@@ -75,6 +75,11 @@ public class HSVColorPicker extends LinearLayout {
     }
 
     private void init() {
+        // Disable hardware acceleration on API versions < 18, otherwise clipPath won't work.
+        if (Build.VERSION.SDK_INT < 18) {
+            this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
         screenDensity = ctx.getResources().getDisplayMetrics().density;
         setOrientation(LinearLayout.VERTICAL);
         hue = 200;
@@ -93,17 +98,19 @@ public class HSVColorPicker extends LinearLayout {
         hv.invalidate();
         sv.invalidate();
         vv.invalidate();
-        if(mColorChangeListener != null)
+        if (mColorChangeListener != null)
             mColorChangeListener.onColorChange(getColor());
     }
 
     private class BarView extends View {
         private float left, right, top, bottom, height, range;
         private float cursorWidth, cursorBorderWidth, cursorPos;
-        private float lastX = 0, i;
+        private float lastX = 0;
         private Paint p, pCursorBorder;
         private Path clipPath;
         private float radius;
+        private float[] hsv;
+        private RectF rectBar;
 
         public static final int HUE = 1;
         public static final int SAT = 2;
@@ -118,7 +125,7 @@ public class HSVColorPicker extends LinearLayout {
         }
 
         private int dpToPx(float dp) {
-            return Math.round(screenDensity*dp);
+            return Math.round(screenDensity * dp);
         }
 
         private void init() {
@@ -140,10 +147,13 @@ public class HSVColorPicker extends LinearLayout {
 
             clipPath = new Path();
             radius = dpToPx(10);
+
+            hsv = new float[3];
+            rectBar = new RectF();
         }
 
         @Override
-        protected void onSizeChanged (int w, int h, int oldw, int oldh) {
+        protected void onSizeChanged(int w, int h, int oldw, int oldh) {
             left = getPaddingLeft();
             right = w - getPaddingRight();
             range = right - left;
@@ -154,62 +164,69 @@ public class HSVColorPicker extends LinearLayout {
             clipPath.reset();
             clipPath.moveTo(left, top + radius);
             clipPath.rQuadTo(0, -radius, radius, -radius);
-            clipPath.rLineTo(range - 2*radius, 0);
+            clipPath.rLineTo(range - 2 * radius, 0);
             clipPath.rQuadTo(radius, 0, radius, radius);
-            clipPath.rLineTo(0, bottom - top - 2*radius);
+            clipPath.rLineTo(0, bottom - top - 2 * radius);
             clipPath.rQuadTo(0, radius, -radius, radius);
-            clipPath.rLineTo(-range + 2*radius, 0);
+            clipPath.rLineTo(-range + 2 * radius, 0);
             clipPath.rQuadTo(-radius, 0, -radius, -radius);
             clipPath.close();
         }
 
         @Override
         public boolean onTouchEvent(MotionEvent event) {
-             switch(event.getAction()) {
-                 case MotionEvent.ACTION_MOVE:
-                 case MotionEvent.ACTION_DOWN:
-                     float x = event.getX();
-                     if(x >= left && x <= right && Math.abs(x - lastX) > 5) {
-                         cursorPos = x;
-                         if (type == HUE)
-                             hue = (cursorPos - left) / range * 360;
-                         else if (type == SAT)
-                             sat = (cursorPos - left) / range;
-                         else
-                             val = (cursorPos - left) / range;
-                         lastX = x;
-                         drawBars();
-                     }
-                     return true;
-                 default:
-                     return super.onTouchEvent(event);
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_MOVE:
+                case MotionEvent.ACTION_DOWN:
+                    float x = event.getX();
+                    if (x >= left && x <= right && Math.abs(x - lastX) > 5) {
+                        cursorPos = x;
+                        if (type == HUE)
+                            hue = (cursorPos - left) / range * 360;
+                        else if (type == SAT)
+                            sat = (cursorPos - left) / range;
+                        else
+                            val = (cursorPos - left) / range;
+                        lastX = x;
+                        drawBars();
+                    }
+                    return true;
+                default:
+                    return super.onTouchEvent(event);
             }
         }
 
         @Override
-        protected void onDraw (Canvas canvas) {
+        protected void onDraw(Canvas canvas) {
             canvas.save();
-            canvas.clipPath(clipPath, Region.Op.REPLACE);
-            if(type == HUE) {
-                for (i = left; i < right; i += 5) {
-                    p.setColor(Color.HSVToColor(new float[]{(i - left) / range * 360, 0.9f, 0.9f}));
+            canvas.clipPath(clipPath);
+            if (type == HUE) {
+                for (float i = left; i < right; i += 5) {
+                    hsv[0] = (i - left) / range * 360;
+                    hsv[1] = 0.9f;
+                    hsv[2] = 0.9f;
+                    p.setColor(Color.HSVToColor(hsv));
                     canvas.drawLine(i, top, i, bottom, p);
                 }
-                cursorPos = hue/360.0f*range + left;
-            }
-            else if(type == SAT) {
-                for (i = left; i < right; i += 5) {
-                    p.setColor(Color.HSVToColor(new float[]{hue, (i - left) / range, val}));
+                cursorPos = hue / 360.0f * range + left;
+            } else if (type == SAT) {
+                for (float i = left; i < right; i += 5) {
+                    hsv[0] = hue;
+                    hsv[1] = (i - left) / range;
+                    hsv[2] = val;
+                    p.setColor(Color.HSVToColor(hsv));
                     canvas.drawLine(i, top, i, bottom, p);
                 }
-                cursorPos = sat*range + left;
-            }
-            else {
-                for (i = left; i < right; i += 5) {
-                    p.setColor(Color.HSVToColor(new float[]{hue, sat, (i - left) / range}));
+                cursorPos = sat * range + left;
+            } else {
+                for (float i = left; i < right; i += 5) {
+                    hsv[0] = hue;
+                    hsv[1] = sat;
+                    hsv[2] = (i - left) / range;
+                    p.setColor(Color.HSVToColor(hsv));
                     canvas.drawLine(i, top, i, bottom, p);
                 }
-                cursorPos = val*range + left;
+                cursorPos = val * range + left;
             }
 
             canvas.restore();
@@ -217,9 +234,11 @@ public class HSVColorPicker extends LinearLayout {
             pCursorBorder.setColor(Color.GRAY);
             canvas.drawPath(clipPath, pCursorBorder);
             p.setColor(Color.WHITE);
-            canvas.drawRoundRect(new RectF(cursorPos - cursorWidth/2, 0, cursorPos + cursorWidth/2, height), cursorWidth/2, cursorWidth/2, p);
+            rectBar.set(cursorPos - cursorWidth / 2, 0, cursorPos + cursorWidth / 2, height);
+            canvas.drawRoundRect(rectBar, cursorWidth / 2, cursorWidth / 2, p);
             pCursorBorder.setColor(Color.BLACK);
-            canvas.drawRoundRect(new RectF(cursorPos - cursorWidth / 2, cursorBorderWidth / 2, cursorPos + cursorWidth / 2, height - cursorBorderWidth / 2), cursorWidth/2, cursorWidth/2, pCursorBorder);
+            rectBar.set(cursorPos - cursorWidth / 2, cursorBorderWidth / 2, cursorPos + cursorWidth / 2, height - cursorBorderWidth / 2);
+            canvas.drawRoundRect(rectBar, cursorWidth / 2, cursorWidth / 2, pCursorBorder);
         }
     }
 }

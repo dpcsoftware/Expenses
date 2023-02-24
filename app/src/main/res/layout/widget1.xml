@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2013-2015 Daniel Pereira Coelho
+   Copyright 2023 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -16,21 +16,22 @@
    along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_vertical"
-    android:padding="@dimen/widget_padding"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/widget_bg"
     android:layout_margin="4dp" >
 
     <LinearLayout
-        android:layout_width="0dp"
+		android:id="@+id/LinearLayout1"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
+        android:layout_marginLeft="12dp"
         android:orientation="vertical" >
         
         <TextView
@@ -38,10 +39,9 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
-	        android:layout_marginLeft="5dp"
 	        android:textStyle="bold"
 	        android:textColor="@android:color/white"
-	        android:textSize="6pt"
+	        android:textSize="14sp"
             android:gravity="center_vertical"/>
         
         <TextView
@@ -49,10 +49,9 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
-	        android:layout_marginLeft="5dp"
 	        android:textStyle="bold"
 	        android:textColor="@android:color/white"
-	        android:textSize="6pt"
+	        android:textSize="14sp"
             android:gravity="center_vertical"/>
         
         <TextView
@@ -60,10 +59,9 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
-	        android:layout_marginLeft="5dp"
 	        android:textStyle="bold"
 	        android:textColor="@android:color/white"
-	        android:textSize="6pt"
+	        android:textSize="14sp"
             android:gravity="center_vertical"/>
         
     </LinearLayout>
@@ -73,7 +71,9 @@
         style="@style/MN.Widget.ImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+		android:layout_centerVertical="true"
+		android:layout_alignParentRight="true"
         android:src="@drawable/add_box_white"
         android:contentDescription="@string/widget1config_l_img1" />
 
-</LinearLayout>
+</RelativeLayout>

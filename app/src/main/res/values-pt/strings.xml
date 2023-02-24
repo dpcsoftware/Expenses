@@ -1,5 +1,5 @@
 <!--
-   Copyright 2013-2015 Daniel Pereira Coelho
+   Copyright 2023 Daniel Pereira Coelho
 
    This file is part of the Expenses Android Application.
 
@@ -30,20 +30,19 @@
     <string name="gp_3">Cancelar</string>
     <string name="gp_4">Editar</string>
     <string name="gp_5">Excluir</string>
-    <string name="gp_6">Compartilhar</string>
     <string name="gp_7">Anterior</string>
     <string name="gp_8">Próximo</string>
     <string name="gp_9">Selecionar</string>
 
 
 
-    <string name="changes">-- Corrigido erro ao compartilhar ou abrir arquivos no menu \"Exportar Dados\".</string>
+    <string name="changes">\u2022 Dados exportados e backups são salvos na pasta de Downloads\n\u2022 Dados podem ser exportados no formato CSV\n\u2022 Acentos são ignorados ao buscar despesas\n\u2022 Pequenas correções de erros</string>
 
 
         
     <string name="about_c1">Sobre o aplicativo</string>
-    
-    <string name="about_l1">Versão 1.3.3</string>
+    <string name="about_c2">Versão %s</string>
+
     <string name="about_l3">Envie seu feedback:</string>
     <string name="about_l4">Novidades desta versão</string>
     <string name="about_l6">Despesas é um software livre publicado sob a licença GNU GPL versão 3</string>
@@ -95,46 +94,32 @@
     <string name="exportdata_c5">Sim</string>
     <string name="exportdata_c6">Não</string>
     <string name="exportdata_c7">Erro ao fazer backup</string>
-    <string name="exportdata_c8">Backup realizado!</string>
+    <string name="exportdata_c8">Backup salvo na pasta Downloads</string>
     <string name="exportdata_c9">Backup recuperado!</string>
     <string name="exportdata_c10">Erro ao recuperar backup</string>
-    <string name="exportdata_c11">Tem certeza que deseja excluir o arquivo?</string>
     <string name="exportdata_c12">Escolha o aplicativo</string>
     <string name="exportdata_c13">Data</string>
     <string name="exportdata_c14">Categoria</string>
     <string name="exportdata_c15">Valor</string>
     <string name="exportdata_c16">Detalhes</string>
-    <string name="exportdata_c17">Planilha</string>
-    <string name="exportdata_c18">Erro durante a criação da planilha</string>
+    <string name="exportdata_c18">Erro durante exportação de dados</string>
 
     <string name="exportdata_l2">Fazer backup agora</string>
-    <string name="exportdata_l3">Arquivos</string>
-    <string name="exportdata_l4">Pasta:</string>
-    <string name="exportdata_l5">Exportar para planilha ODS</string>
-    
-    <string name="exportdata_l_img1">Abrir Arquivo</string>
-    <string name="exportdata_l_img2">Recuperar Backup</string>
+    <string name="exportdata_l3">Formato</string>
+    <string name="exportdata_l4">ODS (Planilha)</string>
+    <string name="exportdata_l5">Exportar</string>
 
-    
-    
-    
+
     <string name="editcategories_c1">Editar Categorias</string>
     <string name="editcategories_c2">Atenção!</string>
     <string name="editcategories_c3">Ao menos uma categoria deve existir</string>
     <string name="editcategories_c4">Excluir categoria e todas as transações associadas</string>
     <string name="editcategories_c5">Excluir categoria e mover transações para a categoria:</string>
     <string name="editcategories_c6">Excluir Categoria</string>
-    <string name="editcategories_c7">Adicionar Categoria</string>
-    <string name="editcategories_c8">Editar Categoria</string>
-    <string name="editcategories_c9">Editado!</string>
-    <string name="editcategories_c10">Adicionado!</string>
-    <string name="editcategories_c11">Erro ao acessar Banco de Dados</string>
     <string name="editcategories_c12">Excluído!</string>
     <string name="editcategories_c13">Erro ao excluir</string>
-    <string name="editcategories_c14">Digite um nome para a categoria</string>
-    
-    
-    
+
+
     <string name="editgroups_c1">Editar Grupos</string>
     <string name="editgroups_c2">Atenção!</string>
     <string name="editgroups_c3">Ao menos um grupo deve existir</string>
@@ -161,16 +146,16 @@
     <string name="expenseslist_c2">Suas despesas vão aparecer aqui!</string>
     
     <string name="expenseslist_l1">Filtros:</string>
-    <string name="expenseslist_dr1">ESTATÍSTICAS</string>
-    <string name="expenseslist_dr2">Por Categoria</string>
-    <string name="expenseslist_dr3">No Tempo</string>
-    <string name="expenseslist_dr4">PERSONALIZAR</string>
-    <string name="expenseslist_dr5">Grupos</string>
-    <string name="expenseslist_dr6">Categorias</string>
-    <string name="expenseslist_dr8">Orçamento</string>
-    <string name="expenseslist_dr9">Exportar Dados</string>
-    <string name="expenseslist_dr10">Preferências</string>
-    <string name="expenseslist_dr11">Sobre</string>
+    <string name="menu_main_1">ESTATÍSTICAS</string>
+    <string name="menu_main_2">Por Categoria</string>
+    <string name="menu_main_4">No Tempo</string>
+    <string name="menu_main_5">PERSONALIZAR</string>
+    <string name="menu_main_6">Grupos</string>
+    <string name="menu_main_7">Categorias</string>
+    <string name="menu_main_9">Orçamento</string>
+    <string name="menu_main_10">Exportar Dados</string>
+    <string name="menu_main_11">Preferências</string>
+    <string name="menu_main_12">Sobre</string>
     <string name="expenseslist_l_img1">Expandir Lista</string>
     
     
@@ -183,7 +168,7 @@
     <string name="menu_content_readex_1">Excluir</string>
     <string name="menu_groups_1">Novo Grupo</string>
     <string name="menu_categories_1">Nova Categoria</string>
-    <string name="menu_main_1">Pesquisar</string>
+    <string name="menu_expenseslist_1">Pesquisar</string>
     <string name="menu_budget_1">Adicionar Meta</string>
     
     
@@ -204,18 +189,6 @@
     </string-array>
     <string name="prefs_12">Defina a frequência com que os backups automáticos são feitos</string>
     
-    
-    
-    <string name="folderpicker_c1">Erro de Memória</string>
-    <string name="folderpicker_c2">Este é o diretório raiz</string>
-    <string name="folderpicker_c3">Selecionado!</string>
-    <string name="folderpicker_c4">Diretório Raiz</string>
-    <string name="folderpicker_c5">.. Diretório Acima</string>
-    
-    <string name="folderpicker_l_img1">Pasta</string>
-    
-    
-    
     <string name="widget1config_l1">Selecione Um Grupo</string>
     <string name="widget1config_l2">Valor Exibido</string>
     <string name="widget1config_l3">Mês</string>
@@ -225,15 +198,11 @@
     <string name="addex_l_img3">Próximo Dia</string>
     <string name="addex_l_img4">Dia Anterior</string>
     <string name="budget_c1">Nenhum item foi definido para este grupo</string>
-    <string name="budget_c2">Total</string>
     <string name="budget_c3">Adicionar Item</string>
     <string name="budget_c4">Editar Item</string>
     <string name="budget_c5">Valor inválido</string>
     <string name="budget_c6">Salvo!</string>
     <string name="budget_c7">Salvo!</string>
-    <string name="budget_l1">Mensal</string>
-    <string name="budget_l2">Total</string>
-    <string name="budget_l5">Excluir Item</string>
     <string name="budget_l_img1">Próximo Mês</string>
     <string name="budget_l_img2">Mês Anterior</string>
     <string name="expenseslist_c3">Abrir Menu</string>
@@ -243,12 +212,12 @@
     <string name="gp_10">Total</string>
     <string name="gp_11">Erro ao acessar banco de dados</string>
     <string name="gp_12">Valor</string>
-    <string name="menu_main_2">Fechar Pesquisa</string>
+    <string name="menu_expenseslist_2">Fechar Pesquisa</string>
     <string name="prefs_13">Orçamento</string>
     <string name="prefs_15">Escolha se quer receber notificações quando você gasta mais do que o previsto no orçamento</string>
     <string name="prefs_14">Notificações do Orçamento</string>
     <string name="gp_13">Categoria</string>
-    <string name="expenseslist_dr7">OUTROS</string>
+    <string name="menu_main_8">OUTROS</string>
     <string name="app_c1">Você gastou mais do que deveria!</string>
     <string name="app_c2">Orçamento</string>
     <string name="gp_14">Mensal</string>
@@ -258,9 +227,8 @@
     <string name="exportdata_l11">Até</string>
     <string name="exportdata_l6">Backup de dados</string>
     <string name="exportdata_l7">Backups são uma cópia do banco de dados do aplicativo. Eles são salvos na memória do telefone e são especialmente úteis para recuperar seus dados em um outro telefone, porém você deve transferir o arquivo entre os aparelhos por conta própria (por e-mail por exemplo).</string>
-    <string name="exportdata_l8">Exportar para uma planilha</string>
-    <string name="exportdata_l9">Selecione o intervalo de tempo para exportar suas despesas para uma planilha ODS:</string>
-    <string name="exportdata_c20">Planilha criada!</string>
+    <string name="exportdata_l8">Exportar para Arquivo</string>
+    <string name="exportdata_l9">Selecione o intervalo de tempo e o formato do arquivo para exportar suas despesas:</string>
     <string name="exportdata_c19">Intervalo de tempo inválido</string>
     <string name="widget1config_c1">Configurações do Widget</string>
     <string name="editcategoryactivity_c1">Editar Categoria</string>
@@ -276,6 +244,17 @@
     <string name="editcategoryactivity_c3">Salvo!</string>
     <string name="editcategoryactivity_c4">Salvo!</string>
     <string name="groupstats_c1">Balanço dos Grupos</string>
-    <string name="expenseslist_dr12">Por Grupo</string>
+    <string name="menu_main_3">Por Grupo</string>
+    <string name="exportdata_l1">Restaurar Backup</string>
+    <string name="exportdata_choicedialog_l1">Compartilhar</string>
+    <string name="exportdata_choicedialog_l2">Salvar</string>
+    <string name="exportdata_choicedialog_l3">Cancelar</string>
+    <string name="exportdata_choicedialog_c1">Escolha uma opção</string>
+    <string name="exportdata_c21">Grupo</string>
+    <string name="exportdata_c22">Arquivo criado na pasta Downloads</string>
+    <string name="menu_main_13">Logo</string>
+    <string name="editgroups_l1">Nome</string>
+    <string name="editcategoryactivity_l2">Nome</string>
+    <string name="menu_spinner_l1">Digite para pesquisar</string>
 
 </resources>

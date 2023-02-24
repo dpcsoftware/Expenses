@@ -1,6 +1,6 @@
 /*
- *   Copyright 2013-2015 Daniel Pereira Coelho
- *   
+ *   Copyright 2023 Daniel Pereira Coelho
+ *
  *   This file is part of the Expenses Android Application.
  *
  *   Expenses is free software: you can redistribute it and/or modify
@@ -14,21 +14,24 @@
  *
  *   You should have received a copy of the GNU General Public License
  *   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  */
 
 package com.dpcsoftware.mn;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class About extends AppCompatActivity {
-	
-	@Override
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.about);
-		getSupportActionBar().setTitle(R.string.about_c1);
-	}
-	
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.about);
+        ((TextView) findViewById(R.id.textView2)).setText(String.format(getResources().getString(R.string.about_c2), BuildConfig.VERSION_NAME));
+        App.requireNonNull(getSupportActionBar()).setTitle(R.string.about_c1);
+    }
+
 }

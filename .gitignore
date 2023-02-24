@@ -37,9 +37,18 @@ assets/
 *.swo
 
 #Android Studio
+*.iml
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/runConfigurations.xml
 .idea/codeStyleSettings.xml
 .idea/caches
 .idea/codeStyles
+.idea/libraries
+.idea/dictionaries
+.idea/modules.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/jarRepositories.xml
+.idea/vcs.xml
+.idea/deploymentTargetDropDown.xml

@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2013-2015 Daniel Pereira Coelho
+   Copyright 2023 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -17,6 +17,7 @@
 -->
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@android:id/text1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -24,5 +25,5 @@
     android:layout_gravity="left"
     android:padding="5dp"
     style="@style/MN.ActionBar.Title"
-    android:drawableRight="@drawable/arrow_drop_down_white" />
+    app:drawableRightCompat="@drawable/arrow_drop_down_white" />
 

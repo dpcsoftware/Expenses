@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013-2015 Daniel Pereira Coelho
+ *   Copyright 2023 Daniel Pereira Coelho
  *
  *   This file is part of the Expenses Android Application.
  *
@@ -24,9 +24,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +31,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 
@@ -45,13 +45,12 @@ public class GroupStats extends AppCompatActivity {
     private boolean isByMonth = true;
     private View.OnClickListener monthButtonCListener = new View.OnClickListener() {
         public void onClick(View v) {
-            switch(v.getId()) {
-                case R.id.imageButton1:
-                    date.add(Calendar.MONTH, -1);
-                    break;
-                case R.id.imageButton2:
-                    date.add(Calendar.MONTH, 1);
-                    break;
+            int id = v.getId();
+            if (id == R.id.imageButton1) {
+                date.add(Calendar.MONTH, -1);
+            }
+            else if (id == R.id.imageButton2) {
+                date.add(Calendar.MONTH, 1);
             }
             renderGraph();
         }
@@ -69,10 +68,10 @@ public class GroupStats extends AppCompatActivity {
         }
         setContentView(R.layout.groupstats);
 
-        ListView lv = ((ListView) findViewById(R.id.listView1));
+        ListView lv = findViewById(R.id.listView1);
         LayoutInflater inflater = LayoutInflater.from(this);
         footer = inflater.inflate(R.layout.groupstats_listitem, null);
-        TextView footerText = (TextView) footer.findViewById(R.id.textView1);
+        TextView footerText = footer.findViewById(R.id.textView1);
         footerText.setText(R.string.gp_10);
         footerText.setTypeface(null, Typeface.BOLD);
         lv.addFooterView(footer);
@@ -80,19 +79,16 @@ public class GroupStats extends AppCompatActivity {
         findViewById(R.id.imageButton1).setOnClickListener(monthButtonCListener);
         findViewById(R.id.imageButton2).setOnClickListener(monthButtonCListener);
 
-        ((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged (RadioGroup group, int checkedId) {
-                LinearLayout monthPicker = (LinearLayout) findViewById(R.id.LinearLayoutMonthPicker);
-                if(checkedId == R.id.radio0) {
-                    isByMonth = true;
-                    monthPicker.setVisibility(View.VISIBLE);
-                }
-                else {
-                    isByMonth = false;
-                    monthPicker.setVisibility(View.GONE);
-                }
-                renderGraph();
+        ((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener((group, checkedId) -> {
+            LinearLayout monthPicker = findViewById(R.id.LinearLayoutMonthPicker);
+            if (checkedId == R.id.radio0) {
+                isByMonth = true;
+                monthPicker.setVisibility(View.VISIBLE);
+            } else {
+                isByMonth = false;
+                monthPicker.setVisibility(View.GONE);
             }
+            renderGraph();
         });
 
         renderGraph();
@@ -102,7 +98,7 @@ public class GroupStats extends AppCompatActivity {
         SQLiteDatabase db = DatabaseHelper.quickDb(this, DatabaseHelper.MODE_READ);
 
         String queryModifier = "";
-        if(isByMonth)
+        if (isByMonth)
             queryModifier = " AND strftime('%Y-%m'," + Db.Table1.T_DATE + ") = '" + App.dateToDb("yyyy-MM", date.getTime()) + "'";
 
         Cursor c = db.rawQuery("SELECT " +
@@ -120,20 +116,19 @@ public class GroupStats extends AppCompatActivity {
                 " ORDER BY " + Db.Table3.T_GROUP_NAME, null);
 
         float total = 0;
-        while(c.moveToNext()) {
+        while (c.moveToNext()) {
             total += c.getFloat(2);
         }
 
-        ListView lv = ((ListView) findViewById(R.id.listView1));
+        ListView lv = findViewById(R.id.listView1);
         ((TextView) footer.findViewById(R.id.textView2)).setText(app.printMoney(total));
 
         ((TextView) findViewById(R.id.textViewMonth)).setText(App.dateToUser("MMMM / yyyy", date.getTime()));
 
-        if(adapter == null) {
-            adapter = new GroupStatsAdapter(this,c);
+        if (adapter == null) {
+            adapter = new GroupStatsAdapter(this, c);
             lv.setAdapter(adapter);
-        }
-        else {
+        } else {
             adapter.changeCursor(c);
             adapter.notifyDataSetChanged();
         }
@@ -144,12 +139,12 @@ public class GroupStats extends AppCompatActivity {
 
         public GroupStatsAdapter(Context context, Cursor c) {
             super(context, c, 0);
-            mInflater=LayoutInflater.from(context);
+            mInflater = LayoutInflater.from(context);
         }
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            return mInflater.inflate(R.layout.groupstats_listitem,parent,false);
+            return mInflater.inflate(R.layout.groupstats_listitem, parent, false);
         }
 
         @Override

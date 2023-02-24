@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+   Copyright 2023 Daniel Pereira Coelho
+
+   This file is part of the Expenses Android Application.
+
+   Expenses is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation in version 3.
+
+   Expenses is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Expenses.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/menu_main_1">
+        <menu>
+            <item
+                android:id="@+id/menu_item_stats_category"
+                android:icon="@drawable/stats_grey"
+                android:title="@string/menu_main_2"/>
+            <item
+                android:id="@+id/menu_item_stats_group"
+                android:icon="@drawable/list_grey"
+                android:title="@string/menu_main_3"/>
+            <item
+                android:id="@+id/menu_item_stats_time"
+                android:icon="@drawable/stats_time_grey"
+                android:title="@string/menu_main_4"/>
+        </menu>
+    </item>
+
+    <item android:title="@string/menu_main_5">
+        <menu>
+            <item
+                android:id="@+id/menu_item_edit_groups"
+                android:icon="@drawable/groups_grey"
+                android:title="@string/menu_main_6"/>
+            <item
+                android:id="@+id/menu_item_edit_categories"
+                android:icon="@drawable/categories_grey"
+                android:title="@string/menu_main_7"/>
+        </menu>
+    </item>
+
+    <item android:title="@string/menu_main_8">
+        <menu>
+            <item
+                android:id="@+id/menu_item_budget"
+                android:icon="@drawable/money_grey"
+                android:title="@string/menu_main_9"/>
+            <item
+                android:id="@+id/menu_item_export_data"
+                android:icon="@drawable/sd_storage_grey"
+                android:title="@string/menu_main_10"/>
+            <item
+                android:id="@+id/menu_item_prefs"
+                android:icon="@drawable/checkbox_grey"
+                android:title="@string/menu_main_11"/>
+            <item
+                android:id="@+id/menu_item_about"
+                android:icon="@drawable/info_grey"
+                android:title="@string/menu_main_12"/>
+        </menu>
+    </item>
+</menu>

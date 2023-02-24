@@ -1,5 +1,5 @@
 <!--
-   Copyright 2013-2015 Daniel Pereira Coelho
+   Copyright 2023 Daniel Pereira Coelho
 
    This file is part of the Expenses Android Application.
 
@@ -17,12 +17,14 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dpcsoftware.mn"
-    android:versionCode="18"
-    android:versionName="1.3.3" >
+    android:versionCode="19"
+    android:versionName="1.4" >
 
     <uses-permission
     	android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:icon="@drawable/logo"
@@ -32,7 +34,8 @@
         android:allowBackup="true">
         <activity
             android:name="ExpensesList"
-            android:label="@string/title_activity_main">
+            android:label="@string/title_activity_main"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,18 +52,17 @@
         <activity android:name="EditPreferences" />
         <activity android:name="About" />
         <activity android:name="ExportData" />
-        <activity android:name="FolderPicker" />
         <activity android:name="Budget" />
         <activity android:name="EditCategoryActivity" />
         <activity android:name=".GroupStats" />
         
-        <activity android:name="Widget1Config">
+        <activity android:name="Widget1Config" android:exported="true">
 		    <intent-filter>
 		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
 		    </intent-filter>
 		</activity>
         
-        <receiver android:name="Widget1" >
+        <receiver android:name="Widget1" android:exported="false">
 	    	<intent-filter>
 	        	<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 	    	</intent-filter>
@@ -69,7 +71,7 @@
 		</receiver>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.dpcsoftware.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

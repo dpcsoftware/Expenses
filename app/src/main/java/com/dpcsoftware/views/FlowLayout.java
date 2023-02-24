@@ -1,5 +1,5 @@
 /*
- *   Copyright 2013-2015 Daniel Pereira Coelho
+ *   Copyright 2023 Daniel Pereira Coelho
  *
  *   This file is part of the Expenses Android Application.
  *
@@ -24,25 +24,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 public class FlowLayout extends ViewGroup {
-    private ArrayList<Integer> rowPos;
-    private ArrayList<Integer> childrenLeft;
-
     public FlowLayout(Context context) {
         super(context);
-        init();
     }
 
     public FlowLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
-
-    private void init() {
-        rowPos = new ArrayList<Integer>();
-        childrenLeft = new ArrayList<Integer>();
     }
 
     @Override
@@ -69,7 +57,7 @@ public class FlowLayout extends ViewGroup {
                 int chHeight = child.getMeasuredHeight() + mlp.topMargin + mlp.bottomMargin;
                 int chWidth = child.getMeasuredWidth() + mlp.leftMargin + mlp.rightMargin;
 
-                if(childLeft + chWidth > myWidth) { //put child in next row
+                if (childLeft + chWidth > myWidth) { //put child in next row
                     childLeft = 0;
                     childTop += rowHeight;
                     rowHeight = 0;
@@ -97,7 +85,7 @@ public class FlowLayout extends ViewGroup {
                 int chHeight = child.getMeasuredHeight() + mlp.topMargin + mlp.bottomMargin;
                 int chWidth = child.getMeasuredWidth() + mlp.leftMargin + mlp.rightMargin;
 
-                if(childLeft + chWidth > right) { //put child in next row
+                if (childLeft + chWidth > right) { //put child in next row
                     childLeft = 0;
                     childTop += rowHeight;
                     rowHeight = 0;

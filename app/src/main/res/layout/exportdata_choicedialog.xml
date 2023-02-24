@@ -1,6 +1,6 @@
-<!-- 
+<!--
    Copyright 2023 Daniel Pereira Coelho
-   
+
    This file is part of the Expenses Android Application.
 
    Expenses is free software: you can redistribute it and/or modify
@@ -17,33 +17,43 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="3dp">
+    android:orientation="vertical">
 
-    <EditText
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText1"
-        android:ems="10"
-        android:hint="@string/gp_12"
-        android:inputType="numberDecimal"/>
+        android:id="@+id/buttonShare"
+        android:text="@string/exportdata_choicedialog_l1"
+        android:drawableLeft="@drawable/share_grey"
+        android:background="@drawable/statelist_normal"
+        android:padding="5dp">
+    </Button>
 
-    <TextView
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView1"
-        android:text="@string/gp_13"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:layout_marginLeft="5dp"/>
-    
-    <Spinner
-        android:id="@+id/spinner1"
+        android:id="@+id/buttonSave"
+        android:text="@string/exportdata_choicedialog_l2"
+        android:drawableLeft="@drawable/sd_storage_grey"
+        android:background="@drawable/statelist_normal"
+        android:padding="5dp">
+    </Button>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/hBar"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"/>
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+        android:id="@+id/buttonCancel"
+        android:text="@string/exportdata_choicedialog_l3"
+        android:background="@drawable/statelist_normal">
+    </Button>
 
 </LinearLayout>

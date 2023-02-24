@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2013-2015 Daniel Pereira Coelho
+   Copyright 2023 Daniel Pereira Coelho
    
    This file is part of the Expenses Android Application.
 
@@ -41,7 +41,9 @@
 	            android:background="?android:attr/windowBackground"
 	            android:padding="5dp"
                 android:imeOptions="actionDone"
-                android:layout_toLeftOf="@+id/imageButton1"/>
+                android:layout_toLeftOf="@+id/imageButton1">
+				<requestFocus/>
+			</EditText>
 	
 	        <ImageButton
 	            android:id="@+id/imageButton1"
